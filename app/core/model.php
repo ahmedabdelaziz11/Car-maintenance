@@ -7,47 +7,58 @@ class model
 {
     private $connection;
     private $sql;
+    protected $table;
 
     public function __construct()
     {
         $this->connection = mysqli_connect(SERVER, USERNAME, PASSWORD, DATABASE);
     }
 
-    public function select($table, $columns)
+    private function escapeColumns($columns)
     {
-        $this->sql = "SELECT $columns FROM `$table`";
+        return implode(', ', array_map(fn($col) => "`" . mysqli_real_escape_string($this->connection, $col) . "`", $columns));
+    }
+
+    private function escapeValues($values)
+    {
+        return implode(', ', array_map(fn($val) => "'" . mysqli_real_escape_string($this->connection, $val) . "'", $values));
+    }
+
+    public function select(array $columns = [])
+    {
+        $columnsList = empty($columns) ? '*' : $this->escapeColumns($columns);
+        $this->sql = "SELECT $columnsList FROM `$this->table`";
         return $this;
     }
 
-    public function delete($table)
+    public function delete($id)
     {
-        $this->sql = "DELETE FROM `$table`";
+        $this->sql = "DELETE FROM `$this->table` WHERE `id` = '" . mysqli_real_escape_string($this->connection, $id) . "'";
         return $this;
     }
 
     public function where($column, $operator, $value)
     {
-        $this->sql .= " WHERE  `$column` $operator '$value'";
+        $escapedColumn = "`" . mysqli_real_escape_string($this->connection, $column) . "`";
+        $escapedValue = "'" . mysqli_real_escape_string($this->connection, $value) . "'";
+        $this->sql .= " WHERE $escapedColumn $operator $escapedValue";
         return $this;
     }
 
     public function row()
     {
-        $query =  mysqli_query($this->connection, $this->sql);
-        return mysqli_fetch_assoc($query);
+        $query = mysqli_query($this->connection, $this->sql);
+        if ($query) {
+            return mysqli_fetch_assoc($query);
+        }
+        return null;
     }
 
-    public function insert($table, $data)
+    public function insert($data)
     {
-        $columns  = "";
-        $values  = "";
-        foreach ($data as $column => $value) {
-            $columns .= $column . ",";
-            $values .=  "'" . $value . "',";
-        }
-        $columns = rtrim($columns, ",");
-        $values = rtrim($values, ",");
-        $this->sql = "INSERT INTO `$table` ( $columns ) VALUES ( $values )";
+        $columns = array_keys($data);
+        $values = array_values($data);
+        $this->sql = "INSERT INTO `$this->table` (" . $this->escapeColumns($columns) . ") VALUES (" . $this->escapeValues($values) . ")";
         return $this;
     }
 
@@ -56,10 +67,36 @@ class model
         mysqli_query($this->connection, $this->sql);
         return mysqli_affected_rows($this->connection);
     }
-    
+
     public function all()
     {
-        $query =  mysqli_query($this->connection, $this->sql);
-        return mysqli_fetch_all($query, MYSQLI_ASSOC);
+        $query = mysqli_query($this->connection, $this->sql);
+        if ($query) {
+            return mysqli_fetch_all($query, MYSQLI_ASSOC);
+        }
+        return [];
+    }
+
+    public function orderBy($columns, $direction = 'ASC')
+    {
+        if (is_array($columns)) {
+            $columnsList = $this->escapeColumns($columns);
+        } else {
+            $columnsList = "`" . mysqli_real_escape_string($this->connection, $columns) . "`";
+        }
+
+        $direction = strtoupper($direction) === 'DESC' ? 'DESC' : 'ASC';
+        $this->sql .= " ORDER BY $columnsList $direction";
+        return $this;
+    }
+
+    public function update($data)
+    {
+        $set = [];
+        foreach ($data as $column => $value) {
+            $set[] = "`" . mysqli_real_escape_string($this->connection, $column) . "` = '" . mysqli_real_escape_string($this->connection, $value) . "'";
+        }
+        $this->sql = "UPDATE `$this->table` SET " . implode(', ', $set);
+        return $this;
     }
 }
