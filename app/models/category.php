@@ -4,12 +4,12 @@ namespace MVC\models;
 
 use MVC\core\model;
 
-class service extends model{
+class category extends model{
     
     public function __construct()
     {
         parent::__construct();  
-        $this->table = "services";
+        $this->table = "categories";
     }
 
     public function create($data)

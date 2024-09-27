@@ -5,9 +5,9 @@ namespace MVC\controllers;
 use MVC\Traits\ImageUploaderTrait;
 use MVC\core\controller;
 use MVC\core\Session;
-use MVC\models\service;
+use MVC\models\category;
 
-class ServiceController extends controller{
+class CategoryController extends controller{
     use ImageUploaderTrait;
 
     public function __construct()
@@ -26,9 +26,9 @@ class ServiceController extends controller{
     
     public function index()
     {
-        $serviceModel = new Service();
-        $services = $serviceModel->getAll();
-        $this->view('services/index', ['services' => $services]);
+        $category = new category();
+        $categories = $category->getAll();
+        $this->view('categories/index', ['categories' => $categories]);
     }
 
     public function create()
@@ -36,7 +36,7 @@ class ServiceController extends controller{
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = $this->validateCreateRequest();
             if (empty($errors)) {
-                $uploadedImage = $this->uploadImage($_FILES['image'], ROOT . 'public/uploads/services/');
+                $uploadedImage = $this->uploadImage($_FILES['image'], ROOT . 'public/uploads/categories/');
 
                 if ($uploadedImage) {
                     $data = [
@@ -44,27 +44,27 @@ class ServiceController extends controller{
                         'image' => $uploadedImage,
                     ];
 
-                    $serviceModel = new Service();
-                    $serviceModel->create($data);
+                    $category = new category();
+                    $category->create($data);
 
-                    header('Location: ' . BASE_URL . '/service');
+                    header('Location: ' . BASE_URL . '/category');
                     exit;
                 } else {
                     $errors[] = 'فشل تحميل الصورة.';
                 }
             } else {
                 $errorMessage = implode("<br>", $errors);
-                $this->view('services/create', ['errorMessage' => $errorMessage]);
+                $this->view('categories/create', ['errorMessage' => $errorMessage]);
             }
         }
 
-        $this->view('services/create', []);
+        $this->view('categories/create', []);
     }
 
     public function edit($id)
     {
-        $serviceModel = new Service();
-        $service = $serviceModel->getById($id);
+        $categoryModel = new category();
+        $category = $categoryModel->getById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = $this->validateEditRequest($id);
@@ -74,34 +74,34 @@ class ServiceController extends controller{
                     'name' => $_POST['name'],
                 ];
                 if (!empty($_FILES['image']['name'])) {
-                    $uploadedImage = $this->uploadImage($_FILES['image'], ROOT . 'public/uploads/services/');
+                    $uploadedImage = $this->uploadImage($_FILES['image'], ROOT . 'public/uploads/categories/');
                     $data['image'] = $uploadedImage;
-                    $oldImagePath = ROOT . 'public/uploads/services/' . $service['image'];
+                    $oldImagePath = ROOT . 'public/uploads/categories/' . $category['image'];
                     if (file_exists($oldImagePath)) {
                         unlink($oldImagePath);
                     }
                 }
-                $serviceModel->updateRow($data);
-                header('Location: ' . BASE_URL . '/service');
+                $categoryModel->updateRow($data);
+                header('Location: ' . BASE_URL . '/category');
                 exit;
             } else {
                 $errorMessage = implode("<br>", $errors);
-                $this->view('services/edit', ['errorMessage' => $errorMessage,'service' => $service]);
+                $this->view('categories/edit', ['errorMessage' => $errorMessage,'category' => $category]);
             }
         }
-        $this->view('services/edit', ['service' => $service]);
+        $this->view('categories/edit', ['category' => $category]);
     }
 
     public function delete($id)
     {
-        $serviceModel = new Service();
-        $service = $serviceModel->getById($id);
-        $oldImagePath = ROOT . 'public/uploads/services/' . $service['image'];
+        $categoryModel = new Category();
+        $category = $categoryModel->getById($id);
+        $oldImagePath = ROOT . 'public/uploads/categories/' . $category['image'];
         if (file_exists($oldImagePath)) {
             unlink($oldImagePath);
         }
-        $serviceModel->deleteRow($id);
-        header('Location: ' . BASE_URL . '/service');
+        $categoryModel->deleteRow($id);
+        header('Location: ' . BASE_URL . '/category');
         exit;
     }
 
@@ -109,7 +109,7 @@ class ServiceController extends controller{
     {
         $errors = [];
         if (empty($_POST['name'])) {
-            $errors[] = 'اسم الخدمة مطلوب';
+            $errors[] = 'اسم الفئة مطلوب';
         }else {
             if ($this->isNameExists($_POST['name'])) {
                 $errors[] = 'الاسم مستخدم بالفعل';
@@ -126,7 +126,7 @@ class ServiceController extends controller{
     public function validateEditRequest($id) {
         $errors = [];
         if (empty($_POST['name'])) {
-            $errors[] = 'اسم الخدمة مطلوب';
+            $errors[] = 'اسم الفئة مطلوب';
         }else {
             if ($this->isNameExists($_POST['name'],$id)) {
                 $errors[] = 'الاسم مستخدم بالفعل';
@@ -143,7 +143,7 @@ class ServiceController extends controller{
 
     public function isNameExists($name,$id = null)
     {
-        $serviceModel = new service();
-        return  $serviceModel->getByName($name,$id);
+        $categoryModel = new category();
+        return  $categoryModel->getByName($name,$id);
     }
 }

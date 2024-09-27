@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<form action="/cars/public/user/register" method="POST" class="mt-4">
+<form action="<?= BASE_URL . '/user/register'; ?>" method="POST" class="mt-4">
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" name="name" id="name" class="form-control" required>
@@ -16,7 +16,7 @@
     <button type="submit" class="btn btn-primary">Register</button>
 </form>
 
-<p class="mt-3">Already have an account? <a href="/cars/public/user/login">Login here</a>.</p>
+<p class="mt-3">Already have an account? <a href="<?= BASE_URL . '/user/login'; ?>">Login here</a>.</p>
 
 <?php 
 $content = ob_get_clean();

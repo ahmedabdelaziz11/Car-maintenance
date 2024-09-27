@@ -8,6 +8,7 @@ define("CORE",APP."core".DS);
 define("MODEL",APP."Models".DS);
 define("VIEW",APP."views".DS);
 define("CONFIG",APP."config".DS);
+define("BASE_URL", "http://localhost/cars/public");
 
 
 // config 

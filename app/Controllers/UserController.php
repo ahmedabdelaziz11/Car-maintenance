@@ -22,21 +22,23 @@ class UserController extends controller{
             $password = trim($_POST['password']);
             
             if (empty($name) || empty($email) || empty($password)) {
-                echo "All fields are required!";
-                return;
-            }
-            $user = new User();
-            $result = $user->register([
-                'name'     => $name,
-                'email'    => $email,
-                'password' => $password,
-                'role'     => 3
-            ]);
-            if ($result === "Registration successful!") {
-                header('Location: /cars/public/user/login');
-                exit;
-            } else {
-                echo $result;
+                $errorMessage = "جميع الحقول مطلوبة!";
+                $this->view('auth/register',['errorMessage' => $errorMessage]);
+            }else{
+                $user = new User();
+                $result = $user->register([
+                    'name'     => $name,
+                    'email'    => $email,
+                    'password' => $password,
+                    'role'     => 3
+                ]);
+                if ($result === "Registration successful!") {
+                    header('Location: ' . BASE_URL . '/user/login');
+                    exit;
+                } else {
+                    $errorMessage = $result;
+                    $this->view('auth/register',['errorMessage' => $errorMessage]);
+                }
             }
         }
 
@@ -44,39 +46,38 @@ class UserController extends controller{
     }
 
     public function login() {
+        $errorMessage = "";
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
-
             if (empty($email) || empty($password)) {
-                echo "Email and password are required!";
-                return;
-            }
-            
-            $user = new User();
-            $authenticatedUser = $user->select(['id', 'email', 'password', 'role'])
-                ->where('email', '=', $email)
-                ->row();
-
-            if ($authenticatedUser && password_verify($password, $authenticatedUser['password'])) {
-                Session::Set('user', [
-                    'id' => $authenticatedUser['id'],
-                    'email' => $authenticatedUser['email'],
-                    'role' => $authenticatedUser['role']
-                ]);
-                
-                header('Location: /cars/public/');
-                exit;
-            } else {
-                echo 'Invalid login credentials';
+                $errorMessage = "Email and password are required!";
+            }else{
+                $user = new User();
+                $authenticatedUser = $user->select(['id', 'email', 'password', 'role'])
+                    ->where('email', '=', $email)
+                    ->row();
+    
+                if ($authenticatedUser && password_verify($password, $authenticatedUser['password'])) {
+                    Session::Set('user', [
+                        'id' => $authenticatedUser['id'],
+                        'email' => $authenticatedUser['email'],
+                        'role' => $authenticatedUser['role']
+                    ]);
+                    
+                    header('Location: ' . BASE_URL . '/');
+                    exit;
+                } else {
+                    $errorMessage = 'بيانات اعتماد تسجيل الدخول غير صالحة';
+                }
             }
         }
-        $this->view('auth/login',[]);
+        $this->view('auth/login',['errorMessage' => $errorMessage]);
     }
 
     public function logout() {
         Session::Stop();
-        header('Location: /');
+        header('Location: ' . BASE_URL . '/');
         exit;
     }
 }

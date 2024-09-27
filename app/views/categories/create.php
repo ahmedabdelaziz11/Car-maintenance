@@ -1,8 +1,8 @@
 <?php ob_start(); ?>
 
-<h1>Create Service</h1>
+<h1>Create Category</h1>
 
-<form action="<?= BASE_URL . '/service/create'; ?>" method="POST" enctype="multipart/form-data" class="mt-4">
+<form action="<?= BASE_URL . '/category/create'; ?>" method="POST" enctype="multipart/form-data" class="mt-4">
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" name="name" id="name" class="form-control">

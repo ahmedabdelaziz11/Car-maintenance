@@ -5,8 +5,8 @@ namespace MVC\core;
 
 class model
 {
-    private $connection;
-    private $sql;
+    protected $connection;
+    protected $sql;
     protected $table;
 
     public function __construct()
@@ -26,7 +26,7 @@ class model
 
     public function select(array $columns = [])
     {
-        $columnsList = empty($columns) ? '*' : $this->escapeColumns($columns);
+        $columnsList = empty($columns) ? '*' : implode(', ', array_map(fn($col) => $col === '*' ? $col : "" . mysqli_real_escape_string($this->connection, $col) . "", $columns));
         $this->sql = "SELECT $columnsList FROM `$this->table`";
         return $this;
     }
@@ -39,9 +39,13 @@ class model
 
     public function where($column, $operator, $value)
     {
-        $escapedColumn = "`" . mysqli_real_escape_string($this->connection, $column) . "`";
+        $escapedColumn = "" . mysqli_real_escape_string($this->connection, $column) . "";
         $escapedValue = "'" . mysqli_real_escape_string($this->connection, $value) . "'";
-        $this->sql .= " WHERE $escapedColumn $operator $escapedValue";
+        if (strpos($this->sql, 'WHERE') !== false) {
+            $this->sql .= " AND $escapedColumn $operator $escapedValue";
+        } else {
+            $this->sql .= " WHERE $escapedColumn $operator $escapedValue";
+        }
         return $this;
     }
 
@@ -65,6 +69,11 @@ class model
     public function execute()
     {
         mysqli_query($this->connection, $this->sql);
+
+        if (strpos($this->sql, 'INSERT') !== false) {
+            return mysqli_insert_id($this->connection);
+        }
+    
         return mysqli_affected_rows($this->connection);
     }
 
@@ -76,6 +85,12 @@ class model
         }
         return [];
     }
+
+    public function join($table, $condition)
+    {
+        $this->sql .= " INNER JOIN `$table` ON $condition";
+        return $this;
+    }    
 
     public function orderBy($columns, $direction = 'ASC')
     {
