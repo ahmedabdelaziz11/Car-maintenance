@@ -11522,3 +11522,18 @@ textarea.form-control-lg {
   width: 4rem;
   font-size: 2rem;
 }
+
+.offer-details img {
+  max-height: 400px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.offer-details .lead {
+  font-size: 1.2rem;
+}
+
+.offer-details .btn {
+  font-size: 1rem;
+  padding: 10px 20px;
+}

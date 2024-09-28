@@ -54,6 +54,7 @@
                     <p><strong>Service:</strong> <?= $offer['service_name'] ?></p>
                     <p><strong>Category:</strong> <?= $offer['category_name'] ?></p>
                     <p><strong>Car Model:</strong> <?= $offer['car_model_from'] ?> - <?= $offer['car_model_to'] ?></p>
+                    <a href="<?= BASE_URL . '/offer/details/' . $offer['id'] ?>" class="btn btn-primary">View Details</a>
                 </div>
             </div>
         </div>

@@ -46,9 +46,14 @@ class offer extends model{
 
     public function getById($id)
     {
-        $offer = $this->select()->where('id', '=', $id)->row();
+        $offer = $this->select(['offers.*', 'services.name AS service_name', 'categories.name AS category_name'])
+        ->join('services', 'offers.service_id = services.id')
+        ->join('categories', 'offers.category_id = categories.id')
+        ->where('offers.id', '=', $id)
+        ->row();
         if ($offer) {
             $offer['other_images'] = $this->getRelatedImages($id);
+            $offer['comments']     = $this->getRelatedComments($id);
         }
         return $offer;
     }
@@ -74,6 +79,17 @@ class offer extends model{
     private function getRelatedImages($offerId)
     {
         $this->sql = "SELECT * FROM `offer_images` WHERE offer_id = '" . mysqli_real_escape_string($this->connection, $offerId) . "'";
+        return $this->all();
+    }
+
+    private function getRelatedComments($offerId)
+    {
+        $this->sql = "
+            SELECT offer_comments.*, users.name as user_name 
+            FROM offer_comments 
+            JOIN users ON offer_comments.user_id = users.id 
+            WHERE offer_comments.offer_id = '" . mysqli_real_escape_string($this->connection, $offerId) . "'
+        ";        
         return $this->all();
     }
 }

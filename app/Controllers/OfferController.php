@@ -7,6 +7,7 @@ use MVC\core\controller;
 use MVC\core\Session;
 use MVC\models\category;
 use MVC\models\offer;
+use MVC\models\offerComment;
 use MVC\models\offerImage;
 use MVC\models\service;
 
@@ -150,6 +151,32 @@ class OfferController extends controller{
         $this->view('offers/edit', [
             'services' => $services,
             'categories' => $categories,
+            'offer' => $offer
+        ]);
+    }
+
+    public function details($id)
+    {
+        $offerModel = new offer();
+        $offerCommentModel = new offerComment();
+        $offer = $offerModel->getById($id);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $comment = $_POST['comment'] ?? '';
+    
+            if (!empty($comment)) {
+                $offerCommentModel->create([
+                    'offer_id' => $id,
+                    'user_id' => $_SESSION['user']['id'],
+                    'date' => date('Y-m-d'),
+                    'comment' => $_POST['comment'],
+                ]);
+                header('Location: ' . BASE_URL . '/offer/details/' . $id);
+                exit;
+            }
+        }
+    
+        $this->view('offers/show', [
             'offer' => $offer
         ]);
     }
