@@ -4,7 +4,7 @@ namespace MVC\controllers;
 
 use MVC\Traits\ImageUploaderTrait;
 use MVC\core\controller;
-use MVC\core\Session;
+use MVC\core\session;
 use MVC\models\service;
 
 class ServiceController extends controller{
@@ -12,7 +12,7 @@ class ServiceController extends controller{
 
     public function __construct()
     {
-        $user = Session::Get('user');
+        $user = session::Get('user');
         if(!$user)
         {
             header('Location: ' . BASE_URL . '/user/login');

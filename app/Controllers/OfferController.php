@@ -4,7 +4,7 @@ namespace MVC\controllers;
 
 use MVC\Traits\ImageUploaderTrait;
 use MVC\core\controller;
-use MVC\core\Session;
+use MVC\core\session;
 use MVC\models\category;
 use MVC\models\offer;
 use MVC\models\offerComment;
@@ -16,7 +16,7 @@ class OfferController extends controller{
 
     public function __construct()
     {
-        if(!Session::Get('user'))
+        if(!session::Get('user'))
         {
             header('Location: ' . BASE_URL . '/user/login');
             exit;

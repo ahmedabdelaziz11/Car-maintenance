@@ -4,7 +4,7 @@
 namespace MVC\controllers;
 
 use MVC\core\controller;
-use MVC\core\Session;
+use MVC\core\session;
 use MVC\models\user;
 
 class UserController extends controller{
@@ -59,7 +59,7 @@ class UserController extends controller{
                     ->row();
     
                 if ($authenticatedUser && password_verify($password, $authenticatedUser['password'])) {
-                    Session::Set('user', [
+                    session::Set('user', [
                         'id' => $authenticatedUser['id'],
                         'email' => $authenticatedUser['email'],
                         'role' => $authenticatedUser['role']
@@ -76,7 +76,7 @@ class UserController extends controller{
     }
 
     public function logout() {
-        Session::Stop();
+        session::Stop();
         header('Location: ' . BASE_URL . '/');
         exit;
     }

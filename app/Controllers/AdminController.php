@@ -3,14 +3,14 @@
 namespace MVC\controllers;
 
 use MVC\core\controller;
-use MVC\core\Session;
+use MVC\core\session;
 use MVC\models\user;
 
 class AdminController extends controller{
 
     public function __construct()
     {
-        $user = Session::Get('user');
+        $user = session::Get('user');
         if(!$user)
         {
             header('Location: ' . BASE_URL . '/user/login');

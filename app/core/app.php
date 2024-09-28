@@ -11,7 +11,7 @@ class app
 
     public function __construct()
     {
-        Session::Start();
+        session::Start();
         $this->url();
         $this->render();
     }

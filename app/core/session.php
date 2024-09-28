@@ -2,7 +2,7 @@
 
 namespace MVC\core;
 
-class Session
+class session
 {
 
     public static function Start()
