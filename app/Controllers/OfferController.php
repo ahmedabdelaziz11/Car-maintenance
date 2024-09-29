@@ -5,7 +5,9 @@ namespace MVC\controllers;
 use MVC\Traits\ImageUploaderTrait;
 use MVC\core\controller;
 use MVC\core\session;
+use MVC\models\carType;
 use MVC\models\category;
+use MVC\models\favorite;
 use MVC\models\offer;
 use MVC\models\offerComment;
 use MVC\models\offerImage;
@@ -32,9 +34,11 @@ class OfferController extends controller{
 
     public function create()
     {
-        $serviceModel = new Service();
-        $categoryModel = new Category();
+        $serviceModel = new service();
+        $categoryModel = new category();
+        $carTypeModel = new carType();
         $services = $serviceModel->getAll();
+        $carTypes = $carTypeModel->getAll();
         $categories = $categoryModel->getAll();
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -50,6 +54,7 @@ class OfferController extends controller{
                     'user_id' => $_SESSION['user']['id'],
                     'service_id' => $_POST['service_id'],
                     'category_id' => $_POST['category_id'],
+                    'car_type_id' => $_POST['car_type_id'],
                     'car_model_from' => $_POST['car_model_from'],
                     'car_model_to' => $_POST['car_model_to'],
                     'image' => $uploadedImage,
@@ -78,12 +83,13 @@ class OfferController extends controller{
                 $this->view('offers/create', [
                     'services' => $services,
                     'categories' => $categories,
+                    'carTypes' => $carTypes,
                     'errorMessage' => $errorMessage
                 ]);
             }
         }
     
-        $this->view('offers/create', ['services' => $services, 'categories' => $categories]);
+        $this->view('offers/create', ['services' => $services, 'categories' => $categories,'carTypes' => $carTypes]);
     }
     
     public function edit($id)
@@ -91,11 +97,12 @@ class OfferController extends controller{
         $offerModel = new offer();
         $serviceModel = new service();
         $categoryModel = new category();
-    
+        $carTypeModel = new CarType();
+        
         $offer = $offerModel->getById($id);
-    
         $services = $serviceModel->getAll();
-        $categories = $categoryModel->getAll();
+        $carTypes = $carTypeModel->getAll();
+        $categories = $categoryModel->categoryByCarTypeId($offer['car_type_id']);
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = $this->validateEditRequest();
@@ -106,6 +113,7 @@ class OfferController extends controller{
                     'details' => $_POST['details'],
                     'user_id' => $_SESSION['user']['id'],
                     'service_id' => $_POST['service_id'],
+                    'car_type_id' => $_POST['car_type_id'],
                     'category_id' => $_POST['category_id'],
                     'car_model_from' => $_POST['car_model_from'],
                     'car_model_to' => $_POST['car_model_to'],
@@ -141,6 +149,7 @@ class OfferController extends controller{
                 $errorMessage = implode("<br>", $errors);
                 $this->view('offers/edit', [
                     'services' => $services,
+                    'carTypes' => $carTypes,
                     'categories' => $categories,
                     'errorMessage' => $errorMessage,
                     'offer' => $offer
@@ -150,6 +159,7 @@ class OfferController extends controller{
     
         $this->view('offers/edit', [
             'services' => $services,
+            'carTypes' => $carTypes,
             'categories' => $categories,
             'offer' => $offer
         ]);
@@ -180,7 +190,22 @@ class OfferController extends controller{
             'offer' => $offer
         ]);
     }
-    
+
+    public function getCategoriesByCarType($carTypeId)
+    {
+        $categoryModel = new category();
+        $categories = $categoryModel->categoryByCarTypeId($carTypeId);
+
+        echo json_encode($categories);
+    }
+
+    public function favorite($offer_id)
+    {
+        $favoriteModel = new favorite();
+        $favoriteModel->toggleFavorite($offer_id);
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit;
+    }
 
     public function delete($id)
     {
@@ -225,12 +250,22 @@ class OfferController extends controller{
             }
         }
     
+        if (empty($_POST['car_type_id'])) {
+            $errors[] = 'نوع السيارة مطلوب.';
+        } else {
+            $carTypeModel = new CarType();
+            if (!$carTypeModel->getById($_POST['car_type_id'])) {
+                $errors[] = 'نوع السيارة غير موجود.';
+            }
+        }
+    
         if (empty($_POST['category_id'])) {
             $errors[] = 'معرف الفئة مطلوب.';
         } else {
             $categoryModel = new Category();
-            if (!$categoryModel->getById($_POST['category_id'])) {
-                $errors[] = 'الفئة غير موجودة.';
+            
+            if (!$categoryModel->categoryByCarTypeId($_POST['category_id'], $_POST['car_type_id'])) {
+                $errors[] = 'الفئة غير متاحة لنوع السيارة المختار.';
             }
         }
     
@@ -304,13 +339,23 @@ class OfferController extends controller{
                 $errors[] = 'الخدمة غير موجودة.';
             }
         }
+
+        if (empty($_POST['car_type_id'])) {
+            $errors[] = 'نوع السيارة مطلوب.';
+        } else {
+            $carTypeModel = new CarType();
+            if (!$carTypeModel->getById($_POST['car_type_id'])) {
+                $errors[] = 'نوع السيارة غير موجود.';
+            }
+        }
     
         if (empty($_POST['category_id'])) {
             $errors[] = 'معرف الفئة مطلوب.';
         } else {
             $categoryModel = new Category();
-            if (!$categoryModel->getById($_POST['category_id'])) {
-                $errors[] = 'الفئة غير موجودة.';
+            
+            if (!$categoryModel->categoryByCarTypeId($_POST['category_id'], $_POST['car_type_id'])) {
+                $errors[] = 'الفئة غير متاحة لنوع السيارة المختار.';
             }
         }
     

@@ -8,6 +8,15 @@
         <input type="text" name="name" id="name" class="form-control">
     </div>
     <div class="form-group">
+        <label for="car_type_id">car type</label>
+        <select name="car_type_id" id="car_type_id" class="form-control" required>
+            <option value="">car type</option>
+            <?php foreach ($carTypes as $car_type): ?>
+                <option value="<?= $car_type['id'] ?>"><?= $car_type['name'] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="form-group">
         <label for="image">Image</label>
         <input type="file" name="image" id="image" class="form-control">
     </div>

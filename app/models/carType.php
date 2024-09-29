@@ -4,12 +4,12 @@ namespace MVC\models;
 
 use MVC\core\model;
 
-class category extends model{
+class carType extends model{
     
     public function __construct()
     {
         parent::__construct();  
-        $this->table = "categories";
+        $this->table = "car_types";
     }
 
     public function create($data)
@@ -19,13 +19,7 @@ class category extends model{
 
     public function getAll()
     {
-        return $this->select(['categories.*','car_types.name As car_type_name'])
-            ->join('car_types','categories.car_type_id = car_types.id')
-            ->all();
-    }
-
-    public function categoryByCarTypeId($carTypeId){
-        return $this->select()->where('car_type_id','=',$carTypeId)->all();
+        return $this->select(['id','name','image'])->all();
     }
 
     public function getById($id)

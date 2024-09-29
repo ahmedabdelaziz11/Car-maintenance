@@ -19,20 +19,21 @@ class app
 
     private function url()
     {
-        if (!empty($_SERVER['QUERY_STRING'])) {
-            $url = $_SERVER['QUERY_STRING'];
+        $url = $_SERVER['QUERY_STRING'];
+        
+        if (!empty($_SERVER['QUERY_STRING']) && count(explode("/", explode("&", $url)[0])) >  0 ) {
             $url = explode("&", $url)[0];
             $url = explode("/", $url);
             $this->controller = isset($url[0]) ? $url[0] . "Controller" : "HomeController";
-    
             $this->method = isset($url[1]) ? $url[1] : "index";
-    
             unset($url[0], $url[1]);
-    
             $this->params = array_values($url);
         } else {
+            $url = explode("&", $url)[0];
+            $url = explode("/", $url);
             $this->controller = 'HomeController';
             $this->method = 'index';
+            $this->params = array_values($url);
         }
     }
 

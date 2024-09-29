@@ -17,6 +17,7 @@
 
             <!-- Service and Category -->
             <p><strong>Service:</strong> <?= $offer['service_name'] ?></p>
+            <p><strong>Car Type:</strong> <?= $offer['car_type_name'] ?></p>
             <p><strong>Category:</strong> <?= $offer['category_name'] ?></p>
 
             <!-- Car Model Information -->

@@ -8,6 +8,17 @@
         <input type="text" name="name" id="name" class="form-control" value="<?= $category['name'] ?>" required>
     </div>
     <div class="form-group">
+        <label for="car_type_id">car type</label>
+        <select name="car_type_id" id="car_type_id" class="form-control" required>
+            <option value="">car type</option>
+            <?php foreach ($carTypes as $car_type): ?>
+                <option value="<?= $car_type['id'] ?>" <?= $category['car_type_id'] == $car_type['id'] ? 'selected' : '' ?>>
+                    <?= $car_type['name'] ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="form-group">
         <label for="image">Image</label>
         <input type="file" name="image" id="image" class="form-control">
         <img src="path/to/upload/directory/<?= $category['image'] ?>" alt="<?= $category['name'] ?>" width="100" class="mt-2">

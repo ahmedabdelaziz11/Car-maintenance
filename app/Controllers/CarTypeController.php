@@ -8,7 +8,7 @@ use MVC\core\session;
 use MVC\models\carType;
 use MVC\models\category;
 
-class CategoryController extends controller{
+class CarTypeController extends controller{
     use ImageUploaderTrait;
 
     public function __construct()
@@ -27,49 +27,45 @@ class CategoryController extends controller{
     
     public function index()
     {
-        $category = new category();
-        $categories = $category->getAll();
-        $this->view('categories/index', ['categories' => $categories]);
+        $carType = new carType();
+        $carTypes = $carType->getAll();
+        $this->view('carTypes/index', ['carTypes' => $carTypes]);
     }
 
     public function create()
     {
-        $carTypes = (new carType())->getAll();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = $this->validateCreateRequest();
             if (empty($errors)) {
-                $uploadedImage = $this->uploadImage($_FILES['image'], ROOT . 'public/uploads/categories/');
+                $uploadedImage = $this->uploadImage($_FILES['image'], ROOT . 'public/uploads/car_types/');
 
                 if ($uploadedImage) {
                     $data = [
                         'name' => $_POST['name'],
-                        'car_type_id' => $_POST['car_type_id'],
                         'image' => $uploadedImage,
                     ];
 
-                    $category = new category();
-                    $category->create($data);
+                    $carType = new carType();
+                    $carType->create($data);
 
-                    header('Location: ' . BASE_URL . '/category');
+                    header('Location: ' . BASE_URL . '/carType');
                     exit;
                 } else {
                     $errors[] = 'فشل تحميل الصورة.';
                 }
             } else {
                 $errorMessage = implode("<br>", $errors);
-                $this->view('categories/create', ['errorMessage' => $errorMessage,'carTypes' => $carTypes]);
+                $this->view('carTypes/create', ['errorMessage' => $errorMessage]);
             }
         }
 
-        $this->view('categories/create', ['carTypes' => $carTypes]);
+        $this->view('carTypes/create', []);
     }
 
     public function edit($id)
     {
-        $categoryModel = new category();
-        $carTypes = (new carType())->getAll();
-
-        $category = $categoryModel->getById($id);
+        $carTypeModel = new carType();
+        $carType = $carTypeModel->getById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = $this->validateEditRequest($id);
@@ -77,37 +73,42 @@ class CategoryController extends controller{
                 $data = [
                     'id' => $id,
                     'name' => $_POST['name'],
-                    'car_type_id' => $_POST['car_type_id'],
                 ];
                 if (!empty($_FILES['image']['name'])) {
-                    $uploadedImage = $this->uploadImage($_FILES['image'], ROOT . 'public/uploads/categories/');
+                    $uploadedImage = $this->uploadImage($_FILES['image'], ROOT . 'public/uploads/car_types/');
                     $data['image'] = $uploadedImage;
-                    $oldImagePath = ROOT . 'public/uploads/categories/' . $category['image'];
+                    $oldImagePath = ROOT . 'public/uploads/car_types/' . $carType['image'];
                     if (file_exists($oldImagePath)) {
                         unlink($oldImagePath);
                     }
                 }
-                $categoryModel->updateRow($data);
-                header('Location: ' . BASE_URL . '/category');
+                $carTypeModel->updateRow($data);
+                header('Location: ' . BASE_URL . '/carType');
                 exit;
             } else {
                 $errorMessage = implode("<br>", $errors);
-                $this->view('categories/edit', ['errorMessage' => $errorMessage,'category' => $category,'carType' => $carTypes]);
+                $this->view('carTypes/edit', ['errorMessage' => $errorMessage,'carType' => $carType]);
             }
         }
-        $this->view('categories/edit', ['category' => $category,'carTypes' => $carTypes]);
+        $this->view('carTypes/edit', ['carType' => $carType]);
     }
 
     public function delete($id)
     {
+        $carTypeModel = new carType();
         $categoryModel = new category();
-        $category = $categoryModel->getById($id);
-        $oldImagePath = ROOT . 'public/uploads/categories/' . $category['image'];
+        if(count($categoryModel->categoryByCarTypeId($id)) >  0){
+            $errorMessage = "يجب حذف فئات السيارة اولا";
+            $this->view('carTypes/index', ['errorMessage' => $errorMessage,'carTypes' => $carTypeModel->getAll()]);
+            exit;
+        }
+        $carType = $carTypeModel->getById($id);
+        $oldImagePath = ROOT . 'public/uploads/car_types/' . $carType['image'];
         if (file_exists($oldImagePath)) {
             unlink($oldImagePath);
         }
-        $categoryModel->deleteRow($id);
-        header('Location: ' . BASE_URL . '/category');
+        $carTypeModel->deleteRow($id);
+        header('Location: ' . BASE_URL . '/carType');
         exit;
     }
 
@@ -120,10 +121,6 @@ class CategoryController extends controller{
             if ($this->isNameExists($_POST['name'])) {
                 $errors[] = 'الاسم مستخدم بالفعل';
             }
-        }
-
-        if (empty($_POST['car_type_id'])) {
-            $errors[] = 'نوع السيارة مطلوب';
         }
 
         $imageErrors = $this->validateImage($_FILES['image']);
@@ -142,11 +139,6 @@ class CategoryController extends controller{
                 $errors[] = 'الاسم مستخدم بالفعل';
             }
         }
-
-        if (empty($_POST['car_type_id'])) {
-            $errors[] = 'نوع السيارة مطلوب';
-        }
-
         if (!empty($_FILES['image']['name'])) {
             $imageErrors = $this->validateImage($_FILES['image']);
             if (!empty($imageErrors)) {
@@ -158,7 +150,7 @@ class CategoryController extends controller{
 
     public function isNameExists($name,$id = null)
     {
-        $categoryModel = new category();
-        return  $categoryModel->getByName($name,$id);
+        $carTypeModel = new carType();
+        return  $carTypeModel->getByName($name,$id);
     }
 }

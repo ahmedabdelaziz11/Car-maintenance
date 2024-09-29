@@ -8,6 +8,7 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>car type</th>
             <th>Image</th>
             <th>Actions</th>
         </tr>
@@ -17,6 +18,7 @@
             <tr>
                 <td><?= $category['id'] ?></td>
                 <td><?= $category['name'] ?></td>
+                <td><?= $category['car_type_name'] ?></td>
                 <td><img src="<?= BASE_URL.'/uploads/Categories/' .$category['image'] ?>" alt="<?= $category['name'] ?>" width="100"></td>
                 <td>
                     <a href="<?= BASE_URL . '/category/edit/' . $category['id'] ?>" class="btn btn-warning">Edit</a>

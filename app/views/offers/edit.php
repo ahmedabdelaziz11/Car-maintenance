@@ -25,6 +25,18 @@
     </div>
 
     <div class="form-group">
+        <label for="car_type_id">نوع السيارة</label>
+        <select name="car_type_id" id="car_type_id" class="form-control">
+            <option value="">اختر نوع السيارة</option>
+            <?php foreach ($carTypes as $carType): ?>
+                <option value="<?= $carType['id'] ?>" <?= $offer['car_type_id'] == $carType['id'] ? 'selected' : '' ?>>
+                    <?= $carType['name'] ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="form-group">
         <label for="category_id">الفئة</label>
         <select name="category_id" id="category_id" class="form-control">
             <option value="">اختر الفئة</option>
@@ -71,6 +83,34 @@
 
     <button type="submit" class="btn btn-warning">تحديث</button>
 </form>
+
+<script>
+document.getElementById('car_type_id').addEventListener('change', function() {
+    var carTypeId = this.value;
+    var categorySelect = document.getElementById('category_id');
+
+    categorySelect.innerHTML = '<option value="">اختر الفئة</option>';
+
+    if (carTypeId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '<?= BASE_URL ?>/offer/getCategoriesByCarType/' + carTypeId, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var categories = JSON.parse(xhr.responseText);
+
+                categories.forEach(function(category) {
+                    var option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    categorySelect.appendChild(option);
+                });
+            }
+        };
+        xhr.send();
+    }
+});
+
+</script>
 
 <?php 
 $content = ob_get_clean(); 

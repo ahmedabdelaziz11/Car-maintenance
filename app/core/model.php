@@ -90,7 +90,13 @@ class model
     {
         $this->sql .= " INNER JOIN `$table` ON $condition";
         return $this;
-    }    
+    } 
+    
+    public function leftJoin($table, $condition)
+    {
+        $this->sql .= " LEFT JOIN `$table` ON $condition";
+        return $this;
+    }   
 
     public function orderBy($columns, $direction = 'ASC')
     {

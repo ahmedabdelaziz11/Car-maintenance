@@ -1,4 +1,3 @@
-<!-- register.php -->
 <?php ob_start(); ?>
 
 <!-- Search Form -->
@@ -51,7 +50,18 @@
                 <div class="card-body">
                     <h5 class="card-title"><?= $offer['title'] ?></h5>
                     <p class="card-text"><?= $offer['details'] ?></p>
+                    <?php if (isset($_SESSION['user'])): ?>
+                        <form action="<?= BASE_URL . '/offer/favorite/' . $offer['id'] ?>" method="POST">
+                            <?php if ($offer['is_favorite']): ?> 
+                                <button type="submit" class="btn btn-danger">إزالة من المفضلة</button>
+                            <?php else: ?>
+                                <button type="submit" class="btn btn-secondary">إضافة إلى المفضلة</button>
+                            <?php endif; ?>
+                        </form>
+                    <?php endif; ?>
+
                     <p><strong>Service:</strong> <?= $offer['service_name'] ?></p>
+                    <p><strong>car type:</strong> <?= $offer['car_type_name'] ?></p>
                     <p><strong>Category:</strong> <?= $offer['category_name'] ?></p>
                     <p><strong>Car Model:</strong> <?= $offer['car_model_from'] ?> - <?= $offer['car_model_to'] ?></p>
                     <a href="<?= BASE_URL . '/offer/details/' . $offer['id'] ?>" class="btn btn-primary">View Details</a>
