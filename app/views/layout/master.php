@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 
-    <link href="../css/styles.css" rel="stylesheet" />
+    <link href="../app/views/css/styles.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title><?= isset($title) ? $title : 'CARS' ?></title>
 
     <style>

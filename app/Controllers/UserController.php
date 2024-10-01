@@ -54,13 +54,14 @@ class UserController extends controller{
                 $errorMessage = "Email and password are required!";
             }else{
                 $user = new User();
-                $authenticatedUser = $user->select(['id', 'email', 'password', 'role'])
+                $authenticatedUser = $user->select(['id','name', 'email', 'password', 'role'])
                     ->where('email', '=', $email)
                     ->row();
     
                 if ($authenticatedUser && password_verify($password, $authenticatedUser['password'])) {
                     session::Set('user', [
                         'id' => $authenticatedUser['id'],
+                        'name' => $authenticatedUser['name'],
                         'email' => $authenticatedUser['email'],
                         'role' => $authenticatedUser['role']
                     ]);

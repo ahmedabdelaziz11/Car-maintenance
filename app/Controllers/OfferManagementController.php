@@ -26,14 +26,21 @@ class OfferManagementController extends controller{
     public function toggleStatus($id)
     {
         $offerModel = new Offer();
-        echo $offer = $offerModel->getOfferByIdForAdmins($id);
+        $offer = $offerModel->getOfferByIdForAdmins($id);
 
         if ($offer) {
             $newStatus = $offer['is_active'] ? 0 : 1;
-            $offerModel->updateRow(['id' => $id ,'is_active' => $newStatus]); 
-        }
+            $offerModel->updateRow(['id' => $id, 'is_active' => $newStatus]);
 
-        header('Location: ' . BASE_URL . '/OfferManagement');
+            echo json_encode([
+                'success' => true,
+                'newStatus' => $newStatus
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false
+            ]);
+        }
         exit();
     }
 }

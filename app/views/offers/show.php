@@ -5,6 +5,18 @@
         <!-- Offer Image -->
         <div class="col-md-6">
             <img src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="Offer Image" class="img-fluid rounded">
+            <div class="mt-4">
+                <a href="<?= BASE_URL . '/chat/index/'.$offer['user_id'] ?>" class="btn btn-secondary">Send a Message to the Offer Owner</a>
+            </div>
+            <?php if (isset($_SESSION['user'])): ?>
+                <button class="btn p-0 border-0 bg-transparent favorite-btn" data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" data-offer-id="<?= $offer['id'] ?>">
+                    <?php if ($offer['is_favorite']): ?> 
+                        <i class="fas fa-heart heart-icon" style="color: red; font-size: 1.5rem;"></i> 
+                    <?php else: ?>
+                        <i class="far fa-heart heart-icon" style="color: gray; font-size: 1.5rem;"></i>
+                    <?php endif; ?>
+                </button>
+            <?php endif; ?>
         </div>
 
         <!-- Offer Details -->
@@ -74,12 +86,43 @@
             </form>
         </div>
     </div>
-
-    <!-- Extra Section: Optionally, you can add buttons or links to go back or perform actions -->
-    <div class="mt-4">
-        <a href="<?= BASE_URL . '/home/index' ?>" class="btn btn-secondary">Back to Offers</a>
-    </div>
 </div>
+
+<script>
+document.querySelectorAll('.favorite-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const offerId = this.getAttribute('data-offer-id');
+        const isFavorite = this.getAttribute('data-favorite') === 'true';
+
+        fetch('<?= BASE_URL . "/offer/favorite/" ?>' + offerId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                favorite: !isFavorite
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.setAttribute('data-favorite', !isFavorite);
+                const icon = this.querySelector('i');
+                if (!isFavorite) {
+                    icon.style.color = 'red';
+                } else {
+                    icon.style.color = 'gray';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+
+</script>
 
 <?php 
 $content = ob_get_clean(); 

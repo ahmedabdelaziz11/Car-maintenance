@@ -8,6 +8,8 @@ use MVC\core\session;
 use MVC\models\carType;
 use MVC\models\category;
 use MVC\models\favorite;
+use MVC\models\follow;
+use MVC\models\notification;
 use MVC\models\offer;
 use MVC\models\offerComment;
 use MVC\models\offerImage;
@@ -63,6 +65,7 @@ class OfferController extends controller{
                 ];
     
                 $offerModel = new Offer();
+                $followModel = new follow();
                 $offerId = $offerModel->create($data);
     
                 if (!empty($_FILES['other_images']['name'][0])) {
@@ -76,6 +79,17 @@ class OfferController extends controller{
                         ]);
                     }
                 }
+                $userIdsFollowsOffer = $followModel->getUserIdsFollowsOffer($_POST['service_id'],$_POST['category_id']);
+                foreach($userIdsFollowsOffer as $row)
+                {;
+                    $notificationModel = new notification();
+                    $notificationModel->create([
+                        'offer_id' => $offerId,
+                        'user_id'  => $row['user_id'],
+                        'date'     => date('Y-m-d H:i:s'),
+                        'message'  => 'عرض جديد من العروض التي تتابعها',
+                    ]);
+                } 
                 header('Location: ' . BASE_URL . '/offer');
                 exit;
             } else {
@@ -165,8 +179,12 @@ class OfferController extends controller{
         ]);
     }
 
-    public function details($id)
+    public function details($id,$notification_id = null)
     {
+        if($notification_id){
+            $notificationModel = new notification();
+            $notificationModel->updateRow(['id' => $notification_id,'is_read' => 1]);
+        }
         $offerModel = new offer();
         $offerCommentModel = new offerComment();
         $offer = $offerModel->getById($id);
@@ -178,9 +196,17 @@ class OfferController extends controller{
                 $offerCommentModel->create([
                     'offer_id' => $id,
                     'user_id' => $_SESSION['user']['id'],
-                    'date' => date('Y-m-d'),
+                    'date' => date('Y-m-d H:i:s'),
                     'comment' => $_POST['comment'],
                 ]);
+                $notificationModel = new notification();
+                $notificationModel->create([
+                    'offer_id' => $offer['id'],
+                    'user_id'  => $offer['user_id'],
+                    'date'     => date('Y-m-d H:i:s'),
+                    'message'  => 'تم اضافة تعليق على عرضك من قبل  ' . session::get('user')['name'],
+                ]);
+
                 header('Location: ' . BASE_URL . '/offer/details/' . $id);
                 exit;
             }
@@ -203,8 +229,8 @@ class OfferController extends controller{
     {
         $favoriteModel = new favorite();
         $favoriteModel->toggleFavorite($offer_id);
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        exit;
+        $response = ['success' => true];
+        echo json_encode($response);
     }
 
     public function delete($id)

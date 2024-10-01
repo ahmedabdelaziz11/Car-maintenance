@@ -37,7 +37,12 @@
             <input type="text" class="form-control" id="model_to" name="model_to" placeholder="Model To" value="<?= $_GET['model_to'] ?? '' ?>">
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Search</button>
+    
+    <button type="submit" name="action" value="search" class="btn btn-primary">Search</button>
+    <?php if (isset($_SESSION['user'])): ?>
+        <button type="submit" name="action" value="follow" class="btn btn-secondary">Follow</button>
+    <?php endif; ?>
+
 </form>
 
 
@@ -51,15 +56,14 @@
                     <h5 class="card-title"><?= $offer['title'] ?></h5>
                     <p class="card-text"><?= $offer['details'] ?></p>
                     <?php if (isset($_SESSION['user'])): ?>
-                        <form action="<?= BASE_URL . '/offer/favorite/' . $offer['id'] ?>" method="POST">
+                        <button class="btn p-0 border-0 bg-transparent favorite-btn" data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" data-offer-id="<?= $offer['id'] ?>">
                             <?php if ($offer['is_favorite']): ?> 
-                                <button type="submit" class="btn btn-danger">إزالة من المفضلة</button>
+                                <i class="fas fa-heart heart-icon" style="color: red; font-size: 1.5rem;"></i> 
                             <?php else: ?>
-                                <button type="submit" class="btn btn-secondary">إضافة إلى المفضلة</button>
+                                <i class="far fa-heart heart-icon" style="color: gray; font-size: 1.5rem;"></i>
                             <?php endif; ?>
-                        </form>
+                        </button>
                     <?php endif; ?>
-
                     <p><strong>Service:</strong> <?= $offer['service_name'] ?></p>
                     <p><strong>car type:</strong> <?= $offer['car_type_name'] ?></p>
                     <p><strong>Category:</strong> <?= $offer['category_name'] ?></p>
@@ -71,9 +75,41 @@
     <?php endforeach; ?>
 </div>
 
+<script>
+document.querySelectorAll('.favorite-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const offerId = this.getAttribute('data-offer-id');
+        const isFavorite = this.getAttribute('data-favorite') === 'true';
 
+        fetch('<?= BASE_URL . "/offer/favorite/" ?>' + offerId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                favorite: !isFavorite
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.setAttribute('data-favorite', !isFavorite);
+                const icon = this.querySelector('i');
+                if (!isFavorite) {
+                    icon.style.color = 'red';
+                } else {
+                    icon.style.color = 'gray';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
 
-
+</script>
 <?php require_once(VIEW . 'pagination-links.php'); ?>
 
 

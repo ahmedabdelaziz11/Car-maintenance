@@ -87,9 +87,11 @@ class offer extends model{
         ->where('offers.id', '=', $id)
         ->where('is_active','=',1)
         ->row();
+        
         if ($offer) {
             $offer['other_images'] = $this->getRelatedImages($id);
             $offer['comments']     = $this->getRelatedComments($id);
+            $offer['is_favorite']     = $this->isOfferInFavorites($id,session::Get('user')['id']);
         }
         return $offer;
     }
@@ -135,5 +137,19 @@ class offer extends model{
             WHERE offer_comments.offer_id = '" . mysqli_real_escape_string($this->connection, $offerId) . "'
         ";        
         return $this->all();
+    }
+
+    public function isOfferInFavorites($offerId, $userId)
+    {
+        $this->sql = "
+            SELECT COUNT(*) as total
+            FROM favorites
+            WHERE offer_id = '" . mysqli_real_escape_string($this->connection, $offerId) . "' 
+            AND user_id = '" . mysqli_real_escape_string($this->connection, $userId) . "'
+        ";
+    
+        $result = $this->row();
+    
+        return $result['total'] > 0;
     }
 }

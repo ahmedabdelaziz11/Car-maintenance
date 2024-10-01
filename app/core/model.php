@@ -111,6 +111,14 @@ class model
         return $this;
     }
 
+    public function limit($limit, $offset = 0)
+    {
+        $limit = intval($limit);
+        $offset = intval($offset);
+        $this->sql .= " LIMIT $limit OFFSET $offset";
+        return $this;
+    }
+
     public function update($data)
     {
         $set = [];
