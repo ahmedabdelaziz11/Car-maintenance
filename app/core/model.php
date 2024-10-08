@@ -88,13 +88,13 @@ class model
 
     public function join($table, $condition)
     {
-        $this->sql .= " INNER JOIN `$table` ON $condition";
+        $this->sql .= " INNER JOIN $table ON $condition";
         return $this;
     } 
     
     public function leftJoin($table, $condition)
     {
-        $this->sql .= " LEFT JOIN `$table` ON $condition";
+        $this->sql .= " LEFT JOIN $table ON $condition";
         return $this;
     }   
 

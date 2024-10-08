@@ -11,6 +11,9 @@
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+
     <title><?= isset($title) ? $title : 'CARS' ?></title>
 
     <style>
@@ -41,7 +44,6 @@
     </section>
 
     <?php  require_once(VIEW . 'layout/footer.php'); ?>
-
 </body>
 
 </html>

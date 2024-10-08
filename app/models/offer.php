@@ -23,21 +23,23 @@ class offer extends model{
         return $this->select()->all();
     }   
 
-    public function getAllWithPaginated($service_id = null, $category_id = null, $model_from = null, $model_to = null, $page = 1, $limit = 3)
+    public function getAllWithPaginated($service_id = null, $car_type_id = null, $category_id = null, $model_from = null, $model_to = null, $page = 1, $limit = 3)
     {
         $offset = ($page - 1) * $limit;
-    
-        $this->select(['offers.*','favorites.id AS favorite_id', 'services.name AS service_name', 'car_types.name AS car_type_name','categories.name AS category_name'])
+        
+        $this->select(['offers.*', 'favorites.id AS favorite_id', 'services.name AS service_name', 'car_types.name AS car_type_name', 'categories.name AS category_name'])
             ->join('car_types', 'offers.car_type_id = car_types.id')
             ->join('services', 'offers.service_id = services.id')
             ->join('categories', 'offers.category_id = categories.id');
-
+        
         $userId = session::Get('user')['id'] ?? 0;
         $this->leftJoin('favorites', 'offers.id = favorites.offer_id AND favorites.user_id = '.$userId);
         
-    
         if ($service_id) {
             $this->where('offers.service_id', '=', $service_id);
+        }
+        if ($car_type_id) {
+            $this->where('offers.car_type_id', '=', $car_type_id);
         }
         if ($category_id) {
             $this->where('offers.category_id', '=', $category_id);
@@ -48,16 +50,31 @@ class offer extends model{
         if ($model_to) {
             $this->where('offers.car_model_to', '<=', $model_to);
         }
-        $this->where('is_active','=',1);
+        
+        $this->where('is_active', '=', 1);
+    
+        $totalQuery = clone $this;
+        $totalQuery->select(['COUNT(*) AS total_count']);
+        $totalCountResult = $totalQuery->row();
+        $totalCount = $totalCountResult['total_count'] ?? 0;
     
         $this->sql .= " LIMIT $limit OFFSET $offset";
         $results = $this->all();
-
+    
+        $hasNextPage = (($page * $limit) < $totalCount);
+    
         foreach ($results as &$result) {
             $result['is_favorite'] = !empty($result['favorite_id']);
         }
-        return $results;
+    
+        return [
+            'offers' => $results,
+            'hasNextPage' => $hasNextPage,
+            'currentPage' => $page,
+            'totalPages' => ceil($totalCount / $limit)
+        ];
     }
+    
     
     public function favoriteOffers()
     {

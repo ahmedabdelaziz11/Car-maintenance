@@ -186,36 +186,12 @@ class OfferController extends controller{
             $notificationModel->updateRow(['id' => $notification_id,'is_read' => 1]);
         }
         $offerModel = new offer();
-        $offerCommentModel = new offerComment();
         $offer = $offerModel->getById($id);
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $comment = $_POST['comment'] ?? '';
-    
-            if (!empty($comment)) {
-                $offerCommentModel->create([
-                    'offer_id' => $id,
-                    'user_id' => $_SESSION['user']['id'],
-                    'date' => date('Y-m-d H:i:s'),
-                    'comment' => $_POST['comment'],
-                ]);
-                $notificationModel = new notification();
-                $notificationModel->create([
-                    'offer_id' => $offer['id'],
-                    'user_id'  => $offer['user_id'],
-                    'date'     => date('Y-m-d H:i:s'),
-                    'message'  => 'تم اضافة تعليق على عرضك من قبل  ' . session::get('user')['name'],
-                ]);
-
-                header('Location: ' . BASE_URL . '/offer/details/' . $id);
-                exit;
-            }
-        }
     
         $this->view('offers/show', [
             'offer' => $offer
         ]);
-    }
+    } 
 
     public function getCategoriesByCarType($carTypeId)
     {
@@ -251,7 +227,7 @@ class OfferController extends controller{
             $offerImageModel->deleteRow($img['id']);
         }
         $offerModel->deleteRow($id);
-        header('Location: ' . BASE_URL . '/offer');
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }
 
@@ -290,7 +266,7 @@ class OfferController extends controller{
         } else {
             $categoryModel = new Category();
             
-            if (!$categoryModel->categoryByCarTypeId($_POST['category_id'], $_POST['car_type_id'])) {
+            if (!$categoryModel->checkCategoryWithCarType($_POST['category_id'], $_POST['car_type_id'])) {
                 $errors[] = 'الفئة غير متاحة لنوع السيارة المختار.';
             }
         }
@@ -380,7 +356,7 @@ class OfferController extends controller{
         } else {
             $categoryModel = new Category();
             
-            if (!$categoryModel->categoryByCarTypeId($_POST['category_id'], $_POST['car_type_id'])) {
+            if (!$categoryModel->checkCategoryWithCarType($_POST['category_id'], $_POST['car_type_id'])) {
                 $errors[] = 'الفئة غير متاحة لنوع السيارة المختار.';
             }
         }

@@ -1,7 +1,6 @@
 <?php ob_start(); ?>
 
-<!-- Search Form -->
-<form method="GET" action="<?= BASE_URL . '/home/index' ?>">
+<form method="GET" id="search-form" action="<?= BASE_URL . '/home/index' ?>">
     <div class="form-row">
         <div class="form-group col-md-3">
             <label for="service_id">Service</label>
@@ -16,14 +15,19 @@
         </div>
 
         <div class="form-group col-md-3">
+            <label for="category_id">car type</label>
+            <select name="car_type_id" id="car_type_id" class="form-control">
+                <option value="">select car type</option>
+                <?php foreach ($carTypes as $carType): ?>
+                    <option value="<?= $carType['id'] ?>"><?= $carType['name'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group col-md-3">
             <label for="category_id">Category</label>
             <select class="form-control" id="category_id" name="category_id">
                 <option value="">Select Category</option>
-                <?php foreach ($categories as $category): ?>
-                    <option value="<?= $category['id']; ?>" <?= isset($_GET['category_id']) && $_GET['category_id'] == $category['id'] ? 'selected' : '' ?>>
-                        <?= $category['name']; ?>
-                    </option>
-                <?php endforeach; ?>
             </select>
         </div>
 
@@ -36,17 +40,17 @@
             <label for="model_to">Model To</label>
             <input type="text" class="form-control" id="model_to" name="model_to" placeholder="Model To" value="<?= $_GET['model_to'] ?? '' ?>">
         </div>
-    </div>
-    
-    <button type="submit" name="action" value="search" class="btn btn-primary">Search</button>
-    <?php if (isset($_SESSION['user'])): ?>
-        <button type="submit" name="action" value="follow" class="btn btn-secondary">Follow</button>
-    <?php endif; ?>
 
+        <div class="form-group col-md-3 mt-4">
+            <button type="submit" name="action" value="search" class="btn btn-primary">Search</button>
+            <?php if (isset($_SESSION['user'])): ?>
+                <button type="button" id="follow-button" class="btn btn-secondary">Follow</button>
+            <?php endif; ?>
+        </div>
+    </div>
 </form>
 
 
-<!-- Display Offers in Cards -->
 <div class="row mt-4">
     <?php foreach ($offers as $offer): ?>
         <div class="col-md-4">
@@ -55,15 +59,6 @@
                 <div class="card-body">
                     <h5 class="card-title"><?= $offer['title'] ?></h5>
                     <p class="card-text"><?= $offer['details'] ?></p>
-                    <?php if (isset($_SESSION['user'])): ?>
-                        <button class="btn p-0 border-0 bg-transparent favorite-btn" data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" data-offer-id="<?= $offer['id'] ?>">
-                            <?php if ($offer['is_favorite']): ?> 
-                                <i class="fas fa-heart heart-icon" style="color: red; font-size: 1.5rem;"></i> 
-                            <?php else: ?>
-                                <i class="far fa-heart heart-icon" style="color: gray; font-size: 1.5rem;"></i>
-                            <?php endif; ?>
-                        </button>
-                    <?php endif; ?>
                     <p><strong>Service:</strong> <?= $offer['service_name'] ?></p>
                     <p><strong>car type:</strong> <?= $offer['car_type_name'] ?></p>
                     <p><strong>Category:</strong> <?= $offer['category_name'] ?></p>
@@ -73,44 +68,107 @@
             </div>
         </div>
     <?php endforeach; ?>
+    <?php require_once(VIEW . 'pagination-links.php'); ?>
 </div>
 
-<script>
-document.querySelectorAll('.favorite-btn').forEach(button => {
-    button.addEventListener('click', function () {
-        const offerId = this.getAttribute('data-offer-id');
-        const isFavorite = this.getAttribute('data-favorite') === 'true';
 
-        fetch('<?= BASE_URL . "/offer/favorite/" ?>' + offerId, {
-            method: 'POST',
+<script>
+    document.getElementById('follow-button').addEventListener('click', function () {
+        const form = document.querySelector('form');
+        const queryString = serializeForm(form);
+        const url = `<?= BASE_URL ?>/home/index?${queryString}&action=follow`;
+
+        fetch(url, {
             headers: {
-                'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                favorite: !isFavorite
-            })
+            }
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                this.setAttribute('data-favorite', !isFavorite);
-                const icon = this.querySelector('i');
-                if (!isFavorite) {
-                    icon.style.color = 'red';
-                } else {
-                    icon.style.color = 'gray';
-                }
+                alert('You are now following this service.');
+            } else {
+                alert('Failed to follow. Maybe you are already following this service.');
             }
         })
         .catch(error => {
             console.error('Error:', error);
+            alert('An error occurred. Please try again.');
         });
     });
-});
 
+
+    document.getElementById('car_type_id').addEventListener('change', function() {
+        const carTypeId = this.value;
+        const categorySelect = document.getElementById('category_id');
+        categorySelect.innerHTML = '<option value="">Select Category</option>';
+
+        if (carTypeId) {
+            fetch(`<?= BASE_URL ?>/offer/getCategoriesByCarType/${carTypeId}`)
+                .then(response => response.json())
+                .then(categories => {
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.id;
+                        option.textContent = category.name;
+                        categorySelect.appendChild(option);
+                    });
+                });
+        }
+    });
+
+    function serializeForm(form) {
+        const formData = new FormData(form);
+        return new URLSearchParams([...formData.entries()]).toString();
+    }
+
+    function fetchOffers(page = 1, pushState = false) {
+        const form = document.querySelector('form');
+        const queryString = serializeForm(form);
+        const url = `<?= BASE_URL ?>/home/index?${queryString}&page=${page}`;
+
+        fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                document.querySelector('.row').innerHTML = html;
+                attachPaginationListeners();
+            })
+            .catch(console.error);
+    }
+
+    window.addEventListener('popstate', () => {
+        const page = new URLSearchParams(window.location.search).get('page') || 1;
+        fetchOffers(page);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const page = new URLSearchParams(window.location.search).get('page') || 1;
+        fetchOffers(page);
+    });
+
+    document.querySelector('form').addEventListener('submit', event => {
+        event.preventDefault();
+        fetchOffers();
+    });
+
+    function attachPaginationListeners() {
+        document.querySelectorAll('.pagination-link').forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                const page = link.getAttribute('data-page');
+                if (!link.closest('li').classList.contains('disabled')) {
+                    fetchOffers(page, true);
+                }
+            });
+        });
+    }
+
+    attachPaginationListeners();
 </script>
-<?php require_once(VIEW . 'pagination-links.php'); ?>
 
 
 <?php

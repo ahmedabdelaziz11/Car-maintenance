@@ -18,11 +18,6 @@
             <?php endforeach; ?>
         </select>
     </div>
-    <div class="form-group">
-        <label for="image">Image</label>
-        <input type="file" name="image" id="image" class="form-control">
-        <img src="path/to/upload/directory/<?= $category['image'] ?>" alt="<?= $category['name'] ?>" width="100" class="mt-2">
-    </div>
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
 

@@ -28,6 +28,14 @@ class category extends model{
         return $this->select()->where('car_type_id','=',$carTypeId)->all();
     }
 
+    public function checkCategoryWithCarType($categoryId,$carTypeId){
+        return $this
+            ->select()
+            ->where('id','=',$categoryId)
+            ->where('car_type_id','=',$carTypeId)
+            ->row();
+    }
+
     public function getById($id)
     {
         return $this->select()->where('id', '=', $id)->row();

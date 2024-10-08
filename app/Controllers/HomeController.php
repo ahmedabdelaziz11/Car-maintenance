@@ -5,7 +5,7 @@ namespace MVC\controllers;
 
 use MVC\core\controller;
 use MVC\core\session;
-use MVC\models\category;
+use MVC\models\carType;
 use MVC\models\follow;
 use MVC\models\offer;
 use MVC\models\service;
@@ -16,45 +16,54 @@ class HomeController extends controller{
     {
         $offerModel = new offer();
         $serviceModel = new service();
-        $categoryModel = new category(); 
-        $followModel = new follow(); 
-    
-        $services = $serviceModel->getAll(); 
-        $categories = $categoryModel->getAll(); 
-    
-        $service_id = $_GET['service_id'] ?? null;
+        $carTypeModel = new carType();
+        $followModel = new follow();
+        
+        $services = $serviceModel->getAll();
+        $carTypes = $carTypeModel->getAll();
+        
+        $service_id  = $_GET['service_id'] ?? null;
+        $car_type_id = $_GET['car_type_id'] ?? null;
         $category_id = $_GET['category_id'] ?? null;
-        $model_from = $_GET['model_from'] ?? null;
-        $model_to = $_GET['model_to'] ?? null;
-        $page = $_GET['page'] ?? 1;
+        $model_from  = $_GET['model_from'] ?? null;
+        $model_to    = $_GET['model_to'] ?? null;
+        $page        = $_GET['page'] ?? 1;
     
-        $offers = $offerModel->getAllWithPaginated($service_id, $category_id, $model_from, $model_to, $page);
-
-        if (isset($_GET['action'])) {
-            $action = $_GET['action'];
-            if ($action == 'follow' 
-                && session::Get('user') 
-                && isset($_GET['service_id']) && $_GET['service_id'] != null
-                && isset($_GET['category_id']) && $_GET['category_id'] != null
-            ) {
-                if(!$followModel->followExist($_GET['service_id'],$_GET['category_id'],session::Get('user')['id']))
-                {
+        if (isset($_GET['action']) && $_GET['action'] === 'follow') {
+            if (session::Get('user') && $service_id && $category_id) {
+                if (!$followModel->followExist($service_id, $category_id, session::Get('user')['id'])) {
                     $followModel->create([
-                        'user_id' =>  session::Get('user')['id'],
-                        'service_id' => $_GET['service_id'],
-                        'category_id' => $_GET['category_id'],
+                        'user_id' => session::Get('user')['id'],
+                        'service_id' => $service_id,
+                        'category_id' => $category_id,
                     ]);
+                    echo json_encode(['success' => true]);
+                    return;
                 }
             }
-            $offers = $offerModel->getAllWithPaginated(null, null, null, null, $page);
+            echo json_encode(['success' => false]);
+            return;
         }
     
-        $this->view('index', [
-            'offers' => $offers,
-            'services' => $services,
-            'categories' => $categories,
-            'page' => $page
-        ]);
-    }
+        $offersData = $offerModel->getAllWithPaginated($service_id, $car_type_id, $category_id, $model_from, $model_to, $page);
     
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            echo $this->view('partials/offers', [
+                'offers' => $offersData['offers'],
+                'page' => $page,
+                'hasNextPage' => $offersData['hasNextPage'],
+                'totalPages' => $offersData['totalPages']
+            ]);
+            return;
+        } else {
+            $this->view('index', [
+                'offers' => $offersData['offers'],
+                'services' => $services,
+                'carTypes' => $carTypes,
+                'page' => $page,
+                'hasNextPage' => $offersData['hasNextPage'],
+                'totalPages' => $offersData['totalPages']
+            ]);
+        }
+    }    
 }
