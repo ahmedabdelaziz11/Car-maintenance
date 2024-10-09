@@ -71,7 +71,6 @@
     <?php require_once(VIEW . 'pagination-links.php'); ?>
 </div>
 
-
 <script>
     document.getElementById('follow-button').addEventListener('click', function () {
         const form = document.querySelector('form');
@@ -96,32 +95,6 @@
             alert('An error occurred. Please try again.');
         });
     });
-
-
-    document.getElementById('car_type_id').addEventListener('change', function() {
-        const carTypeId = this.value;
-        const categorySelect = document.getElementById('category_id');
-        categorySelect.innerHTML = '<option value="">Select Category</option>';
-
-        if (carTypeId) {
-            fetch(`<?= BASE_URL ?>/offer/getCategoriesByCarType/${carTypeId}`)
-                .then(response => response.json())
-                .then(categories => {
-                    categories.forEach(category => {
-                        const option = document.createElement('option');
-                        option.value = category.id;
-                        option.textContent = category.name;
-                        categorySelect.appendChild(option);
-                    });
-                });
-        }
-    });
-
-    function serializeForm(form) {
-        const formData = new FormData(form);
-        return new URLSearchParams([...formData.entries()]).toString();
-    }
-
     function fetchOffers(page = 1, pushState = false) {
         const form = document.querySelector('form');
         const queryString = serializeForm(form);
@@ -140,6 +113,75 @@
             .catch(console.error);
     }
 
+    function serializeForm(form) {
+        const formData = new FormData(form);
+        return new URLSearchParams([...formData.entries()]).toString();
+    }
+
+    function debounce(func, wait = 300) {
+        let timeout;
+        return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    function attachInputListeners() {
+        const formInputs = document.querySelectorAll('#search-form input, #search-form select');
+
+        formInputs.forEach(input => {
+            input.addEventListener('input', debounce(() => {
+                fetchOffers();
+            }));
+        });
+    }
+
+    document.getElementById('car_type_id').addEventListener('change', function() {
+        const carTypeId = this.value;
+        const categorySelect = document.getElementById('category_id');
+        categorySelect.innerHTML = '<option value="">Select Category</option>';
+
+        if (carTypeId) {
+            fetch(`<?= BASE_URL ?>/offer/getCategoriesByCarType/${carTypeId}`)
+                .then(response => response.json())
+                .then(categories => {
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.id;
+                        option.textContent = category.name;
+                        categorySelect.appendChild(option);
+                    });
+                    fetchOffers();
+                });
+        } else {
+            fetchOffers(); 
+        }
+    });
+
+    function attachPaginationListeners() {
+        document.querySelectorAll('.pagination-link').forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                const page = link.getAttribute('data-page');
+                if (!link.closest('li').classList.contains('disabled')) {
+                    fetchOffers(page, true);
+                }
+            });
+        });
+    }
+
+    window.addEventListener('popstate', () => {
+        const page = new URLSearchParams(window.location.search).get('page') || 1;
+        fetchOffers(page);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const page = new URLSearchParams(window.location.search).get('page') || 1;
+        fetchOffers(page);
+        attachInputListeners();
+        attachPaginationListeners(); 
+    });
+
     window.addEventListener('popstate', () => {
         const page = new URLSearchParams(window.location.search).get('page') || 1;
         fetchOffers(page);
@@ -154,18 +196,6 @@
         event.preventDefault();
         fetchOffers();
     });
-
-    function attachPaginationListeners() {
-        document.querySelectorAll('.pagination-link').forEach(link => {
-            link.addEventListener('click', event => {
-                event.preventDefault();
-                const page = link.getAttribute('data-page');
-                if (!link.closest('li').classList.contains('disabled')) {
-                    fetchOffers(page, true);
-                }
-            });
-        });
-    }
 
     attachPaginationListeners();
 </script>

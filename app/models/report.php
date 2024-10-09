@@ -21,11 +21,11 @@ class report extends model{
             'offer_comments.comment as comment_text', 
             'comment_user.name as comment_user_name'
         ])
-        ->leftJoin('offers', 'reports.offer_id = offers.id') // Left join to include reports with no offer_id
-        ->leftJoin('users as offer_user', 'offers.user_id = offer_user.id') // User who posted the offer
-        ->leftJoin('offer_comments', 'reports.comment_id = offer_comments.id') // Left join to include reports with no comment_id
-        ->leftJoin('users as comment_user', 'offer_comments.user_id = comment_user.id') // User who posted the comment
-        ->join('users as reporter', 'reports.user_id = reporter.id') // User who reported
+        ->leftJoin('offers', 'reports.offer_id = offers.id')
+        ->leftJoin('users as offer_user', 'offers.user_id = offer_user.id')
+        ->leftJoin('offer_comments', 'reports.comment_id = offer_comments.id') 
+        ->leftJoin('users as comment_user', 'offer_comments.user_id = comment_user.id')
+        ->join('users as reporter', 'reports.user_id = reporter.id')
         ->orderBy('created_at', 'DESC');
 
     return $this->all();
