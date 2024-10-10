@@ -13,6 +13,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="<?= BASE_URL . '/'; ?>">الرئيسية</a></li>
                 <?php if (isset($_SESSION['user'])): ?>
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL . '/contact'; ?>">تواصل معانا</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL . '/offer'; ?>">عروضك</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL . '/favorite'; ?>">المفضلة</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL . '/chat/index/'; ?>">المحدثات</a></li>
