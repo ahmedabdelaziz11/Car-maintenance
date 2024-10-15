@@ -72,29 +72,32 @@
 </div>
 
 <script>
-    document.getElementById('follow-button').addEventListener('click', function () {
-        const form = document.querySelector('form');
-        const queryString = serializeForm(form);
-        const url = `<?= BASE_URL ?>/home/index?${queryString}&action=follow`;
+    const followButton = document.getElementById('follow-button');
+    if (followButton) {
+        document.getElementById('follow-button').addEventListener('click', function () {
+            const form = document.querySelector('form');
+            const queryString = serializeForm(form);
+            const url = `<?= BASE_URL ?>/home/index?${queryString}&action=follow`;
 
-        fetch(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('You are now following this service.');
-            } else {
-                alert('Failed to follow. Maybe you are already following this service.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('You are now following this service.');
+                } else {
+                    alert('Failed to follow. Maybe you are already following this service.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
         });
-    });
+    }
     function fetchOffers(page = 1, pushState = false) {
         const form = document.querySelector('form');
         const queryString = serializeForm(form);
