@@ -28,4 +28,14 @@ class contact extends model {
     public function getContactById($id) {
         return $this->select()->where('id', '=', $id)->row();
     }
+
+    public function getConversationsByTypes($contactTypes) {
+        if (empty($contactTypes)) {
+            return [];
+        }
+        return $this->select()
+            ->whereIn('contact_type',$contactTypes)
+            ->orderBy('created_at', 'DESC')
+            ->all();
+    }
 }

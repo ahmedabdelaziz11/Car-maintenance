@@ -75,4 +75,9 @@ class user extends model{
 
         return "Registration successful!";
     }
+
+    public function getAllowedContactTypes($adminId) {
+        $admin = $this->select()->where('id', '=', $adminId)->row();
+        return json_decode($admin['contact_types'], true) ?? [];
+    }
 }

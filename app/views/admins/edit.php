@@ -27,6 +27,19 @@
             <option value="2" <?= $admin['role'] == 2 ? 'selected' : '' ?>>Supervisor</option>
         </select>
     </div>
+    <div class="form-group">
+        <label for="role">Allowed Contact Types</label>
+        <br>
+        <label>
+            <input type="checkbox" name="contact_types[]" value="Complaint" <?= in_array('Complaint', $assignedTypes) ? 'checked' : '' ?>> Complaint
+        </label><br>
+        <label>
+            <input type="checkbox" name="contact_types[]" value="Suggestion" <?= in_array('Suggestion', $assignedTypes) ? 'checked' : '' ?>> Suggestion
+        </label><br>
+        <label>
+            <input type="checkbox" name="contact_types[]" value="Inquiry" <?= in_array('Inquiry', $assignedTypes) ? 'checked' : '' ?>> Inquiry
+        </label><br>
+    </div>
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
 

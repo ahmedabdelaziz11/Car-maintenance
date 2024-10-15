@@ -3,9 +3,10 @@
 namespace MVC\controllers;
 
 use MVC\core\controller;
-use MVC\models\Contact;
-use MVC\models\Message;
 use MVC\core\session;
+use MVC\models\contact;
+use MVC\models\message;
+use MVC\models\user;
 
 class ContactController extends controller {
 
@@ -20,10 +21,35 @@ class ContactController extends controller {
 
     public function index()
     {
-        $contact = new Contact();
-        $conversations = $contact->getContactsByUser(session::Get('user')['id']);
+        $contact = new contact();
+        $messageModel = new message();
 
-        $this->view('contacts/index', ['conversations' => $conversations]);
+        $userId = session::Get('user')['id'];
+        $userRole = session::Get('user')['role'];
+        if($userRole == 3)
+        {
+            $conversations = $contact->getContactsByUser($userId);
+
+            foreach ($conversations as &$conversation) {
+                $conversation['unread_count'] = $messageModel->countUnreadMessagesByContactId($conversation['id'])['count'];
+            }
+            
+            $this->view('contacts/index', ['conversations' => $conversations]);
+        }
+        $userModel = new user();
+        $allowedTypes = $userModel->getAllowedContactTypes($userId);
+        if (!empty($allowedTypes)) {
+            $contact = new contact();
+            $conversations = $contact->getConversationsByTypes($allowedTypes);
+            foreach ($conversations as &$conversation) {
+                $conversation['unread_count'] = $messageModel->countUnreadMessagesByContactIdForAdmin($conversation['id'])['count'];
+            }
+
+            $this->view('contacts/index', ['conversations' => $conversations]);
+        } else {
+            $this->view('contacts/index', ['conversations' => []]);
+        }
+
     }
 
     public function create() {
@@ -35,7 +61,7 @@ class ContactController extends controller {
                 'created_at'   => date('Y-m-d H:i:s'),
             ];
 
-            $contact = new Contact();
+            $contact = new contact();
             $contactId = $contact->createContact($data);
             
             header('Location: ' . BASE_URL . '/contact/show/' . $contactId);
@@ -46,11 +72,18 @@ class ContactController extends controller {
     }
 
     public function show($id) {
-        $contact = new Contact();
-        $messageModel = new Message();
+        $contact = new contact();
+        $messageModel = new message();
 
         $contactDetails = $contact->getContactById($id);
         $messages = $messageModel->getMessagesByContactId($id);
+
+        $userRole = session::Get('user')['role'];
+        if ($userRole == 3) {
+            $messageModel->markMessagesAsRead($id);
+        }else{
+            $messageModel->markMessagesAsReadForAdmin($id);
+        }
 
         $this->view('contacts/view', [
             'contact' => $contactDetails,
@@ -67,7 +100,7 @@ class ContactController extends controller {
                 'created_at'   => date('Y-m-d H:i:s'),
             ];
 
-            $message = new Message();
+            $message = new message();
             $message->addMessage($data);
 
             header('Location: ' . BASE_URL . '/contact/show/' . $contactId);

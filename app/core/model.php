@@ -49,6 +49,25 @@ class model
         return $this;
     }
 
+    public function whereIn($column, $values)
+    {
+        $escapedColumn = "" . mysqli_real_escape_string($this->connection, $column) . "";
+
+        $escapedValues = array_map(function($value) {
+            return "'" . mysqli_real_escape_string($this->connection, $value) . "'";
+        }, $values);
+
+        $escapedValuesStr = implode(',', $escapedValues);
+
+        if (strpos($this->sql, 'WHERE') !== false) {
+            $this->sql .= " AND $escapedColumn IN ($escapedValuesStr)";
+        } else {
+            $this->sql .= " WHERE $escapedColumn IN ($escapedValuesStr)";
+        }
+
+        return $this;
+    }
+
     public function row()
     {
         $query = mysqli_query($this->connection, $this->sql);
