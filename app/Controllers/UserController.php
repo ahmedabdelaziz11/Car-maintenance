@@ -5,7 +5,9 @@ namespace MVC\controllers;
 
 use MVC\core\controller;
 use MVC\core\session;
+use MVC\models\offer;
 use MVC\models\user;
+use MVC\models\userFollow;
 
 class UserController extends controller{
 
@@ -80,5 +82,33 @@ class UserController extends controller{
         session::Stop();
         header('Location: ' . BASE_URL . '/');
         exit;
+    }
+
+    public function follow()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $followModel = new userFollow();
+            $followModel->create([
+                'follower_id' => $_POST['follower_id'],
+                'following_id' => $_POST['following_id']
+            ]);
+            
+            header('Location: ' . BASE_URL . '/user/profile/' . $_POST['following_id']);
+            exit;
+        }
+    }
+
+    public function profile($userId)
+    {
+        $userModel = new user();
+        $offerModel = new offer();
+
+        $user = $userModel->getById($userId);
+        $offers = $offerModel->getOffersByUserId($userId);
+
+        $this->view('users/profile', [
+            'user' => $user,
+            'offers' => $offers
+        ]);
     }
 }

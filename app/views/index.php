@@ -1,8 +1,8 @@
 <?php ob_start(); ?>
 
 <form method="GET" id="search-form" action="<?= BASE_URL . '/home/index' ?>">
-    <div class="form-row">
-        <div class="form-group col-md-3">
+    <div class="form-row row">
+        <div class="col-md-3">
             <label for="service_id">Service</label>
             <select class="form-control" id="service_id" name="service_id">
                 <option value="">Select Service</option>
@@ -14,7 +14,7 @@
             </select>
         </div>
 
-        <div class="form-group col-md-3">
+        <div class="col-md-3">
             <label for="category_id">car type</label>
             <select name="car_type_id" id="car_type_id" class="form-control">
                 <option value="">select car type</option>
@@ -24,19 +24,19 @@
             </select>
         </div>
 
-        <div class="form-group col-md-3">
+        <div class="col-md-3">
             <label for="category_id">Category</label>
             <select class="form-control" id="category_id" name="category_id">
                 <option value="">Select Category</option>
             </select>
         </div>
 
-        <div class="form-group col-md-3">
+        <div class="col-md-3">
             <label for="model_from">Model From</label>
             <input type="text" class="form-control" id="model_from" name="model_from" placeholder="Model From" value="<?= $_GET['model_from'] ?? '' ?>">
         </div>
 
-        <div class="form-group col-md-3">
+        <div class="col-md-3">
             <label for="model_to">Model To</label>
             <input type="text" class="form-control" id="model_to" name="model_to" placeholder="Model To" value="<?= $_GET['model_to'] ?? '' ?>">
         </div>
@@ -51,7 +51,7 @@
 </form>
 
 
-<div class="row mt-4">
+<div class="row elements mt-4">
     <?php foreach ($offers as $offer): ?>
         <div class="col-md-4">
             <div class="card mb-4">
@@ -110,7 +110,7 @@
             })
             .then(response => response.text())
             .then(html => {
-                document.querySelector('.row').innerHTML = html;
+                document.querySelector('.elements').innerHTML = html;
                 attachPaginationListeners();
             })
             .catch(console.error);

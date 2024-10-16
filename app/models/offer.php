@@ -23,6 +23,11 @@ class offer extends model{
         return $this->select()->all();
     }   
 
+    public function getOffersByUserId($userId)
+    {
+        return $this->select()->where('user_id', '=', $userId)->all();
+    }
+
     public function getAllWithPaginated($service_id = null, $car_type_id = null, $category_id = null, $model_from = null, $model_to = null, $page = 1, $limit = 3)
     {
         $offset = ($page - 1) * $limit;
@@ -109,6 +114,7 @@ class offer extends model{
             $offer['other_images'] = $this->getRelatedImages($id);
             $offer['comments']     = $this->getRelatedComments($id);
             $offer['is_favorite']     = $this->isOfferInFavorites($id,session::Get('user')['id']);
+            $offer['is_follow_owner']     = $this->isFollowOwner($offer['user_id'],session::Get('user')['id']);
         }
         return $offer;
     }
@@ -163,6 +169,20 @@ class offer extends model{
             FROM favorites
             WHERE offer_id = '" . mysqli_real_escape_string($this->connection, $offerId) . "' 
             AND user_id = '" . mysqli_real_escape_string($this->connection, $userId) . "'
+        ";
+    
+        $result = $this->row();
+    
+        return $result['total'] > 0;
+    }
+
+    public function isFollowOwner($owner_id, $userId)
+    {
+        $this->sql = "
+            SELECT COUNT(*) as total
+            FROM user_follows
+            WHERE follower_id = '" . mysqli_real_escape_string($this->connection, $userId) . "' 
+            AND following_id = '" . mysqli_real_escape_string($this->connection, $owner_id) . "'
         ";
     
         $result = $this->row();

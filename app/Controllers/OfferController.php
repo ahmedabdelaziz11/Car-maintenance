@@ -14,6 +14,7 @@ use MVC\models\offer;
 use MVC\models\offerComment;
 use MVC\models\offerImage;
 use MVC\models\service;
+use MVC\models\userFollow;
 
 class OfferController extends controller{
     use ImageUploaderTrait;
@@ -66,6 +67,7 @@ class OfferController extends controller{
     
                 $offerModel = new Offer();
                 $followModel = new follow();
+                $userFollowModel = new userFollow();
                 $offerId = $offerModel->create($data);
     
                 if (!empty($_FILES['other_images']['name'][0])) {
@@ -81,13 +83,24 @@ class OfferController extends controller{
                 }
                 $userIdsFollowsOffer = $followModel->getUserIdsFollowsOffer($_POST['service_id'],$_POST['category_id']);
                 foreach($userIdsFollowsOffer as $row)
-                {;
+                {
                     $notificationModel = new notification();
                     $notificationModel->create([
                         'offer_id' => $offerId,
                         'user_id'  => $row['user_id'],
                         'date'     => date('Y-m-d H:i:s'),
                         'message'  => 'عرض جديد من العروض التي تتابعها',
+                    ]);
+                } 
+                $userFollowers = $userFollowModel->getFollowers($_SESSION['user']['id']);
+                foreach($userFollowers as $row)
+                {
+                    $notificationModel = new notification();
+                    $notificationModel->create([
+                        'offer_id' => $offerId,
+                        'user_id'  => $row['follower_id'],
+                        'date'     => date('Y-m-d H:i:s'),
+                        'message'  => 'عرض جديد من المستخدميين التي تتابعها',
                     ]);
                 } 
                 header('Location: ' . BASE_URL . '/offer');
@@ -189,7 +202,8 @@ class OfferController extends controller{
         $offer = $offerModel->getById($id);
     
         $this->view('offers/show', [
-            'offer' => $offer
+            'offer' => $offer,
+            'offerOwner' => $offer['user_id'],
         ]);
     } 
 

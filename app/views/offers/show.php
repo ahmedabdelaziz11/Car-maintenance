@@ -1,4 +1,8 @@
-<?php ob_start(); ?>
+<?php
+
+use MVC\core\session;
+
+ob_start(); ?>
 
 <div class="container mt-5">
     <div class="row">
@@ -8,8 +12,23 @@
             <div class="mt-4">
                 <button class="btn btn-warning" data-toggle="modal" data-target="#reportOfferModal">Report Offer</button>
                 <a href="<?= BASE_URL . '/chat/index/'.$offer['user_id'] ?>" class="btn btn-secondary">Send a Message to the Offer Owner</a>
+                <br>
+
+                <?php if (session::Get('user')['id'] !== $offer['user_id']): ?>
+                    <form action="<?= BASE_URL ?>/user/follow" method="POST">
+                        <input type="hidden" name="follower_id" value="<?= session::Get('user')['id'] ?>">
+                        <input type="hidden" name="following_id" value="<?= $offer['user_id'] ?>">
+                        <?php if (!$offer['is_follow_owner']): ?>
+                            <button class="btn btn-primary" type="submit">Follow</button>
+                        <?php else: ?>
+                            <button class="btn btn-primary" type="submit">Un follow</button>
+                        <?php endif; ?>
+                    </form>
+                <?php endif; ?>
             </div>
 
+
+            <a href="<?= BASE_URL ?>/user/profile/<?= $offer['user_id'] ?>">View Owner Profile</a>
             <?php if (isset($_SESSION['user'])): ?>
                 <button class="btn p-0 border-0 bg-transparent favorite-btn" data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" data-offer-id="<?= $offer['id'] ?>">
                     <?php if ($offer['is_favorite']): ?> 
