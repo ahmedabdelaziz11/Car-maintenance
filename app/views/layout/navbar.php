@@ -20,28 +20,7 @@
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL . '/offer'; ?>">عروضك</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL . '/favorite'; ?>">المفضلة</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL . '/chat/index/'; ?>" > المحدثات <span class="badge bg-danger"> <?= $unreadMessages; ?></span></a> </li>
-                    
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            إشعارات <span class="badge bg-danger"><?= $unreadCount; ?></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="max-height: 300px; overflow-y: auto;">
-                            <?php if (empty($notifications)): ?>
-                                <li><a class="dropdown-item" href="#">لا توجد إشعارات</a></li>
-                            <?php else: ?>
-                                <?php foreach ($notifications as $notification): ?>
-                                    <li>
-                                        <a class="dropdown-item" <?= $notification['is_read'] == 0 ? 'style="font-size: large;background-color: darkgrey;"' : ''; ?> href="<?= BASE_URL . '/OfferDetails/show/' . $notification['offer_id'] .'/'.$notification['id'] ?>">
-                                            <?= $notification['message']; ?>
-                                            <br>
-                                            <small class="text-muted"><?= date('Y-m-d H:i', strtotime($notification['date'])); ?></small>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </ul>
-
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL . '/notification/index'; ?>">إشعارات <span class="badge bg-danger"><?= $unreadCount; ?></span></a></li>
                 <?php endif; ?>
 
                 <!-- Admin Links -->
