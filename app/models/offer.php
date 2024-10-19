@@ -31,11 +31,20 @@ class offer extends model{
     public function getAllWithPaginated($service_id = null, $car_type_id = null, $category_id = null, $model_from = null, $model_to = null, $page = 1, $limit = 3)
     {
         $offset = ($page - 1) * $limit;
-        
-        $this->select(['offers.*', 'favorites.id AS favorite_id', 'services.name AS service_name', 'car_types.name AS car_type_name', 'categories.name AS category_name'])
-            ->join('car_types', 'offers.car_type_id = car_types.id')
-            ->join('services', 'offers.service_id = services.id')
-            ->join('categories', 'offers.category_id = categories.id');
+        $this->select([
+            'offers.*', 
+            'services.name AS service_name', 
+            'categories.name AS category_name',
+            'car_types.name AS car_type_name',
+            'cities.name AS city_name',
+            'countries.name AS country_name',
+            'favorites.id AS favorite_id'
+        ])
+        ->join('services', 'offers.service_id = services.id')
+        ->join('car_types', 'offers.car_type_id = car_types.id')
+        ->join('categories', 'offers.category_id = categories.id')
+        ->join('cities', 'offers.city_id = cities.id')
+        ->join('countries', 'offers.country_id = countries.id');
         
         $userId = session::Get('user')['id'] ?? 0;
         $this->leftJoin('favorites', 'offers.id = favorites.offer_id AND favorites.user_id = '.$userId);
@@ -102,10 +111,19 @@ class offer extends model{
 
     public function getById($id)
     {
-        $offer = $this->select(['offers.*', 'services.name AS service_name', 'categories.name AS category_name','car_types.name AS car_type_name'])
+        $offer = $this->select([
+                'offers.*', 
+                'services.name AS service_name', 
+                'categories.name AS category_name',
+                'car_types.name AS car_type_name',
+                'cities.name AS city_name',
+                'countries.name AS country_name',
+        ])
         ->join('services', 'offers.service_id = services.id')
         ->join('car_types', 'offers.car_type_id = car_types.id')
         ->join('categories', 'offers.category_id = categories.id')
+        ->join('cities', 'offers.city_id = cities.id')
+        ->join('countries', 'offers.country_id = countries.id')
         ->where('offers.id', '=', $id)
         ->where('is_active','=',1)
         ->row();

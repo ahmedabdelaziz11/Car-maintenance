@@ -30,11 +30,11 @@ ob_start(); ?>
 
             <a href="<?= BASE_URL ?>/user/profile/<?= $offer['user_id'] ?>">View Owner Profile</a>
             <?php if (isset($_SESSION['user'])): ?>
-                <button class="btn p-0 border-0 bg-transparent favorite-btn" data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" data-offer-id="<?= $offer['id'] ?>">
+                <button class="btn bg-primary favorite-btn" data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" data-offer-id="<?= $offer['id'] ?>">
                     <?php if ($offer['is_favorite']): ?> 
-                        <i class="fas fa-heart heart-icon" style="color: red; font-size: 1.5rem;"></i> 
+                        ازالة من المفضة
                     <?php else: ?>
-                        <i class="far fa-heart heart-icon" style="color: gray; font-size: 1.5rem;"></i>
+                        اضافة الى المفضلة
                     <?php endif; ?>
                 </button>
             <?php endif; ?>
@@ -182,11 +182,11 @@ ob_start(); ?>
             .then(data => {
                 if (data.success) {
                     this.setAttribute('data-favorite', !isFavorite);
-                    const icon = this.querySelector('i');
+
                     if (!isFavorite) {
-                        icon.style.color = 'red';
+                        this.innerText = 'ازالة من المفضلة'; 
                     } else {
-                        icon.style.color = 'gray';
+                        this.innerText = 'اضافة الى المفضلة';
                     }
                 }
             })

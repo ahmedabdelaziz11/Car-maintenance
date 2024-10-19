@@ -49,19 +49,41 @@
     </div>
 
     <div class="form-group">
+        <label for="country_id">البلد</label>
+        <select name="country_id" id="country_id" class="form-control" required>
+            <option value="">اختر البلد</option>
+            <?php foreach ($countries as $country): ?>
+                <option value="<?= $country['id'] ?>"  <?= $offer['country_id'] == $country['id'] ? 'selected' : '' ?>><?= $country['name'] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="city_id">المدينة</label>
+        <select name="city_id" id="city_id" class="form-control" required>
+            <option value="">اختر المدينة</option>
+            <?php foreach ($cities as $city): ?>
+                <option value="<?= $city['id'] ?>" <?= $offer['city_id'] == $city['id'] ? 'selected' : '' ?>>
+                    <?= $city['name'] ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="form-group">
         <label for="car_model_from">نموذج السيارة من</label>
-        <input type="number" name="car_model_from" id="car_model_from" class="form-control" value="<?= $offer['car_model_from'] ?>" placeholder="السنة (مثل 2010)">
+        <select name="car_model_from" id="car_model_from" class="form-control" required>
+            <option value="" disabled>اختر سنة البداية</option>
+        </select>
     </div>
 
     <div class="form-group">
         <label for="car_model_to">نموذج السيارة إلى</label>
-        <input type="number" name="car_model_to" id="car_model_to" class="form-control" value="<?= $offer['car_model_to'] ?>" placeholder="السنة (مثل 2020)">
+        <select name="car_model_to" id="car_model_to" class="form-control" required>
+            <option value="" disabled>اختر سنة النهاية</option>
+        </select>
     </div>
-
-    <div class="form-group">
-        <label for="contact">جهة الاتصال</label>
-        <input type="text" name="contact" id="contact" class="form-control" value="<?= $offer['contact'] ?>" placeholder="أدخل تفاصيل جهة الاتصال">
-    </div>
+    <div id="yearError" style="color: red; display: none;">سنة البداية يجب أن تكون أقل أو تساوي سنة النهاية</div>
 
     <div class="form-group">
         <label for="image">الصورة</label>
@@ -81,35 +103,105 @@
         <?php endif; ?>
     </div>
 
+    <div class="form-group">
+        <label for="contact">جهة الاتصال</label>
+        <input type="text" name="contact" id="contact" class="form-control" value="<?= $offer['title'] ?>" required>
+    </div>
+
     <button type="submit" class="btn btn-warning">تحديث</button>
 </form>
 
 <script>
-document.getElementById('car_type_id').addEventListener('change', function() {
-    var carTypeId = this.value;
-    var categorySelect = document.getElementById('category_id');
+    document.getElementById('car_type_id').addEventListener('change', function() {
+        var carTypeId = this.value;
+        var categorySelect = document.getElementById('category_id');
 
-    categorySelect.innerHTML = '<option value="">اختر الفئة</option>';
+        categorySelect.innerHTML = '<option value="">اختر الفئة</option>';
 
-    if (carTypeId) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '<?= BASE_URL ?>/offer/getCategoriesByCarType/' + carTypeId, true);
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var categories = JSON.parse(xhr.responseText);
+        if (carTypeId) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '<?= BASE_URL ?>/offer/getCategoriesByCarType/' + carTypeId, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var categories = JSON.parse(xhr.responseText);
 
-                categories.forEach(function(category) {
-                    var option = document.createElement('option');
-                    option.value = category.id;
-                    option.textContent = category.name;
-                    categorySelect.appendChild(option);
-                });
+                    categories.forEach(function(category) {
+                        var option = document.createElement('option');
+                        option.value = category.id;
+                        option.textContent = category.name;
+                        categorySelect.appendChild(option);
+                    });
+                }
+            };
+            xhr.send();
+        }
+    });
+    document.getElementById('country_id').addEventListener('change', function() {
+        var countryId = this.value;
+        var citySelect = document.getElementById('city_id');
+
+        citySelect.innerHTML = '<option value="">اختر المدينة</option>';
+
+        if (countryId) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '<?= BASE_URL ?>/offer/getCitiesByCountry/' + countryId, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var cities = JSON.parse(xhr.responseText);
+
+                    cities.forEach(function(city) {
+                        var option = document.createElement('option');
+                        option.value = city.id;
+                        option.textContent = city.name;
+                        citySelect.appendChild(option);
+                    });
+                }
+            };
+            xhr.send();
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentYear = new Date().getFullYear();
+        const startYear = 1980;
+        
+        const carModelFrom = document.getElementById('car_model_from');
+        const carModelTo = document.getElementById('car_model_to');
+        const yearError = document.getElementById('yearError');
+
+        const selectedFromYear = '<?= $offer['car_model_from'] ?>';
+        const selectedToYear = '<?= $offer['car_model_to'] ?>';
+
+        function populateYearOptions(selectElement, selectedYear) {
+            for (let year = startYear; year <= currentYear; year++) {
+                let option = document.createElement('option');
+                option.value = year;
+                option.text = year;
+
+                if (year == selectedYear) {
+                    option.selected = true;
+                }
+
+                selectElement.appendChild(option);
             }
-        };
-        xhr.send();
-    }
-});
+        }
 
+        populateYearOptions(carModelFrom, selectedFromYear);
+        populateYearOptions(carModelTo, selectedToYear);
+
+        function validateYearSelection() {
+            const fromYear = parseInt(carModelFrom.value);
+            const toYear = parseInt(carModelTo.value);
+
+            if (fromYear && toYear && fromYear > toYear) {
+                yearError.style.display = 'block';
+            } else {
+                yearError.style.display = 'none';
+            }
+        }
+
+        carModelFrom.addEventListener('change', validateYearSelection);
+        carModelTo.addEventListener('change', validateYearSelection);
+    });
 </script>
 
 <?php 

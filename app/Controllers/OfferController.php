@@ -7,11 +7,12 @@ use MVC\core\controller;
 use MVC\core\session;
 use MVC\models\carType;
 use MVC\models\category;
+use MVC\models\city;
+use MVC\models\country;
 use MVC\models\favorite;
 use MVC\models\follow;
 use MVC\models\notification;
 use MVC\models\offer;
-use MVC\models\offerComment;
 use MVC\models\offerImage;
 use MVC\models\service;
 use MVC\models\userFollow;
@@ -37,12 +38,14 @@ class OfferController extends controller{
 
     public function create()
     {
-        $serviceModel = new service();
+        $serviceModel  = new service();
         $categoryModel = new category();
-        $carTypeModel = new carType();
-        $services = $serviceModel->getAll();
-        $carTypes = $carTypeModel->getAll();
+        $carTypeModel  = new carType();
+        $countryModel  = new country();
+        $services   = $serviceModel->getAll();
+        $carTypes   = $carTypeModel->getAll();
         $categories = $categoryModel->getAll();
+        $countries  = $countryModel->getAll();
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = $this->validateCreateRequest();
@@ -58,6 +61,8 @@ class OfferController extends controller{
                     'service_id' => $_POST['service_id'],
                     'category_id' => $_POST['category_id'],
                     'car_type_id' => $_POST['car_type_id'],
+                    'country_id' => $_POST['country_id'],
+                    'city_id' => $_POST['city_id'],
                     'car_model_from' => $_POST['car_model_from'],
                     'car_model_to' => $_POST['car_model_to'],
                     'image' => $uploadedImage,
@@ -110,25 +115,31 @@ class OfferController extends controller{
                 $this->view('offers/create', [
                     'services' => $services,
                     'categories' => $categories,
+                    'countries' => $countries,
                     'carTypes' => $carTypes,
                     'errorMessage' => $errorMessage
                 ]);
             }
         }
     
-        $this->view('offers/create', ['services' => $services, 'categories' => $categories,'carTypes' => $carTypes]);
+        $this->view('offers/create', ['services' => $services, 'categories' => $categories,'carTypes' => $carTypes,'countries' => $countries]);
     }
     
     public function edit($id)
     {
+        $countryModel  = new country();
         $offerModel = new offer();
         $serviceModel = new service();
         $categoryModel = new category();
         $carTypeModel = new CarType();
+        $cityModel = new city();
         
-        $offer = $offerModel->getById($id);
-        $services = $serviceModel->getAll();
-        $carTypes = $carTypeModel->getAll();
+        $offer      = $offerModel->getById($id);
+        $services   = $serviceModel->getAll();
+        $carTypes   = $carTypeModel->getAll();
+        $countries  = $countryModel->getAll();
+        $cities     = $cityModel->getAll();
+
         $categories = $categoryModel->categoryByCarTypeId($offer['car_type_id']);
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -142,6 +153,8 @@ class OfferController extends controller{
                     'service_id' => $_POST['service_id'],
                     'car_type_id' => $_POST['car_type_id'],
                     'category_id' => $_POST['category_id'],
+                    'country_id' => $_POST['country_id'],
+                    'city_id' => $_POST['city_id'],
                     'car_model_from' => $_POST['car_model_from'],
                     'car_model_to' => $_POST['car_model_to'],
                     'contact' => $_POST['contact'],
@@ -179,7 +192,9 @@ class OfferController extends controller{
                     'carTypes' => $carTypes,
                     'categories' => $categories,
                     'errorMessage' => $errorMessage,
-                    'offer' => $offer
+                    'offer' => $offer,
+                    'cities' => $cities,
+                    'countries' => $countries,
                 ]);
             }
         }
@@ -188,7 +203,9 @@ class OfferController extends controller{
             'services' => $services,
             'carTypes' => $carTypes,
             'categories' => $categories,
-            'offer' => $offer
+            'offer' => $offer,
+            'cities' => $cities,
+            'countries' => $countries,
         ]);
     }
 
@@ -213,6 +230,14 @@ class OfferController extends controller{
         $categories = $categoryModel->categoryByCarTypeId($carTypeId);
 
         echo json_encode($categories);
+    }
+
+    public function getCitiesByCountry($countryId)
+    {
+        $cityModel = new city();
+        $cities = $cityModel->cityByCountryId($countryId);
+
+        echo json_encode($cities);
     }
 
     public function favorite($offer_id)
@@ -282,6 +307,25 @@ class OfferController extends controller{
             
             if (!$categoryModel->checkCategoryWithCarType($_POST['category_id'], $_POST['car_type_id'])) {
                 $errors[] = 'الفئة غير متاحة لنوع السيارة المختار.';
+            }
+        }
+
+        if (empty($_POST['country_id'])) {
+            $errors[] = 'البلد مطلوب.';
+        } else {
+            $countryModel = new country();
+            if (!$countryModel->getById($_POST['country_id'])) {
+                $errors[] = 'البلد غير موجود.';
+            }
+        }
+    
+        if (empty($_POST['city_id'])) {
+            $errors[] = 'المدينة مطلوبة';
+        } else {
+            $cityModel = new city();
+            
+            if (!$cityModel->checkCityWithCountry($_POST['city_id'], $_POST['country_id'])) {
+                $errors[] = 'المدينة غير متاحة للبلد المختار.';
             }
         }
     
@@ -372,6 +416,25 @@ class OfferController extends controller{
             
             if (!$categoryModel->checkCategoryWithCarType($_POST['category_id'], $_POST['car_type_id'])) {
                 $errors[] = 'الفئة غير متاحة لنوع السيارة المختار.';
+            }
+        }
+
+        if (empty($_POST['country_id'])) {
+            $errors[] = 'البلد مطلوب.';
+        } else {
+            $countryModel = new country();
+            if (!$countryModel->getById($_POST['country_id'])) {
+                $errors[] = 'البلد غير موجود.';
+            }
+        }
+    
+        if (empty($_POST['city_id'])) {
+            $errors[] = 'المدينة مطلوبة';
+        } else {
+            $cityModel = new city();
+            
+            if (!$cityModel->checkCityWithCountry($_POST['city_id'], $_POST['country_id'])) {
+                $errors[] = 'المدينة غير متاحة للبلد المختار.';
             }
         }
     
