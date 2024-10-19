@@ -1,7 +1,7 @@
 <?php foreach ($offers as $offer): ?>
     <div class="col-md-4">
         <div class="card mb-4">
-            <a href="<?= BASE_URL . '/offer/details/' . $offer['id'] ?>">
+            <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>">
                 <img src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" class="card-img-top" alt="<?= $offer['title'] ?>">
             </a>
             <div class="card-body">

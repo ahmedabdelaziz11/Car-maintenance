@@ -87,13 +87,15 @@ class UserController extends controller{
     public function follow()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $input = json_decode(file_get_contents("php://input"), true);
             $followModel = new userFollow();
+
             $followModel->create([
-                'follower_id' => $_POST['follower_id'],
-                'following_id' => $_POST['following_id']
+                'follower_id' => $input['follower_id'],
+                'following_id' => $input['following_id']
             ]);
-            
-            header('Location: ' . BASE_URL . '/user/profile/' . $_POST['following_id']);
+
+            echo json_encode(['success' => true]);
             exit;
         }
     }

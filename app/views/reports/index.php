@@ -22,7 +22,7 @@
                         <td>
                             <?php if (!empty($report['offer_id'])): ?>
                                 <!-- Link to the offer if it's an offer report -->
-                                <a href="<?= BASE_URL . '/offer/details/' . $report['offer_id']; ?>"><?= htmlspecialchars($report['offer_title']); ?></a>
+                                <a href="<?= BASE_URL . '/OfferDetails/show/' . $report['offer_id']; ?>"><?= htmlspecialchars($report['offer_title']); ?></a>
                             <?php elseif (!empty($report['comment_id'])): ?>
                                 <!-- Display the comment text if it's a comment report -->
                                 Comment: <?= htmlspecialchars($report['comment_text']); ?>

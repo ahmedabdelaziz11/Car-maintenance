@@ -31,7 +31,7 @@
                             <?php else: ?>
                                 <?php foreach ($notifications as $notification): ?>
                                     <li>
-                                        <a class="dropdown-item" <?= $notification['is_read'] == 0 ? 'style="font-size: large;background-color: darkgrey;"' : ''; ?> href="<?= BASE_URL . '/offer/details/' . $notification['offer_id'] .'/'.$notification['id'] ?>">
+                                        <a class="dropdown-item" <?= $notification['is_read'] == 0 ? 'style="font-size: large;background-color: darkgrey;"' : ''; ?> href="<?= BASE_URL . '/OfferDetails/show/' . $notification['offer_id'] .'/'.$notification['id'] ?>">
                                             <?= $notification['message']; ?>
                                             <br>
                                             <small class="text-muted"><?= date('Y-m-d H:i', strtotime($notification['date'])); ?></small>

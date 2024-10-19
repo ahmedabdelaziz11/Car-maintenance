@@ -209,21 +209,6 @@ class OfferController extends controller{
         ]);
     }
 
-    public function details($id,$notification_id = null)
-    {
-        if($notification_id){
-            $notificationModel = new notification();
-            $notificationModel->updateRow(['id' => $notification_id,'is_read' => 1]);
-        }
-        $offerModel = new offer();
-        $offer = $offerModel->getById($id);
-    
-        $this->view('offers/show', [
-            'offer' => $offer,
-            'offerOwner' => $offer['user_id'],
-        ]);
-    } 
-
     public function getCategoriesByCarType($carTypeId)
     {
         $categoryModel = new category();

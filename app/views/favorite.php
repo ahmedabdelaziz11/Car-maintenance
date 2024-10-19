@@ -15,7 +15,7 @@
                     <p><strong>Category:</strong> <?= $offer['category_name'] ?></p>
                     <p><strong>Car Model:</strong> <?= $offer['car_model_from'] ?> - <?= $offer['car_model_to'] ?></p>
                     <button class="btn btn-danger remove-favorite" data-offer-id="<?= $offer['id'] ?>">إزالة من المفضلة</button>
-                    <a href="<?= BASE_URL . '/offer/details/' . $offer['id'] ?>" class="btn btn-primary">View Details</a>
+                    <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>" class="btn btn-primary">View Details</a>
                 </div>
             </div>
         </div>

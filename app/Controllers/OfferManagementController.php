@@ -10,7 +10,7 @@ class OfferManagementController extends controller{
 
     public function __construct()
     {
-        if(!session::Get('user') && (session::Get('user')['role'] == 1 || session::Get('user')['role'] == 2) ){
+        if(!session::Get('user') || session::Get('user')['role'] == 3 ){
             header('Location: ' . BASE_URL . '/user/login');
             exit;
         }

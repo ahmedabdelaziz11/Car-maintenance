@@ -14,17 +14,18 @@ ob_start(); ?>
                 <a href="<?= BASE_URL . '/chat/index/'.$offer['user_id'] ?>" class="btn btn-secondary">Send a Message to the Offer Owner</a>
                 <br>
 
-                <?php if (session::Get('user')['id'] !== $offer['user_id']): ?>
-                    <form action="<?= BASE_URL ?>/user/follow" method="POST">
+                <?php if (session::Get('user') && session::Get('user')['id'] !== $offer['user_id']): ?>
+                    <form id="followForm" action="<?= BASE_URL ?>/user/follow" method="POST">
                         <input type="hidden" name="follower_id" value="<?= session::Get('user')['id'] ?>">
                         <input type="hidden" name="following_id" value="<?= $offer['user_id'] ?>">
                         <?php if (!$offer['is_follow_owner']): ?>
-                            <button class="btn btn-primary" type="submit">Follow</button>
+                            <button class="btn btn-primary" id="followBtn" type="button">Follow</button>
                         <?php else: ?>
-                            <button class="btn btn-primary" type="submit">Un follow</button>
+                            <button class="btn btn-primary" id="followBtn" type="button">Unfollow</button>
                         <?php endif; ?>
                     </form>
                 <?php endif; ?>
+
             </div>
 
 
@@ -268,15 +269,11 @@ ob_start(); ?>
     });
 
 
-    // Report Comment Submission
     document.getElementById('report-comment-form').addEventListener('submit', function(event) {
         event.preventDefault();
 
         const description = document.getElementById('reportDescriptionComment').value;
         const commentId = document.getElementById('comment_id').value;
-
-        // Debug: Check if comment ID is set correctly
-        console.log("Submitting report for comment ID: ", commentId);
 
         fetch('<?= BASE_URL ?>/report/store', {
             method: 'POST',
@@ -304,20 +301,42 @@ ob_start(); ?>
         });
     });
 
-    // When the report comment modal opens, set the comment_id
     $('#reportCommentModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var commentId = button.data('comment-id'); // Extract comment ID from the data-* attribute
+        var button = $(event.relatedTarget); 
+        var commentId = button.data('comment-id'); 
         var modal = $(this);
-
-        // Debug: Log the comment ID to ensure it's being set correctly
-        console.log("Opening modal for comment ID: ", commentId);
-
-        // Set the comment ID in the hidden input field
         modal.find('#comment_id').val(commentId);
     });
 
+    document.getElementById('followBtn').addEventListener('click', function () {
+        const form = document.getElementById('followForm');
+        const followerId = form.querySelector('input[name="follower_id"]').value;
+        const followingId = form.querySelector('input[name="following_id"]').value;
+        const followBtn = document.getElementById('followBtn');
 
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                follower_id: followerId,
+                following_id: followingId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (followBtn.innerText === 'Follow') {
+                    followBtn.innerText = 'Unfollow';
+                } else {
+                    followBtn.innerText = 'Follow';
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
 </script>
 
 <?php 

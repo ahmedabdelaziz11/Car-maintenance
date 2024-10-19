@@ -131,8 +131,14 @@ class offer extends model{
         if ($offer) {
             $offer['other_images'] = $this->getRelatedImages($id);
             $offer['comments']     = $this->getRelatedComments($id);
+        }
+        if($offer && session::Get('user'))
+        {
             $offer['is_favorite']     = $this->isOfferInFavorites($id,session::Get('user')['id']);
-            $offer['is_follow_owner']     = $this->isFollowOwner($offer['user_id'],session::Get('user')['id']);
+            $offer['is_follow_owner'] = $this->isFollowOwner($offer['user_id'],session::Get('user')['id']);
+        }else{
+            $offer['is_favorite']     = 0;
+            $offer['is_follow_owner'] = 0;
         }
         return $offer;
     }

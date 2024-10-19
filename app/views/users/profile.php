@@ -7,7 +7,7 @@
 <ul>
     <?php foreach ($offers as $offer): ?>
         <li>
-            <a href="<?= BASE_URL ?>/offer/details/<?= $offer['id'] ?>"><?= $offer['title'] ?></a>
+            <a href="<?= BASE_URL ?>/OfferDetails/show/<?= $offer['id'] ?>"><?= $offer['title'] ?></a>
         </li>
     <?php endforeach; ?>
 </ul>
