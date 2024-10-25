@@ -15,25 +15,34 @@ class contact extends model {
     }
 
     public function getContactsByUser($userId) {
-        return $this->select()->where('user_id', '=', $userId)->all();
-    }
-
-    public function getAllConversations()
-    {
-        return $this->select(['id', 'user_id', 'contact_type', 'message', 'created_at'])
-            ->orderBy('created_at', 'DESC')
-            ->all();
+        return $this->select([
+            'contacts.*', 
+            'users.name AS user_name', 
+        ])
+        ->join('users', 'contacts.user_id = users.id')
+        ->where('user_id', '=', $userId)
+        ->all();
     }
 
     public function getContactById($id) {
-        return $this->select()->where('id', '=', $id)->row();
+        return $this->select([
+            'contacts.*', 
+            'users.name AS user_name', 
+        ])
+        ->join('users', 'contacts.user_id = users.id')
+        ->where('contacts.id', '=', $id)
+        ->row();
     }
 
     public function getConversationsByTypes($contactTypes) {
         if (empty($contactTypes)) {
             return [];
         }
-        return $this->select()
+        return $this->select([
+                'contacts.*', 
+                'users.name AS user_name', 
+            ])
+            ->join('users', 'contacts.user_id = users.id')
             ->whereIn('contact_type',$contactTypes)
             ->orderBy('created_at', 'DESC')
             ->all();

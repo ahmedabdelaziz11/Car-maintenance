@@ -33,18 +33,28 @@
 
         <div class="col-md-3">
             <label for="model_from">Model From</label>
-            <input type="text" class="form-control" id="model_from" name="model_from" placeholder="Model From" value="<?= $_GET['model_from'] ?? '' ?>">
+            <select id="model_from" name="model_from" class="form-control">
+                <option value="" disabled selected>اختر سنة البداية</option>
+
+            </select>
         </div>
 
         <div class="col-md-3">
             <label for="model_to">Model To</label>
-            <input type="text" class="form-control" id="model_to" name="model_to" placeholder="Model To" value="<?= $_GET['model_to'] ?? '' ?>">
+            <select id="model_to" name="model_to" class="form-control">
+                <option value="" disabled selected>اختر سنة النهاية</option>
+
+            </select>
         </div>
 
         <div class="form-group col-md-3 mt-4">
             <button type="submit" name="action" value="search" class="btn btn-primary">Search</button>
             <?php if (isset($_SESSION['user'])): ?>
-                <button type="button" id="follow-button" class="btn btn-secondary">Follow</button>
+                <?php if (isset($is_follow)): ?>
+                    <button type="button" id="follow-button" class="btn btn-secondary">Un Follow</button>
+                <?php else : ?>
+                    <button type="button" id="follow-button" class="btn btn-secondary">Follow</button>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
@@ -77,12 +87,14 @@
 <script>
     const followButton = document.getElementById('follow-button');
     if (followButton) {
-        document.getElementById('follow-button').addEventListener('click', function () {
-            const form = document.querySelector('form');
+        followButton.addEventListener('click', function () {
+            const form = document.getElementById('search-form');
             const queryString = serializeForm(form);
-            const url = `<?= BASE_URL ?>/home/index?${queryString}&action=follow`;
+            const action = followButton.textContent.trim() === 'Follow' ? 'follow' : 'unfollow';
+            const url = `<?= BASE_URL ?>/home/index?${queryString}&action=${action}`;
 
             fetch(url, {
+                method: 'GET',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
@@ -90,9 +102,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('You are now following this service.');
+                    followButton.textContent = action === 'follow' ? 'Unfollow' : 'Follow';
+                    alert(data.message);
                 } else {
-                    alert('Failed to follow. Maybe you are already following this service.');
+                    alert('Failed to update follow status.');
                 }
             })
             .catch(error => {
@@ -101,6 +114,7 @@
             });
         });
     }
+
     function fetchOffers(page = 1, pushState = false) {
         const form = document.querySelector('form');
         const queryString = serializeForm(form);
@@ -114,6 +128,12 @@
             .then(response => response.text())
             .then(html => {
                 document.querySelector('.elements').innerHTML = html;
+                const isFollowInput = document.getElementById('is-follow-status');
+                if (isFollowInput) {
+                    const isFollow = isFollowInput.value === '1';
+                    const followButton = document.getElementById('follow-button');
+                    followButton.textContent = isFollow ? 'Unfollow' : 'Follow';
+                }
                 attachPaginationListeners();
             })
             .catch(console.error);
@@ -148,7 +168,7 @@
         categorySelect.innerHTML = '<option value="">Select Category</option>';
 
         if (carTypeId) {
-            fetch(`<?= BASE_URL ?>/offer/getCategoriesByCarType/${carTypeId}`)
+            fetch(`<?= BASE_URL ?>/offerDetails/getCategoriesByCarType/${carTypeId}`)
                 .then(response => response.json())
                 .then(categories => {
                     categories.forEach(category => {
@@ -204,6 +224,39 @@
     });
 
     attachPaginationListeners();
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentYear = new Date().getFullYear();
+        const startYear = 1980;
+        const carModelFrom = document.getElementById('model_from');
+        const carModelTo = document.getElementById('model_to');
+
+        function populateYearOptions(selectElement) {
+            for (let year = startYear; year <= currentYear; year++) {
+                let option = document.createElement('option');
+                option.value = year;
+                option.text = year;
+                selectElement.appendChild(option);
+            }
+        }
+
+        populateYearOptions(carModelFrom);
+        populateYearOptions(carModelTo);
+
+        carModelFrom.addEventListener('change', validateYearSelection);
+        carModelTo.addEventListener('change', validateYearSelection);
+
+        function validateYearSelection() {
+            const fromYear = parseInt(carModelFrom.value);
+            const toYear = parseInt(carModelTo.value);
+
+            if (fromYear > toYear) {
+                alert("لا يمكن أن يكون النموذج 'من' أكبر من النموذج 'إلى'");
+                carModelTo.value = '';
+            }
+        }
+    });
 </script>
 
 

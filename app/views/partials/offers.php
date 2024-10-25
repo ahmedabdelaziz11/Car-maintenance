@@ -17,4 +17,6 @@
         </div>
     </div>
 <?php endforeach; ?>
+<input type="hidden" id="is-follow-status" value="<?= $is_follow ? '1' : '0' ?>">
+
 <?php require_once(VIEW . 'pagination-links.php'); ?>

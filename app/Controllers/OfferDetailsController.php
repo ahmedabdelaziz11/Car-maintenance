@@ -3,6 +3,7 @@
 namespace MVC\controllers;
 
 use MVC\core\controller;
+use MVC\models\category;
 use MVC\models\notification;
 use MVC\models\offer;
 
@@ -22,6 +23,14 @@ class OfferDetailsController extends controller{
             'offerOwner' => $offer['user_id'],
         ]);
     } 
+
+    public function getCategoriesByCarType($carTypeId)
+    {
+        $categoryModel = new category();
+        $categories = $categoryModel->categoryByCarTypeId($carTypeId);
+
+        echo json_encode($categories);
+    }
 }
 
 

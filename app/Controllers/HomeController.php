@@ -29,27 +29,43 @@ class HomeController extends controller{
         $model_to    = $_GET['model_to'] ?? null;
         $page        = $_GET['page'] ?? 1;
     
-        if (isset($_GET['action']) && $_GET['action'] === 'follow') {
+        if (isset($_GET['action']) && in_array($_GET['action'], ['follow', 'unfollow'])) {
             if (session::Get('user') && $service_id && $category_id) {
-                if (!$followModel->followExist($service_id, $category_id, session::Get('user')['id'])) {
-                    $followModel->create([
-                        'user_id' => session::Get('user')['id'],
-                        'service_id' => $service_id,
-                        'category_id' => $category_id,
-                    ]);
-                    echo json_encode(['success' => true]);
-                    return;
+                $user_id = session::Get('user')['id'];
+                
+                if ($_GET['action'] === 'follow') {
+                    if (!$followModel->followExist($service_id, $category_id, $user_id)) {
+                        $followModel->create([
+                            'user_id' => $user_id,
+                            'service_id' => $service_id,
+                            'category_id' => $category_id,
+                        ]);
+                        echo json_encode(['success' => true, 'message' => 'You are now following this service.']);
+                        return;
+                    }
+                } elseif ($_GET['action'] === 'unfollow') {
+                    $row = $followModel->followExist($service_id, $category_id, $user_id);
+                    if ($row) {
+                        $followModel->deleteRow($row['id']);
+                        echo json_encode(['success' => true, 'message' => 'You have unfollowed this service.']);
+                        return;
+                    }
                 }
             }
-            echo json_encode(['success' => false]);
+            echo json_encode(['success' => false, 'message' => 'Action failed.']);
             return;
         }
+        
+        // Determine follow state
+        $is_follow = session::Get('user') ? $followModel->followExist($service_id, $category_id, session::Get('user')['id']) : 0;
     
+        // Fetch offers and handle AJAX response if needed
         $offersData = $offerModel->getAllWithPaginated($service_id, $car_type_id, $category_id, $model_from, $model_to, $page);
     
         if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
             echo $this->view('partials/offers', [
                 'offers' => $offersData['offers'],
+                'is_follow' => $is_follow,
                 'page' => $page,
                 'hasNextPage' => $offersData['hasNextPage'],
                 'totalPages' => $offersData['totalPages']
@@ -58,6 +74,7 @@ class HomeController extends controller{
         } else {
             $this->view('index', [
                 'offers' => $offersData['offers'],
+                'is_follow' => $is_follow,
                 'services' => $services,
                 'carTypes' => $carTypes,
                 'page' => $page,
@@ -65,5 +82,5 @@ class HomeController extends controller{
                 'totalPages' => $offersData['totalPages']
             ]);
         }
-    }    
+    }     
 }

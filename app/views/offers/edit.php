@@ -120,7 +120,7 @@
 
         if (carTypeId) {
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', '<?= BASE_URL ?>/offer/getCategoriesByCarType/' + carTypeId, true);
+            xhr.open('GET', '<?= BASE_URL ?>/offerDetails/getCategoriesByCarType/' + carTypeId, true);
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     var categories = JSON.parse(xhr.responseText);

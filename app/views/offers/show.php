@@ -4,13 +4,16 @@ use MVC\core\session;
 
 ob_start(); ?>
 
-<div class="container mt-5">
+<div class="container mt-5"> 
     <div class="row">
         <!-- Offer Image -->
         <div class="col-md-6">
             <img src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="Offer Image" class="img-fluid rounded">
             <div class="mt-4">
-                <button class="btn btn-warning" data-toggle="modal" data-target="#reportOfferModal">Report Offer</button>
+                <?php if (session::Get('user')): ?>
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#reportOfferModal">Report Offer</button>
+                <?php endif; ?>
+
                 <a href="<?= BASE_URL . '/chat/index/'.$offer['user_id'] ?>" class="btn btn-secondary">Send a Message to the Offer Owner</a>
                 <br>
 
@@ -90,24 +93,31 @@ ob_start(); ?>
                         <p><strong><?= $comment['user_name'] ?>:</strong></p>
                         <p><?= $comment['comment'] ?></p>
                         <p><small><?= date('F d, Y h:i A', strtotime($comment['date'])) ?></small></p>
-                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="<?= $comment['id'] ?>">Report Comment</a>
+                        <?php if (session::Get('user')): ?>
+                            <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="<?= $comment['id'] ?>">Report Comment</a>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p>No comments yet. Be the first to comment!</p>
+            <div class="comments-list">
+                <p id="default-comment">No comments yet. Be the first to comment!</p>
+            </div>
         <?php endif; ?>
 
         <!-- Add Comment Form -->
-        <div class="add-comment mt-4">
-            <form id="comment-form" method="POST">
-                <div class="form-group">
-                    <label for="comment">Comment</label>
-                    <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit Comment</button>
-            </form>
-        </div>
+        <?php if (session::Get('user')): ?>
+            <div class="add-comment mt-4">
+                <form id="comment-form" method="POST">
+                    <div class="form-group">
+                        <label for="comment">Comment</label>
+                        <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Comment</button>
+                </form>
+            </div>
+        <?php endif; ?>
+
     </div>
 </div>
 <!-- Report Offer Modal -->
@@ -217,6 +227,10 @@ ob_start(); ?>
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                const defaultComment = document.getElementById("default-comment");
+                if (defaultComment) {
+                    defaultComment.remove();
+                }
                 const commentList = document.querySelector('.comments-list');
                 const newComment = `
                     <div class="comment mb-4">

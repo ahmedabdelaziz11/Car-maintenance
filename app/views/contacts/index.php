@@ -16,6 +16,7 @@
     <thead>
         <tr style="background-color: #f4f4f4; border-bottom: 2px solid #ddd;">
             <th style="padding: 10px; text-align: left;">User ID</th>
+            <th style="padding: 10px; text-align: left;">User Name</th>
             <th style="padding: 10px; text-align: left;">Contact Type</th>
             <th style="padding: 10px; text-align: left;">Message</th>
             <th style="padding: 10px; text-align: left;">Unread Messages</th>
@@ -28,6 +29,7 @@
             <?php foreach ($conversations as $conversation): ?>
                 <tr style="border-bottom: 1px solid #ddd;">
                     <td style="padding: 10px;"><?= htmlspecialchars($conversation['user_id']) ?></td>
+                    <td style="padding: 10px;"><?= htmlspecialchars($conversation['user_name']) ?></td>
                     <td style="padding: 10px;"><?= htmlspecialchars($conversation['contact_type']) ?></td>
                     <td style="padding: 10px;"><?= htmlspecialchars($conversation['message']) ?></td>
                     <td style="padding: 10px; color: <?= $conversation['unread_count'] > 0 ? 'red' : 'green' ?>;">

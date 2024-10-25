@@ -47,6 +47,7 @@ class offer extends model{
         ->join('countries', 'offers.country_id = countries.id');
         
         $userId = session::Get('user')['id'] ?? 0;
+
         $this->leftJoin('favorites', 'offers.id = favorites.offer_id AND favorites.user_id = '.$userId);
         
         if ($service_id) {
@@ -59,10 +60,10 @@ class offer extends model{
             $this->where('offers.category_id', '=', $category_id);
         }
         if ($model_from) {
-            $this->where('offers.car_model_from', '>=', $model_from);
+            $this->where('offers.car_model_from', '<=', $model_from);
         }
         if ($model_to) {
-            $this->where('offers.car_model_to', '<=', $model_to);
+            $this->where('offers.car_model_to', '>=', $model_to);
         }
         
         $this->where('is_active', '=', 1);

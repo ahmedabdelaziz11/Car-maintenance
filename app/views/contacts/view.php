@@ -4,6 +4,9 @@
 <h2 style="font-size: 18px; color: #555; margin-bottom: 20px;">
     <?= htmlspecialchars($contact['contact_type']) ?> - <?= htmlspecialchars($contact['message']) ?>
 </h2>
+<h2 style="font-size: 18px; color: #555; margin-bottom: 20px;">
+    User Name - <?= htmlspecialchars($contact['user_name']) ?>
+</h2>
 
 <div class="messages" style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; background-color: #fafafa; border-radius: 5px;">
     <?php if (empty($messages)): ?>

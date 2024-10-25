@@ -209,14 +209,6 @@ class OfferController extends controller{
         ]);
     }
 
-    public function getCategoriesByCarType($carTypeId)
-    {
-        $categoryModel = new category();
-        $categories = $categoryModel->categoryByCarTypeId($carTypeId);
-
-        echo json_encode($categories);
-    }
-
     public function getCitiesByCountry($countryId)
     {
         $cityModel = new city();
