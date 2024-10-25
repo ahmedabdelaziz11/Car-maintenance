@@ -28,7 +28,7 @@ class offer extends model{
         return $this->select()->where('user_id', '=', $userId)->all();
     }
 
-    public function getAllWithPaginated($service_id = null, $car_type_id = null, $category_id = null, $model_from = null, $model_to = null, $page = 1, $limit = 3)
+    public function getAllWithPaginated($service_id = null, $car_type_id = null, $category_id = null, $model_from = null, $country_id =null , $page = 1, $limit = 3)
     {
         $offset = ($page - 1) * $limit;
         $this->select([
@@ -53,6 +53,9 @@ class offer extends model{
         if ($service_id) {
             $this->where('offers.service_id', '=', $service_id);
         }
+        if ($country_id) {
+            $this->where('offers.country_id', '=', $country_id);
+        }
         if ($car_type_id) {
             $this->where('offers.car_type_id', '=', $car_type_id);
         }
@@ -60,10 +63,8 @@ class offer extends model{
             $this->where('offers.category_id', '=', $category_id);
         }
         if ($model_from) {
-            $this->where('offers.car_model_from', '<=', $model_from);
-        }
-        if ($model_to) {
-            $this->where('offers.car_model_to', '>=', $model_to);
+            $this->where('offers.car_model_from', '<=', $model_from)
+                    ->where('offers.car_model_to', '>=', $model_from);
         }
         
         $this->where('is_active', '=', 1);

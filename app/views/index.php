@@ -32,6 +32,16 @@
         </div>
 
         <div class="col-md-3">
+            <label for="country_id">Country</label>
+            <select class="form-control" id="country_id" name="country_id">
+                <option value="">select Country</option>
+                <?php foreach ($countries as $country): ?>
+                    <option value="<?= $country['id'] ?>"><?= $country['name'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="col-md-3">
             <label for="model_from">Model From</label>
             <select id="model_from" name="model_from" class="form-control">
                 <option value="" disabled selected>اختر سنة البداية</option>
@@ -39,21 +49,13 @@
             </select>
         </div>
 
-        <div class="col-md-3">
-            <label for="model_to">Model To</label>
-            <select id="model_to" name="model_to" class="form-control">
-                <option value="" disabled selected>اختر سنة النهاية</option>
-
-            </select>
-        </div>
-
         <div class="form-group col-md-3 mt-4">
             <button type="submit" name="action" value="search" class="btn btn-primary">Search</button>
             <?php if (isset($_SESSION['user'])): ?>
-                <?php if (isset($is_follow)): ?>
-                    <button type="button" id="follow-button" class="btn btn-secondary">Un Follow</button>
+                <?php if (isset($is_follow) && $is_follow): ?>
+                    <button type="button" id="follow-button" class="btn btn-secondary" style="background-color: green; color: white; border-color: green;">Unfollow</button>
                 <?php else : ?>
-                    <button type="button" id="follow-button" class="btn btn-secondary">Follow</button>
+                    <button type="button" id="follow-button" class="btn btn-secondary" style="background-color: gray; color: white; border-color: gray;">Follow</button>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
@@ -87,6 +89,8 @@
 <script>
     const followButton = document.getElementById('follow-button');
     if (followButton) {
+        setButtonColor(followButton.textContent.trim());
+
         followButton.addEventListener('click', function () {
             const form = document.getElementById('search-form');
             const queryString = serializeForm(form);
@@ -102,8 +106,9 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    followButton.textContent = action === 'follow' ? 'Unfollow' : 'Follow';
-                    alert(data.message);
+                    const newText = action === 'follow' ? 'Unfollow' : 'Follow';
+                    followButton.textContent = newText;
+                    setButtonColor(newText);
                 } else {
                     alert('Failed to update follow status.');
                 }
@@ -113,6 +118,18 @@
                 alert('An error occurred. Please try again.');
             });
         });
+    }
+
+    function setButtonColor(actionText) {
+        if (actionText === 'Unfollow') {
+            followButton.style.backgroundColor = 'green';
+            followButton.style.color = 'white';
+            followButton.style.borderColor = 'green';
+        } else {
+            followButton.style.backgroundColor = 'gray';
+            followButton.style.color = 'white';
+            followButton.style.borderColor = 'gray';
+        }
     }
 
     function fetchOffers(page = 1, pushState = false) {
@@ -230,7 +247,6 @@
         const currentYear = new Date().getFullYear();
         const startYear = 1980;
         const carModelFrom = document.getElementById('model_from');
-        const carModelTo = document.getElementById('model_to');
 
         function populateYearOptions(selectElement) {
             for (let year = startYear; year <= currentYear; year++) {
@@ -240,22 +256,7 @@
                 selectElement.appendChild(option);
             }
         }
-
         populateYearOptions(carModelFrom);
-        populateYearOptions(carModelTo);
-
-        carModelFrom.addEventListener('change', validateYearSelection);
-        carModelTo.addEventListener('change', validateYearSelection);
-
-        function validateYearSelection() {
-            const fromYear = parseInt(carModelFrom.value);
-            const toYear = parseInt(carModelTo.value);
-
-            if (fromYear > toYear) {
-                alert("لا يمكن أن يكون النموذج 'من' أكبر من النموذج 'إلى'");
-                carModelTo.value = '';
-            }
-        }
     });
 </script>
 

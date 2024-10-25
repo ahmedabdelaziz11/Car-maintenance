@@ -6,6 +6,7 @@ namespace MVC\controllers;
 use MVC\core\controller;
 use MVC\core\session;
 use MVC\models\carType;
+use MVC\models\country;
 use MVC\models\follow;
 use MVC\models\offer;
 use MVC\models\service;
@@ -18,15 +19,17 @@ class HomeController extends controller{
         $serviceModel = new service();
         $carTypeModel = new carType();
         $followModel = new follow();
+        $countryModel = new country();
         
         $services = $serviceModel->getAll();
         $carTypes = $carTypeModel->getAll();
+        $countries = $countryModel->getAll();
         
         $service_id  = $_GET['service_id'] ?? null;
         $car_type_id = $_GET['car_type_id'] ?? null;
         $category_id = $_GET['category_id'] ?? null;
         $model_from  = $_GET['model_from'] ?? null;
-        $model_to    = $_GET['model_to'] ?? null;
+        $country_id  = $_GET['country_id'] ?? null;
         $page        = $_GET['page'] ?? 1;
     
         if (isset($_GET['action']) && in_array($_GET['action'], ['follow', 'unfollow'])) {
@@ -56,11 +59,9 @@ class HomeController extends controller{
             return;
         }
         
-        // Determine follow state
         $is_follow = session::Get('user') ? $followModel->followExist($service_id, $category_id, session::Get('user')['id']) : 0;
     
-        // Fetch offers and handle AJAX response if needed
-        $offersData = $offerModel->getAllWithPaginated($service_id, $car_type_id, $category_id, $model_from, $model_to, $page);
+        $offersData = $offerModel->getAllWithPaginated($service_id, $car_type_id, $category_id, $model_from,$country_id, $page);
     
         if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
             echo $this->view('partials/offers', [
@@ -75,8 +76,9 @@ class HomeController extends controller{
             $this->view('index', [
                 'offers' => $offersData['offers'],
                 'is_follow' => $is_follow,
-                'services' => $services,
-                'carTypes' => $carTypes,
+                'services'  => $services,
+                'carTypes'  => $carTypes,
+                'countries' => $countries,
                 'page' => $page,
                 'hasNextPage' => $offersData['hasNextPage'],
                 'totalPages' => $offersData['totalPages']

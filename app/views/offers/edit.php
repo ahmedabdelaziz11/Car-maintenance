@@ -160,6 +160,7 @@
             xhr.send();
         }
     });
+    
     document.addEventListener('DOMContentLoaded', function () {
         const currentYear = new Date().getFullYear();
         const startYear = 1980;
@@ -171,8 +172,16 @@
         const selectedFromYear = '<?= $offer['car_model_from'] ?>';
         const selectedToYear = '<?= $offer['car_model_to'] ?>';
 
-        function populateYearOptions(selectElement, selectedYear) {
-            for (let year = startYear; year <= currentYear; year++) {
+        populateYearOptions(carModelFrom, startYear, currentYear, selectedFromYear);
+
+        populateYearOptions(carModelTo, parseInt(selectedFromYear) + 1, currentYear, selectedToYear);
+
+        carModelFrom.addEventListener('change', handleFromYearChange);
+        carModelTo.addEventListener('change', validateYearSelection);
+
+        function populateYearOptions(selectElement, start, end, selectedYear = null) {
+            selectElement.innerHTML = '<option value="" disabled>اختر سنة</option>'; // Clear options
+            for (let year = start; year <= end; year++) {
                 let option = document.createElement('option');
                 option.value = year;
                 option.text = year;
@@ -185,8 +194,13 @@
             }
         }
 
-        populateYearOptions(carModelFrom, selectedFromYear);
-        populateYearOptions(carModelTo, selectedToYear);
+        function handleFromYearChange() {
+            const fromYear = parseInt(carModelFrom.value);
+            if (!isNaN(fromYear)) {
+                populateYearOptions(carModelTo, fromYear + 1, currentYear); // Update 'To' dropdown
+                validateYearSelection();
+            }
+        }
 
         function validateYearSelection() {
             const fromYear = parseInt(carModelFrom.value);
@@ -198,11 +212,9 @@
                 yearError.style.display = 'none';
             }
         }
-
-        carModelFrom.addEventListener('change', validateYearSelection);
-        carModelTo.addEventListener('change', validateYearSelection);
     });
 </script>
+
 
 <?php 
 $content = ob_get_clean(); 

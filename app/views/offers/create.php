@@ -148,8 +148,14 @@
         const carModelFrom = document.getElementById('car_model_from');
         const carModelTo = document.getElementById('car_model_to');
 
-        function populateYearOptions(selectElement) {
-            for (let year = startYear; year <= currentYear; year++) {
+        populateYearOptions(carModelFrom, startYear, currentYear);
+
+        carModelFrom.addEventListener('change', handleFromYearChange);
+        carModelTo.addEventListener('change', validateYearSelection);
+
+        function populateYearOptions(selectElement, start, end) {
+            selectElement.innerHTML = '<option value="" disabled selected>اختر سنة</option>';
+            for (let year = start; year <= end; year++) {
                 let option = document.createElement('option');
                 option.value = year;
                 option.text = year;
@@ -157,11 +163,12 @@
             }
         }
 
-        populateYearOptions(carModelFrom);
-        populateYearOptions(carModelTo);
-
-        carModelFrom.addEventListener('change', validateYearSelection);
-        carModelTo.addEventListener('change', validateYearSelection);
+        function handleFromYearChange() {
+            const fromYear = parseInt(carModelFrom.value);
+            if (!isNaN(fromYear)) {
+                populateYearOptions(carModelTo, fromYear + 1, currentYear); // Populate 'To' dropdown with years after selected 'From' year
+            }
+        }
 
         function validateYearSelection() {
             const fromYear = parseInt(carModelFrom.value);
@@ -169,7 +176,7 @@
 
             if (fromYear > toYear) {
                 alert("لا يمكن أن يكون النموذج 'من' أكبر من النموذج 'إلى'");
-                carModelFrom.value = '';
+                carModelTo.value = '';
             }
         }
     });
