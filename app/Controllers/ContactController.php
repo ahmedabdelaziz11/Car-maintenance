@@ -57,12 +57,23 @@ class ContactController extends controller {
             $data = [
                 'user_id'      => session::Get('user')['id'],
                 'contact_type' => $_POST['contact_type'],
-                'message'      => $_POST['message'],
+                'message'      => $_POST['title'],
+                'status'       => 0,
                 'created_at'   => date('Y-m-d H:i:s'),
             ];
 
             $contact = new contact();
             $contactId = $contact->createContact($data);
+
+            $data = [
+                'contact_id' => $contactId,
+                'sender' => session::Get('user')['role'] == 1 ? 'admin' : 'user',
+                'message' => $_POST['message'],
+                'created_at'   => date('Y-m-d H:i:s'),
+            ];
+
+            $message = new message();
+            $message->addMessage($data);
             
             header('Location: ' . BASE_URL . '/contact/show/' . $contactId);
             exit;
