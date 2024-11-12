@@ -28,6 +28,23 @@
         <option value="Inquiry">Inquiry</option>
     </select>
 
+    <label for="title" style="
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+        font-weight: bold;
+    ">Title</label>
+    <input id="title" name="title" style="
+        width: 100%;
+        height: 120px;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        resize: vertical;
+        margin-bottom: 15px;
+    " placeholder="Type your title here..." required>
+
     <label for="message" style="
         display: block;
         margin-bottom: 5px;
@@ -44,6 +61,8 @@
         resize: vertical;
         margin-bottom: 15px;
     " placeholder="Type your message here..." required></textarea>
+
+
 
     <button type="submit" class="btn btn-primary" style="
         background-color: #007bff;
