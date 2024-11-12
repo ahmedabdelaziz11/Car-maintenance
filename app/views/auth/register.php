@@ -1,24 +1,44 @@
 <?php ob_start(); ?>
+    <main class="main-wrapper">
+        <div class="login-section mt-115">
+            <div class="container">
+                <!-- Start User Event Area -->
+                <div class="login-wrapper">
+                    <div class="section-content">
+                        <h1 class="title">Sign Up</h1>
+                        <p>Signup is simply dummy text of the printing and typesetting industry.</p>
+                    </div>
+                    <form action="<?= BASE_URL . '/user/register'; ?>" method="POST" class="default-form-wrapper">
+                        <ul class="default-form-list">
+                            <li class="single-form-item">
+                                <label for="name" class="visually-hidden">Name</label>
+                                <input type="text" name="name" required>
+                                <span class="icon"><i class="icon icon-carce-user"></i></span>
+                            </li>
+                            <li class="single-form-item">
+                                <label for="email" class="visually-hidden">Email</label>
+                                <input type="email" name="email" required>
+                                <span class="icon"><i class="icon icon-carce-mail"></i></span>
+                            </li>
+                            <li class="single-form-item">
+                                <label for="password" class="visually-hidden">Password</label>
+                                <input type="password" name="password" required>
+                                <span class="icon"><i class="icon icon-carce-eye"></i></span>
+                            </li>
+                        </ul>
+                        <button type="submit" style="width: 100%;margin-top: 5px;" class="btn btn--block btn--radius btn--size-xlarge btn--color-white btn--bg-maya-blue text-center register-space-top">Sign Up</button>
+                    </form>
+                </div>
 
-<form action="<?= BASE_URL . '/user/register'; ?>" method="POST" class="mt-4">
-    <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" class="form-control" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-</form>
-
-<p class="mt-3">Already have an account? <a href="<?= BASE_URL . '/user/login'; ?>">Login here</a>.</p>
-
+                <div class="sign-account-text text-center">Already have an account? <a href="<?= BASE_URL . '/user/login'; ?>" class="btn--color-radical-red">Sign Up</a></div>
+                <div class="page-progress-wrapper">
+                    <a href="<?= BASE_URL . '/user/login'; ?>" class="btn--center btn--round btn--size-58-58 btn--color-white btn--radical-red progress-btn progress-btn--100"><i
+                            class="icon icon-carce-ios-arrow-forward"></i></a>
+                </div>
+            </div>
+        </div>
+    </main>
 <?php 
 $content = ob_get_clean();
-require_once(VIEW . 'layout/master.php');
+require_once(VIEW . 'auth/auth-layout.php');
 ?>

@@ -1,90 +1,85 @@
 <?php ob_start(); ?>
+<div class="offcanvas-overlay"></div>
 
-<form method="GET" id="search-form" action="<?= BASE_URL . '/home/index' ?>">
-    <div class="form-row row">
-        <div class="col-md-3">
-            <label for="service_id">Service</label>
-            <select class="form-control" id="service_id" name="service_id">
-                <option value="">Select Service</option>
-                <?php foreach ($services as $service): ?>
-                    <option value="<?= $service['id']; ?>" <?= isset($_GET['service_id']) && $_GET['service_id'] == $service['id'] ? 'selected' : '' ?>>
-                        <?= $service['name']; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+<!-- ...:::Start Search & Filter Section:::... -->
+<div class="search-n-filter-section section-gap-top-25">
+    <div class="container">
+        <!-- Start Search & Filter Area -->
+        <div class="search-n-filter-area">
+            <div class="search-box">
+                <div class="search-n-filter-section section-gap-top-25">
+                    <div class="container">
+                        <div class="search-n-filter-area">
+                            <form method="GET" id="search-form" action="<?= BASE_URL . '/home/index' ?>" class="custom-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="service_id">Service</label>
+                                        <select id="service_id" name="service_id" class="custom-select">
+                                            <option value="">Select Service</option>
+                                            <?php foreach ($services as $service): ?>
+                                                <option value="<?= $service['id']; ?>" <?= isset($_GET['service_id']) && $_GET['service_id'] == $service['id'] ? 'selected' : '' ?>>
+                                                    <?= $service['name']; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
 
-        <div class="col-md-3">
-            <label for="category_id">car type</label>
-            <select name="car_type_id" id="car_type_id" class="form-control">
-                <option value="">select car type</option>
-                <?php foreach ($carTypes as $carType): ?>
-                    <option value="<?= $carType['id'] ?>"><?= $carType['name'] ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+                                    <div class="form-group">
+                                        <label for="car_type_id">Car Type</label>
+                                        <select name="car_type_id" id="car_type_id" class="custom-select">
+                                            <option value="">Select Car Type</option>
+                                            <?php foreach ($carTypes as $carType): ?>
+                                                <option value="<?= $carType['id'] ?>"><?= $carType['name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
 
-        <div class="col-md-3">
-            <label for="category_id">Category</label>
-            <select class="form-control" id="category_id" name="category_id">
-                <option value="">Select Category</option>
-            </select>
-        </div>
+                                    <div class="form-group">
+                                        <label for="category_id">Category</label>
+                                        <select id="category_id" name="category_id" class="custom-select">
+                                            <option value="">Select Category</option>
+                                        </select>
+                                    </div>
 
-        <div class="col-md-3">
-            <label for="country_id">Country</label>
-            <select class="form-control" id="country_id" name="country_id">
-                <option value="">select Country</option>
-                <?php foreach ($countries as $country): ?>
-                    <option value="<?= $country['id'] ?>"><?= $country['name'] ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+                                    <div class="form-group">
+                                        <label for="country_id">Country</label>
+                                        <select id="country_id" name="country_id" class="custom-select">
+                                            <option value="">Select Country</option>
+                                            <?php foreach ($countries as $country): ?>
+                                                <option value="<?= $country['id'] ?>"><?= $country['name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
 
-        <div class="col-md-3">
-            <label for="model_from">Model From</label>
-            <select id="model_from" name="model_from" class="form-control">
-                <option value="" disabled selected>اختر سنة البداية</option>
+                                    <div class="form-group">
+                                        <label for="model_from">Model From</label>
+                                        <select id="model_from" name="model_from" class="custom-select">
+                                            <option value="" disabled selected>Choose Year</option>
+                                        </select>
+                                    </div>
 
-            </select>
-        </div>
-
-        <div class="form-group col-md-3 mt-4">
-            <button type="submit" name="action" value="search" class="btn btn-primary">Search</button>
-            <?php if (isset($_SESSION['user'])): ?>
-                <?php if (isset($is_follow) && $is_follow): ?>
-                    <button type="button" id="follow-button" class="btn btn-secondary" style="background-color: green; color: white; border-color: green;">Unfollow</button>
-                <?php else : ?>
-                    <button type="button" id="follow-button" class="btn btn-secondary" style="background-color: gray; color: white; border-color: gray;">Follow</button>
-                <?php endif; ?>
-            <?php endif; ?>
-        </div>
-    </div>
-</form>
-
-
-<div class="row elements mt-4">
-    <?php foreach ($offers as $offer): ?>
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>">
-                    <img src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" class="card-img-top" alt="<?= $offer['title'] ?>">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title"><?= $offer['title'] ?></h5>
-                    <p class="card-text"><?= $offer['details'] ?></p>
-                    <p><strong>Service:</strong> <?= $offer['service_name'] ?></p>
-                    <p><strong>car type:</strong> <?= $offer['car_type_name'] ?></p>
-                    <p><strong>Category:</strong> <?= $offer['category_name'] ?></p>
-                    <p><strong>Car Model:</strong> <?= $offer['car_model_from'] ?> - <?= $offer['car_model_to'] ?></p>
-                    <p><strong>Country:</strong> <?= $offer['country_name'] ?></p>
-                    <p><strong>City :</strong> <?= $offer['city_name'] ?></p>
+                                    <div class="form-group form-actions">
+                                        <?php if (isset($_SESSION['user'])): ?>
+                                            <?php if (isset($is_follow) && $is_follow): ?>
+                                                <button type="button" id="follow-button" style="margin-top: 25px;" class="custom-btn success-btn">Unfollow</button>
+                                            <?php else : ?>
+                                                <button type="button" id="follow-button" style="margin-top: 25px;" class="custom-btn secondary-btn">Follow</button>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    <?php endforeach; ?>
-    <?php require_once(VIEW . 'pagination-links.php'); ?>
+    </div>
 </div>
+<div class="catagories-section section-gap-top-50 elements">
+
+</div>
+
 
 <script>
     const followButton = document.getElementById('follow-button');
@@ -259,9 +254,7 @@
         populateYearOptions(carModelFrom);
     });
 </script>
-
-
 <?php
 $content = ob_get_clean();
-require_once(VIEW . 'layout/master.php');
+require_once(VIEW . 'layout/master-2.php');
 ?>

@@ -1,359 +1,196 @@
+<?php ob_start(); ?>
+
+<main class="main-wrapper">
+    <!-- ...:::Start Product Single Section:::... -->
+    <div class="product-single-section section-gap-top-30">
+        <div class="container">
+            <div class="product-gallery">
+                <div class="product-gallery-large">
+                    <!-- Slider main container -->
+                    <div class="swiper">
+                        <!-- Additional required wrapper -->
+                        <div class="swiper-wrapper">
+                            <!-- Slides -->
+                            <div class="swiper-slide">
+                                <div class="product-gallery-single-item">
+                                    <div class="image">
+                                        <img class="img-fluid" width="276" height="172" src="assets/images/product/single/product-gallery-single-2.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="product-gallery-single-item">
+                                    <div class="image">
+                                        <img class="img-fluid" width="276" height="172" src="assets/images/product/single/product-gallery-single-2.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="product-gallery-single-item">
+                                    <div class="image">
+                                        <img class="img-fluid" width="276" height="172" src="assets/images/product/single/product-gallery-single-2.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-nav-btn">
+                        <!-- If we need navigation buttons -->
+                        <div class="text-btn text-button-prev">Prev</div>
+                        <div class="text-btn text-button-next">Next</div>
+                    </div>
+
+                    <div class="product-tag">
+                        <span class="tag-discount">40% OFF</span>
+                        <a href="wishlist.html" aria-label="Wishlist" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow"><i class="icon icon-carce-heart"></i></a>
+                    </div>
+                </div>
+                <div class="product-thumb-image">
+                    <!-- Slider main container -->
+                    <div class="swiper">
+                        <!-- Additional required wrapper -->
+                        <div class="swiper-wrapper">
+                            <!-- Slides -->
+                            <div class="swiper-slide">
+                                <div class="product-thumb-single-item">
+                                    <div class="image">
+                                        <img class="img-fluid" width="45" height="45" src="assets/images/product/single/product-thumb-1.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="product-thumb-single-item">
+                                    <div class="image">
+                                        <img class="img-fluid" width="45" height="45" src="assets/images/product/single/product-thumb-2.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="product-thumb-single-item">
+                                    <div class="image">
+                                        <img class="img-fluid" width="45" height="45" src="assets/images/product/single/product-thumb-1.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="container px-0">
+            <div class="product-gallery-details">
+                <span class="rating">Rating 4.0 of 5</span>
+                <h1 class="title">PUMA Men's Sports FM 007</h1>
+                <p class="text">There are many variations of passages of Lorem. The
+                    Best Shoes in the world. © 2021</p>
+
+                <ul class="product-variable-lists">
+                    <li class="list-item">
+                        <div class="left">Size</div>
+                        <div class="right">
+                            <ul class="size-chart inner-child-item">
+                                <li>
+                                    <label for="samll">
+                                        <input type="radio" name="size" id="samll" checked>
+                                        <span class="size-text">S</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="medium">
+                                        <input type="radio" name="size" id="medium">
+                                        <span class="size-text">M</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="large">
+                                        <input type="radio" name="size" id="large">
+                                        <span class="size-text">L</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="xlarge">
+                                        <input type="radio" name="size" id="xlarge">
+                                        <span class="size-text">XL</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="xxlarge">
+                                        <input type="radio" name="size" id="xxlarge">
+                                        <span class="size-text">XXL</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="list-item">
+                        <div class="left">Color</div>
+                        <div class="right">
+                            <ul class="color-chart inner-child-item">
+                                <li>
+                                    <label for="blue">
+                                        <input type="radio" name="color" id="blue">
+                                        <span class="color-box color-box--blue"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="orange">
+                                        <input type="radio" name="color" id="orange" checked>
+                                        <span class="color-box color-box--orange"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="violet">
+                                        <input type="radio" name="color" id="violet">
+                                        <span class="color-box color-box--violet"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="pink">
+                                        <input type="radio" name="color" id="pink">
+                                        <span class="color-box color-box--pink"></span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="list-item">
+                        <div class="left">QTY</div>
+                        <div class="right">
+                            <div class="product-quantity">
+                                <div class="num-block skin-2">
+                                    <div class="num-in">
+                                        <span class="minus dis"></span>
+                                        <label for="quan-1" class="visually-hidden"></label>
+                                        <input id="quan-1" type="text" class="in-num" value="1" readonly="">
+                                        <span class="plus"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <p class="text">
+                    Ipsum available, but the majority have suffered alteration in
+                    some form, by injected humour, randomised words which.
+                    don't look even slightly believable. If you are going to use a
+                    passage of Lorem Ipsum, you need
+                </p>
+
+                <div class="price-n-cart">
+                    <span class="price">$950.00</span>
+                    <a href="cart.html" class="btn cart"><span class="icon"><i class="icon icon-carce-cart"></i></span>Add to Cart</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- ...:::End Product Single Section:::... -->
+</main>
+
 <?php
-
-use MVC\core\session;
-
-ob_start(); ?>
-
-<div class="container mt-5"> 
-    <div class="row">
-        <!-- Offer Image -->
-        <div class="col-md-6">
-            <img src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="Offer Image" class="img-fluid rounded">
-            <div class="mt-4">
-                <?php if (session::Get('user')): ?>
-                    <button class="btn btn-warning" data-toggle="modal" data-target="#reportOfferModal">Report Offer</button>
-                <?php endif; ?>
-
-                <a href="<?= BASE_URL . '/chat/index/'.$offer['user_id'] ?>" class="btn btn-secondary">Send a Message to the Offer Owner</a>
-                <br>
-
-                <?php if (session::Get('user') && session::Get('user')['id'] !== $offer['user_id']): ?>
-                    <form id="followForm" action="<?= BASE_URL ?>/user/follow" method="POST">
-                        <input type="hidden" name="follower_id" value="<?= session::Get('user')['id'] ?>">
-                        <input type="hidden" name="following_id" value="<?= $offer['user_id'] ?>">
-                        <?php if (!$offer['is_follow_owner']): ?>
-                            <button class="btn btn-primary" id="followBtn" type="button">Follow</button>
-                        <?php else: ?>
-                            <button class="btn btn-primary" id="followBtn" type="button">Unfollow</button>
-                        <?php endif; ?>
-                    </form>
-                <?php endif; ?>
-
-            </div>
-
-
-            <a href="<?= BASE_URL ?>/user/profile/<?= $offer['user_id'] ?>">View Owner Profile</a>
-            <?php if (isset($_SESSION['user'])): ?>
-                <button class="btn bg-primary favorite-btn" data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" data-offer-id="<?= $offer['id'] ?>">
-                    <?php if ($offer['is_favorite']): ?> 
-                        ازالة من المفضة
-                    <?php else: ?>
-                        اضافة الى المفضلة
-                    <?php endif; ?>
-                </button>
-            <?php endif; ?>
-        </div>
-
-        <!-- Offer Details -->
-        <div class="col-md-6">
-            <h1 class="mb-4"><?= $offer['title'] ?></h1>
-
-            <!-- Description -->
-            <p class="lead"><strong>Details:</strong></p>
-            <p><?= $offer['details'] ?></p>
-
-            <!-- Service and Category -->
-            <p><strong>Service:</strong> <?= $offer['service_name'] ?></p>
-            <p><strong>Car Type:</strong> <?= $offer['car_type_name'] ?></p>
-            <p><strong>Category:</strong> <?= $offer['category_name'] ?></p>
-
-            <!-- Car Model Information -->
-            <p><strong>Car Model From:</strong> <?= $offer['car_model_from'] ?></p>
-            <p><strong>Car Model To:</strong> <?= $offer['car_model_to'] ?></p>
-
-            <!-- Contact Information -->
-            <p><strong>Contact:</strong> <?= $offer['contact'] ?></p>
-
-            <!-- Date -->
-            <p><strong>Date:</strong> <?= date('F d, Y', strtotime($offer['date'])) ?></p>
-        </div>
-
-    </div>
-
-    <?php if (!empty($offer['other_images'])): ?>
-        <div class="mt-5">
-            <h3>Additional Images</h3>
-            <div class="row">
-                <?php foreach ($offer['other_images'] as $other_image): ?>
-                    <div class="col-md-3 mb-4">
-                        <img src="<?= BASE_URL . '/uploads/offers/' . $other_image['image'] ?>" alt="Additional Image" class="img-fluid rounded">
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    <?php endif; ?>
-
-    <div class="mt-5">
-        <h3>Comments</h3>
-        
-        <?php if (!empty($offer['comments'])): ?>
-            <div class="comments-list">
-                <?php foreach ($offer['comments'] as $comment): ?>
-                    <div class="comment mb-4">
-                        <p><strong><?= $comment['user_name'] ?>:</strong></p>
-                        <p><?= $comment['comment'] ?></p>
-                        <p><small><?= date('F d, Y h:i A', strtotime($comment['date'])) ?></small></p>
-                        <?php if (session::Get('user')): ?>
-                            <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="<?= $comment['id'] ?>">Report Comment</a>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php else: ?>
-            <div class="comments-list">
-                <p id="default-comment">No comments yet. Be the first to comment!</p>
-            </div>
-        <?php endif; ?>
-
-        <!-- Add Comment Form -->
-        <?php if (session::Get('user')): ?>
-            <div class="add-comment mt-4">
-                <form id="comment-form" method="POST">
-                    <div class="form-group">
-                        <label for="comment">Comment</label>
-                        <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Comment</button>
-                </form>
-            </div>
-        <?php endif; ?>
-
-    </div>
-</div>
-<!-- Report Offer Modal -->
-<div class="modal fade" id="reportOfferModal" tabindex="-1" role="dialog" aria-labelledby="reportOfferModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form id="report-offer-form">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reportOfferModalLabel">Report Offer</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="reportDescriptionOffer">Details</label>
-                        <textarea class="form-control" id="reportDescriptionOffer" name="description" rows="3"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit Report</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Report Comment Modal -->
-<div class="modal fade" id="reportCommentModal" tabindex="-1" role="dialog" aria-labelledby="reportCommentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form id="report-comment-form">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reportCommentModalLabel">Report Comment</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="reportDescriptionComment">Details</label>
-                        <textarea class="form-control" id="reportDescriptionComment" name="description" rows="3"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit Report</button>
-                </div>
-                <input type="hidden" id="comment_id" name="comment_id">
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    document.querySelectorAll('.favorite-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            const offerId = this.getAttribute('data-offer-id');
-            const isFavorite = this.getAttribute('data-favorite') === 'true';
-
-            fetch('<?= BASE_URL . "/offer/favorite/" ?>' + offerId, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify({
-                    favorite: !isFavorite
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    this.setAttribute('data-favorite', !isFavorite);
-
-                    if (!isFavorite) {
-                        this.innerText = 'ازالة من المفضلة'; 
-                    } else {
-                        this.innerText = 'اضافة الى المفضلة';
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
-    });
-
-    document.getElementById('comment-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const comment = document.getElementById('comment').value;
-        const offerId = '<?= $offer['id'] ?>';
-
-        fetch('<?= BASE_URL ?>/comment/store', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                offer_id: offerId,
-                comment: comment
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const defaultComment = document.getElementById("default-comment");
-                if (defaultComment) {
-                    defaultComment.remove();
-                }
-                const commentList = document.querySelector('.comments-list');
-                const newComment = `
-                    <div class="comment mb-4">
-                        <p><strong>${data.user_name}:</strong></p>
-                        <p>${data.comment}</p>
-                        <p><small>${data.date}</small></p>
-                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="${data.id}">Report Comment</a>
-
-                    </div>`;
-                commentList.insertAdjacentHTML('beforeend', newComment);
-                document.getElementById('comment').value = '';
-            } else {
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-
-    document.getElementById('report-offer-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const description = document.getElementById('reportDescriptionOffer').value;
-    const offerId = '<?= $offer['id'] ?>';
-
-    fetch('<?= BASE_URL ?>/report/store', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                offer_id: offerId,
-                description: description
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                $('#reportOfferModal').modal('hide');
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        });
-    });
-
-
-    document.getElementById('report-comment-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const description = document.getElementById('reportDescriptionComment').value;
-        const commentId = document.getElementById('comment_id').value;
-
-        fetch('<?= BASE_URL ?>/report/store', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                comment_id: commentId,
-                description: description
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                $('#reportCommentModal').modal('hide');
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        });
-    });
-
-    $('#reportCommentModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget); 
-        var commentId = button.data('comment-id'); 
-        var modal = $(this);
-        modal.find('#comment_id').val(commentId);
-    });
-
-    document.getElementById('followBtn').addEventListener('click', function () {
-        const form = document.getElementById('followForm');
-        const followerId = form.querySelector('input[name="follower_id"]').value;
-        const followingId = form.querySelector('input[name="following_id"]').value;
-        const followBtn = document.getElementById('followBtn');
-
-        fetch(form.action, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                follower_id: followerId,
-                following_id: followingId
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                if (followBtn.innerText === 'Follow') {
-                    followBtn.innerText = 'Unfollow';
-                } else {
-                    followBtn.innerText = 'Follow';
-                }
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    });
-</script>
-
-<?php 
-$content = ob_get_clean(); 
-require_once(VIEW . 'layout/master.php'); 
+$content = ob_get_clean();
+require_once(VIEW . 'layout/master-2.php');
 ?>
