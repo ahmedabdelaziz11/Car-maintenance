@@ -1,25 +1,32 @@
 <?php ob_start(); ?>
 
-
-<!-- Display Offers in Cards -->
-<div class="row mt-4">
-    <?php foreach ($offers as $offer): ?>
-        <div class="col-md-4" id="offer-<?= $offer['id'] ?>">
-            <div class="card mb-4">
-                <img src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" class="card-img-top" alt="<?= $offer['title'] ?>">
-                <div class="card-body">
-                    <h5 class="card-title"><?= $offer['title'] ?></h5>
-                    <p class="card-text"><?= $offer['details'] ?></p>
-                    <p><strong>Service:</strong> <?= $offer['service_name'] ?></p>
-                    <p><strong>car type:</strong> <?= $offer['car_type_name'] ?></p>
-                    <p><strong>Category:</strong> <?= $offer['category_name'] ?></p>
-                    <p><strong>Car Model:</strong> <?= $offer['car_model_from'] ?> - <?= $offer['car_model_to'] ?></p>
-                    <button class="btn btn-danger remove-favorite" data-offer-id="<?= $offer['id'] ?>">إزالة من المفضلة</button>
-                    <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>" class="btn btn-primary">View Details</a>
-                </div>
-            </div>
+<div class="cart-section section-gap-top-30">
+    <div class="container">
+        <div class="cart-items-wrapper">
+            <ul class="cart-item-list">
+                <?php foreach ($offers as $offer): ?>
+                    <li class="single-cart-item" id="offer-<?= $offer['id'] ?>">
+                        <div class="image">
+                            <img width="90" height="90" src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="<?= $offer['title'] ?>">
+                        </div>
+                        <div class="content">
+                            <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>" class="title"><?= $offer['title'] ?></a>
+                            <div class="details">
+                                <div class="left">
+                                    <span class="brand"><?= $offer['service_name'] ?></span>
+                                    <span class="price"><?= $offer['car_type_name'] ?></span>
+                                    <span class="price"><?= $offer['category_name'] ?></span>
+                                </div>
+                                <div class="right">
+                                    <button data-offer-id="<?= $offer['id'] ?>" class="remove-favorite btn btn--default btn--radius btn--color-white btn--radical-red">Remove From Favorite</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
         </div>
-    <?php endforeach; ?>
+    </div>
 </div>
 
 <script>
@@ -45,11 +52,8 @@
             .catch(console.error);
         });
     });
-
 </script>
-
-
 <?php
 $content = ob_get_clean();
-require_once(VIEW . 'layout/master.php');
+require_once(VIEW . 'layout/master-2.php');
 ?>

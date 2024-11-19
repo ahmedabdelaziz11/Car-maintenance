@@ -7,6 +7,9 @@
     <title>Car</title>
     <meta name="car" content="car" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="<?= BASE_URL . '/assets/js/vendor/jquery-3.6.0.min.js'?>"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <link rel="shortcut icon" href="<?= BASE_URL . '/assets/images/favicon.ico'?>" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +18,7 @@
     <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/plugins/swiper-bundle.min.css'?>">
     <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/plugins/ion.rangeSlider.min.css'?>">
     <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/style.css'?>">
+
     <style>
         .custom-form {
             display: flex;
@@ -172,7 +176,6 @@
         <?php require_once(VIEW . 'layout/footer-2.php'); ?>
     </main>
     <script src="<?= BASE_URL . '/assets/js/vendor/modernizr-3.11.2.min.js'?>"></script>
-    <script src="<?= BASE_URL . '/assets/js/vendor/jquery-3.6.0.min.js'?>"></script>
     <script src="<?= BASE_URL . '/assets/js/vendor/jquery-migrate-3.3.2.min.js'?>"></script>
     <script src="<?= BASE_URL . '/assets/js/plugins/swiper-bundle.min.js'?>"></script>
     <script src="<?= BASE_URL . '/assets/js/plugins/ion.rangeSlider.min.js'?>"></script>
