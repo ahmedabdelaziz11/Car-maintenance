@@ -41,7 +41,7 @@
                                         <span class="title">Setting</span>
                                     </li>
                                     <li class="list-item">
-                                        <a <?= BASE_URL . '/notification/index'; ?>" class="profile-link"><span class="icon"><i
+                                        <a href="<?= BASE_URL . '/notification/index'; ?>" class="profile-link"><span class="icon"><i
                                             class="icon icon-carce-bell"></i></span>Notification <span class="badge bg-danger"><?= $unreadCount; ?></span></a>
                                     </li>
                                 </ul>

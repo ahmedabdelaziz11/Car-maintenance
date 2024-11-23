@@ -1,115 +1,117 @@
 <?php ob_start(); ?>
 
-<h1>تعديل العرض</h1>
-<form action="<?= BASE_URL . '/offer/edit/' . $offer['id'] ?>" method="POST" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="title">العنوان</label>
-        <input type="text" name="title" id="title" class="form-control" value="<?= $offer['title'] ?>">
-    </div>
-    
-    <div class="form-group">
-        <label for="details">التفاصيل</label>
-        <textarea name="details" id="details" class="form-control"><?= $offer['details'] ?></textarea>
-    </div>
+<div class="container my-5">
+    <h1 class="text-primary mb-4">Edit Offer</h1>
+    <form action="<?= BASE_URL . '/offer/edit/' . $offer['id'] ?>" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" class="form-control" value="<?= $offer['title'] ?>" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="details">Details</label>
+            <textarea name="details" id="details" class="form-control" required><?= $offer['details'] ?></textarea>
+        </div>
 
-    <div class="form-group">
-        <label for="service_id">الخدمة</label>
-        <select name="service_id" id="service_id" class="form-control">
-            <option value="">اختر الخدمة</option>
-            <?php foreach ($services as $service): ?>
-                <option value="<?= $service['id'] ?>" <?= $offer['service_id'] == $service['id'] ? 'selected' : '' ?>>
-                    <?= $service['name'] ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="service_id">Service</label>
+            <select name="service_id" id="service_id" class="form-control" required>
+                <option value="">Select Service</option>
+                <?php foreach ($services as $service): ?>
+                    <option value="<?= $service['id'] ?>" <?= $offer['service_id'] == $service['id'] ? 'selected' : '' ?>>
+                        <?= $service['name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="car_type_id">نوع السيارة</label>
-        <select name="car_type_id" id="car_type_id" class="form-control">
-            <option value="">اختر نوع السيارة</option>
-            <?php foreach ($carTypes as $carType): ?>
-                <option value="<?= $carType['id'] ?>" <?= $offer['car_type_id'] == $carType['id'] ? 'selected' : '' ?>>
-                    <?= $carType['name'] ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="car_type_id">Car Type</label>
+            <select name="car_type_id" id="car_type_id" class="form-control" required>
+                <option value="">Select Car Type</option>
+                <?php foreach ($carTypes as $carType): ?>
+                    <option value="<?= $carType['id'] ?>" <?= $offer['car_type_id'] == $carType['id'] ? 'selected' : '' ?>>
+                        <?= $carType['name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="category_id">الفئة</label>
-        <select name="category_id" id="category_id" class="form-control">
-            <option value="">اختر الفئة</option>
-            <?php foreach ($categories as $category): ?>
-                <option value="<?= $category['id'] ?>" <?= $offer['category_id'] == $category['id'] ? 'selected' : '' ?>>
-                    <?= $category['name'] ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="category_id">Category</label>
+            <select name="category_id" id="category_id" class="form-control" required>
+                <option value="">Select Category</option>
+                <?php foreach ($categories as $category): ?>
+                    <option value="<?= $category['id'] ?>" <?= $offer['category_id'] == $category['id'] ? 'selected' : '' ?>>
+                        <?= $category['name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="country_id">البلد</label>
-        <select name="country_id" id="country_id" class="form-control" required>
-            <option value="">اختر البلد</option>
-            <?php foreach ($countries as $country): ?>
-                <option value="<?= $country['id'] ?>"  <?= $offer['country_id'] == $country['id'] ? 'selected' : '' ?>><?= $country['name'] ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="country_id">Country</label>
+            <select name="country_id" id="country_id" class="form-control" required>
+                <option value="">Select Country</option>
+                <?php foreach ($countries as $country): ?>
+                    <option value="<?= $country['id'] ?>"  <?= $offer['country_id'] == $country['id'] ? 'selected' : '' ?>><?= $country['name'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="city_id">المدينة</label>
-        <select name="city_id" id="city_id" class="form-control" required>
-            <option value="">اختر المدينة</option>
-            <?php foreach ($cities as $city): ?>
-                <option value="<?= $city['id'] ?>" <?= $offer['city_id'] == $city['id'] ? 'selected' : '' ?>>
-                    <?= $city['name'] ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="city_id">City</label>
+            <select name="city_id" id="city_id" class="form-control" required>
+                <option value="">Select City</option>
+                <?php foreach ($cities as $city): ?>
+                    <option value="<?= $city['id'] ?>" <?= $offer['city_id'] == $city['id'] ? 'selected' : '' ?>>
+                        <?= $city['name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="car_model_from">نموذج السيارة من</label>
-        <select name="car_model_from" id="car_model_from" class="form-control" required>
-            <option value="" disabled>اختر سنة البداية</option>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="car_model_from">Car Model From</label>
+            <select name="car_model_from" id="car_model_from" class="form-control" required>
+                <option value="" disabled>Select Start Year</option>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="car_model_to">نموذج السيارة إلى</label>
-        <select name="car_model_to" id="car_model_to" class="form-control" required>
-            <option value="" disabled>اختر سنة النهاية</option>
-        </select>
-    </div>
-    <div id="yearError" style="color: red; display: none;">سنة البداية يجب أن تكون أقل أو تساوي سنة النهاية</div>
+        <div class="form-group">
+            <label for="car_model_to">Car Model To</label>
+            <select name="car_model_to" id="car_model_to" class="form-control" required>
+                <option value="" disabled>Select End Year</option>
+            </select>
+        </div>
+        <div id="yearError" style="color: red; display: none;">Start year must be less than or equal to the end year.</div>
 
-    <div class="form-group">
-        <label for="image">الصورة</label>
-        <input type="file" name="image" id="image" class="form-control">
-        <?php if (!empty($offer['image'])): ?>
-            <img src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="صورة العرض" style="width: 100px;">
-        <?php endif; ?>
-    </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" name="image" id="image" class="form-control">
+            <?php if (!empty($offer['image'])): ?>
+                <img src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="Offer Image" style="width: 100px;">
+            <?php endif; ?>
+        </div>
 
-    <div class="form-group">
-        <label for="other_images">صور أخرى</label>
-        <input type="file" name="other_images[]" id="other_images" class="form-control" multiple>
-        <?php if (!empty($offer['other_images'])): ?>
-            <?php foreach ($offer['other_images'] as $img): ?>
-                <img src="<?= BASE_URL . '/uploads/offers/' . $img['image'] ?>" alt="صورة أخرى" style="width: 100px; margin: 5px;">
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
+        <div class="form-group">
+            <label for="other_images">Other Images</label>
+            <input type="file" name="other_images[]" id="other_images" class="form-control" multiple>
+            <?php if (!empty($offer['other_images'])): ?>
+                <?php foreach ($offer['other_images'] as $img): ?>
+                    <img src="<?= BASE_URL . '/uploads/offers/' . $img['image'] ?>" alt="Other Image" style="width: 100px; margin: 5px;">
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
 
-    <div class="form-group">
-        <label for="contact">جهة الاتصال</label>
-        <input type="text" name="contact" id="contact" class="form-control" value="<?= $offer['title'] ?>" required>
-    </div>
+        <div class="form-group">
+            <label for="contact">Contact</label>
+            <input type="text" name="contact" id="contact" class="form-control" value="<?= $offer['contact'] ?>" required>
+        </div>
 
-    <button type="submit" class="btn btn-warning">تحديث</button>
-</form>
+        <button type="submit" class="btn custom-btn-warning">Update</button>
+    </form>
+</div>
 
 <script>
     document.getElementById('car_type_id').addEventListener('change', function() {
@@ -214,9 +216,7 @@
         }
     });
 </script>
-
-
 <?php 
 $content = ob_get_clean(); 
-require_once(VIEW . 'layout/master.php'); 
+require_once(VIEW . 'layout/master-2.php'); 
 ?>

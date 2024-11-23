@@ -1,34 +1,34 @@
 <?php ob_start(); ?>
 
-<div class="container mt-4">
-    <h1 class="mb-4">الإشعارات</h1>
-    
-    <?php if (empty($notifications)): ?>
-        <div class="alert alert-info" role="alert">
-            لا توجد إشعارات حاليًا.
-        </div>
-    <?php else: ?>
-        <ul class="list-group">
-            <?php foreach ($notifications as $notification): ?>
-                <li class="list-group-item d-flex justify-content-between align-items-start <?= $notification['is_read'] == 0 ? 'bg-light' : ''; ?>">
-                    <div class="ms-2 me-auto">
-                        <a href="<?= BASE_URL . '/OfferDetails/show/' . $notification['offer_id'] . '/' . $notification['id'] ?>" class="text-decoration-none">
-                            <div class="fw-bold">
-                                <?= $notification['message']; ?>
+<div class="catagories-section section-gap-top-50">
+    <div class="container">
+        <div class="product-wrapper">
+            <div class="product-wrapper-content--4">
+                <?php if (empty($notifications)): ?>
+                    <p class="text-center">No notifications available at the moment.</p>
+                <?php else: ?>
+                    <?php foreach ($notifications as $notification): ?>
+                        <div class="single-product-item product-item--style-4">
+                            <div class="content">
+                                <div class="content--left">
+                                    <a href="<?= BASE_URL . '/OfferDetails/show/' . $notification['offer_id'] . '/' . $notification['id'] ?>" class="title">
+                                        <strong><?= htmlspecialchars($notification['message']); ?></strong>
+                                    </a>
+                                    <p><?= htmlspecialchars($notification['date']); ?></p>
+                                </div>
                             </div>
-                            <small class="text-muted"><?= date('Y-m-d H:i', strtotime($notification['date'])); ?></small>
-                        </a>
-                    </div>
-                    <span class="badge bg-<?= $notification['is_read'] == 0 ? 'primary' : 'secondary'; ?> rounded-pill">
-                        <?= $notification['is_read'] == 0 ? 'غير مقروء' : 'مقروء'; ?>
-                    </span>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
+                            <a href="#?" aria-label="Remove Notification" class="cart-link">
+                                <i class="icon icon-carce-x-circle"></i>
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
 </div>
 
 <?php 
 $content = ob_get_clean(); 
-require_once(VIEW . 'layout/master.php'); 
+require_once(VIEW . 'layout/master-2.php'); 
 ?>

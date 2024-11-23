@@ -15,7 +15,7 @@
                 class="icon icon-carce-home"></i></a>
             </div>
             <div class="user-event user-event--right">
-                <a area-label="order icon" href="order.html" class="event-btn-link"><i
+                <a area-label="order icon" href="<?= BASE_URL . '/offer'; ?>" class="event-btn-link"><i
                 class="icon icon-carce-compare"></i></a>
                 <a area-label="chat icon" href="<?= BASE_URL . '/chat/index/'; ?>" class="event-btn-link"><i
                 class="icon icon-carce-bubbles2"></i></a>
