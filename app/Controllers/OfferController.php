@@ -251,14 +251,6 @@ class OfferController extends controller{
         exit;
     }
 
-    public function removeImage($imageId)
-    {
-        $offerImageModel = new offerImage();
-        $offerImageModel->deleteRow($imageId);
-        $response = ['success' => true];
-        echo json_encode($response);
-    }
-
     public function validateCreateRequest()
     {
         $errors = [];

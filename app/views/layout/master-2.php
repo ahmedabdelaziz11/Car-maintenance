@@ -1,3 +1,7 @@
+<?php
+use MVC\core\session;
+$lang = session::Get('lang') ?? 'en';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,149 +21,7 @@
     <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/vendor/icomoon.css'?>" />
     <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/plugins/swiper-bundle.min.css'?>">
     <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/plugins/ion.rangeSlider.min.css'?>">
-    <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/style.css'?>">
-
-    <style>
-        .custom-form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .form-group {
-            flex: 1;
-            min-width: 200px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .custom-select {
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            background-color: #f8f8f8;
-            color: #333;
-        }
-
-        .custom-select:focus {
-            outline: none;
-        }
-
-        .custom-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s;
-        }
-
-        .primary-btn {
-            background-color: #ff375f;
-            color: white;
-        }
-
-        .primary-btn:hover {
-            background-color: #e03354;
-        }
-
-        .success-btn {
-            background-color: green;
-            color: white;
-        }
-
-        .secondary-btn {
-            background-color: gray;
-            color: white;
-        }
-
-        .form-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .custom-btn-success {
-            background-color: #28a745 !important;
-            border: none;
-            color: #fff;
-            padding: 8px 15px;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .custom-btn-success:hover {
-            background-color: #218838;
-            color: #fff;
-        }
-        .custom-btn-warning {
-            background-color: #ffc107;
-            border: none;
-            color: #212529;
-            padding: 8px 15px;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .custom-btn-warning:hover {
-            background-color: #e0a800;
-            color: #212529;
-        }
-        .custom-btn-danger {
-            background-color: #dc3545;
-            border: none;
-            color: #fff;
-            padding: 8px 15px;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .custom-btn-danger:hover {
-            background-color: #c82333;
-            color: #fff;
-        }
-        .custom-btn-secondary {
-            background-color: #6c757d;
-            border: none;
-            color: #fff;
-            padding: 8px 15px;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .custom-btn-secondary:hover {
-            background-color: #5a6268;
-            color: #fff;
-        }
-        .d-flex {
-            display: flex;
-        }
-
-        .justify-content-between {
-            justify-content: space-between;
-        }
-
-        .align-items-center {
-            align-items: center;
-        }
-
-        .mb-2 {
-            margin-bottom: 0.5rem; /* Adjust spacing as needed */
-        }
-    </style>
+    <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/style2.css'?>">
 </head>
 
 <body>
@@ -183,6 +45,15 @@
                                         </g>
                                     </svg>
                                 </a>
+                                <?=  __('lang') ?>
+                            </li>
+
+                            <li class="list-item">
+                                <div class="toggle-btn <?= $lang === 'en' ? 'toggled' : '' ?>" onclick="toggleLanguage(this)">
+                                    <div class="toggle-circle"></div>
+                                    <span class="ar">AR</span>
+                                    <span class="en">EN</span>
+                                </div>
                             </li>
 
                             <?php if (isset($_SESSION['user'])): ?>
@@ -209,9 +80,8 @@
             <div class="offcanvas-header flex-end">
 
                 <div class="logo">
-                    <a href="index.html"><img class="img-fluid" width="147" height="26" src="<?= BASE_URL . '/assets/images/logo.png'?>" alt="image"></a>
+                    <a href="/"><img class="img-fluid" width="147" height="26" src="<?= BASE_URL . '/assets/images/logo.png'?>" alt="image"></a>
                 </div>
-
                 <button class="offcanvas-close" aria-label="offcanvas svg icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="5.973" height="10.449" viewBox="0 0 5.973 10.449">
                         <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back" d="M13.051,11.417,17,7.466a.747.747,0,0,0-1.058-1.054l-4.479,4.476a.745.745,0,0,0-.022,1.03l4.5,4.507A.747.747,0,1,0,17,15.37Z" transform="translate(-11.251 -6.194)" />
@@ -246,6 +116,35 @@
     <script src="<?= BASE_URL . '/assets/js/plugins/swiper-bundle.min.js'?>"></script>
     <script src="<?= BASE_URL . '/assets/js/plugins/ion.rangeSlider.min.js'?>"></script>
     <script src="<?= BASE_URL . '/assets/js/main.js'?>"></script>
+    <script>
+        function toggleLanguage(button) {
+            button.classList.toggle('toggled');
+            const lang = button.classList.contains('toggled') ? 'en' : 'ar';
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '<?= BASE_URL ?>/home/changLang/' + lang, true);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        console.log('Language successfully changed to:', lang);
+                        location.reload();
+                    } else {
+                        console.error('Failed to change language');
+                    }
+                } else {
+                    console.error('Error with the request:', xhr.status);
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error('Network error occurred while changing language');
+            };
+
+            xhr.send();
+        }
+    </script>
 </body>
 
 </html>

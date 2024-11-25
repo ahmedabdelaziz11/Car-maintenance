@@ -84,5 +84,12 @@ class HomeController extends controller{
                 'totalPages' => $offersData['totalPages']
             ]);
         }
-    }     
+    }    
+    
+    public function changLang($lang)
+    {
+        $_SESSION['lang'] = $lang;
+        $response = ['success' => true];
+        echo json_encode($response);
+    }
 }

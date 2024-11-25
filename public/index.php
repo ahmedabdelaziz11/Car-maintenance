@@ -21,4 +21,6 @@ define("DOMAIN_NAME","http://localhost/");
 
 require_once ("../vendor/autoload.php");
 
+require_once '../app/core/helpers.php';
+
 $app = new MVC\core\app();
