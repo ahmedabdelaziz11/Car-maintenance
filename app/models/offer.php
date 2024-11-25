@@ -28,7 +28,7 @@ class offer extends model{
         return $this->select()->where('user_id', '=', $userId)->all();
     }
 
-    public function getAllWithPaginated($service_id = null, $car_type_id = null, $category_id = null, $model_from = null, $country_id =null , $page = 1, $limit = 3)
+    public function getAllWithPaginated($service_id = null, $car_type_id = null, $category_id = null, $model_from = null, $country_id =null , $page = 1, $limit = 9)
     {
         $offset = ($page - 1) * $limit;
         $this->select([

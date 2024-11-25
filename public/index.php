@@ -15,7 +15,7 @@ define("BASE_URL", "http://localhost/car/public");
 define("SERVER","localhost");
 define("USERNAME","root");
 define("PASSWORD","");
-define("DATABASE","car");
+define("DATABASE","cars");
 define("DATABASE_TYPE","mysql");
 define("DOMAIN_NAME","http://localhost/");
 
