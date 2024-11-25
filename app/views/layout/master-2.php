@@ -145,6 +145,21 @@
             background-color: #5a6268;
             color: #fff;
         }
+        .d-flex {
+            display: flex;
+        }
+
+        .justify-content-between {
+            justify-content: space-between;
+        }
+
+        .align-items-center {
+            align-items: center;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem; /* Adjust spacing as needed */
+        }
     </style>
 </head>
 

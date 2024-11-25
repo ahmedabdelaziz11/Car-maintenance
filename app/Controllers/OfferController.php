@@ -77,12 +77,14 @@ class OfferController extends controller{
     
                 if (!empty($_FILES['other_images']['name'][0])) {
                     $uploadedImages = $this->uploadImages($_FILES['other_images'], ROOT . 'public/uploads/offers/');
-                
-                    foreach ($uploadedImages as $uploadedImage) {
+                    $imageOrders = $_POST['image_order'];
+                    foreach ($uploadedImages as $index => $uploadedImage) {
+                        $order = $imageOrders[$index];
                         $offerImageModel = new offerImage();
                         $offerImageModel->create([
                             'offer_id' => $offerId, 
-                            'image' => $uploadedImage
+                            'image' => $uploadedImage,
+                            'order' => $order
                         ]);
                     }
                 }
@@ -171,12 +173,14 @@ class OfferController extends controller{
                         $offerImageModel->deleteRow($img['id']);
                     }
                     $uploadedImages = $this->uploadImages($_FILES['other_images'], ROOT . 'public/uploads/offers/');
-                
-                    foreach ($uploadedImages as $uploadedImage) {
+                    $imageOrders = $_POST['image_order'];
+                    foreach ($uploadedImages as $index => $uploadedImage) {
+                        $order = $imageOrders[$index];
                         $offerImageModel = new offerImage();
                         $offerImageModel->create([
                             'offer_id' => $id, 
-                            'image' => $uploadedImage
+                            'image' => $uploadedImage,
+                            'order' => $order
                         ]);
                     }
                 }    
@@ -245,6 +249,14 @@ class OfferController extends controller{
         $offerModel->deleteRow($id);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
+    }
+
+    public function removeImage($imageId)
+    {
+        $offerImageModel = new offerImage();
+        $offerImageModel->deleteRow($imageId);
+        $response = ['success' => true];
+        echo json_encode($response);
     }
 
     public function validateCreateRequest()

@@ -173,9 +173,9 @@ class offer extends model{
 
     private function getRelatedImages($offerId)
     {
-        $this->sql = "SELECT * FROM `offer_images` WHERE offer_id = '" . mysqli_real_escape_string($this->connection, $offerId) . "'";
+        $this->sql = "SELECT * FROM `offer_images` WHERE offer_id = '" . mysqli_real_escape_string($this->connection, $offerId) . "' ORDER BY `order` ASC";
         return $this->all();
-    }
+    }    
 
     private function getRelatedComments($offerId)
     {

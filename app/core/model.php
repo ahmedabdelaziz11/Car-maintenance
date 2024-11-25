@@ -40,8 +40,8 @@ class model
     public function where($column, $operator, $value)
     {
         $escapedColumn = "" . mysqli_real_escape_string($this->connection, $column) . "";
-        $escapedValue = "'" . mysqli_real_escape_string($this->connection, $value) . "'";
-        if (strpos($this->sql, 'WHERE') !== false) {
+        $escapedValue = "'" . mysqli_real_escape_string($this->connection, (string) $value) . "'";
+        if (strpos((string)$this->sql, 'WHERE') !== false) {
             $this->sql .= " AND $escapedColumn $operator $escapedValue";
         } else {
             $this->sql .= " WHERE $escapedColumn $operator $escapedValue";

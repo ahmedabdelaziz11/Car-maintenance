@@ -96,13 +96,13 @@
 
         <div class="form-group">
             <label for="other_images">Other Images</label>
-            <input type="file" name="other_images[]" id="other_images" class="form-control" multiple>
-            <?php if (!empty($offer['other_images'])): ?>
-                <?php foreach ($offer['other_images'] as $img): ?>
-                    <img src="<?= BASE_URL . '/uploads/offers/' . $img['image'] ?>" alt="Other Image" style="width: 100px; margin: 5px;">
-                <?php endforeach; ?>
-            <?php endif; ?>
+            <input type="file" id="file-selector" class="form-control" multiple>
+            <br>
+            <ul id="file-list"></ul>
+            <br>
         </div>
+
+        <div id="file-hidden-inputs"></div>
 
         <div class="form-group">
             <label for="contact">Contact</label>
@@ -214,6 +214,108 @@
                 yearError.style.display = 'none';
             }
         }
+
+
+        const fileSelector = document.getElementById('file-selector');
+        const fileList = document.getElementById('file-list');
+        let files = [];
+
+        <?php if (!empty($offer['other_images'])): ?>
+            const existingImages = <?php echo json_encode($offer['other_images']); ?>;
+            existingImages.forEach((img, index) => {
+                const imageUrl = `<?= BASE_URL . '/uploads/offers/' ?>${img.image}`;
+                fetch(imageUrl)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const file = new File([blob], `image_${index}.jpg`, { type: blob.type });
+                        files.push(file);
+                        updateFileList();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching image:', error);
+                    });
+            });
+        <?php endif; ?>
+
+        fileSelector.addEventListener('change', function (event) {
+            for (let i = 0; i < event.target.files.length; i++) {
+                files.push(event.target.files[i]);
+            }
+            updateFileList();
+        });
+
+        function updateFileList() {
+            fileList.innerHTML = '';
+            files.forEach((file, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'd-flex justify-content-between align-items-center mb-2';
+
+                const thumbnail = document.createElement('img');
+                thumbnail.src = URL.createObjectURL(file);
+                thumbnail.alt = file.name;
+                thumbnail.style.width = '80px';
+                thumbnail.style.height = 'auto';
+                thumbnail.style.marginRight = '10px';
+
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.className = 'btn custom-btn-danger btn-sm';
+                removeButton.addEventListener('click', function() {
+                    files.splice(index, 1);
+                    updateFileList();
+                });
+
+                const upButton = document.createElement('button');
+                upButton.textContent = 'Up';
+                upButton.className = 'btn btn-sm custom-btn-secondary mr-2';
+                upButton.disabled = index === 0;
+                upButton.addEventListener('click', function() {
+                    moveImage(index, index - 1);
+                });
+
+                const downButton = document.createElement('button');
+                downButton.textContent = 'Down';
+                downButton.className = 'btn btn-sm custom-btn-secondary';
+                downButton.disabled = index === files.length - 1;
+                downButton.addEventListener('click', function() {
+                    moveImage(index, index + 1);
+                });
+
+                listItem.appendChild(thumbnail);
+                listItem.appendChild(removeButton);
+                listItem.appendChild(upButton);
+                listItem.appendChild(downButton);
+                fileList.appendChild(listItem);
+            });
+        }
+
+        function moveImage(fromIndex, toIndex) {
+            const [movedImage] = files.splice(fromIndex, 1);
+            files.splice(toIndex, 0, movedImage);
+            updateFileList();
+        }
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.name = 'other_images[]';
+            fileInput.multiple = true;
+            fileInput.style.display = 'none';
+            const dataTransfer = new DataTransfer();
+            files.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+            fileInput.files = dataTransfer.files;
+            event.target.appendChild(fileInput);
+            files.forEach((file, index) => {
+                const orderInput = document.createElement('input');
+                orderInput.type = 'hidden';
+                orderInput.name = 'image_order[]';
+                orderInput.value = index + 1; 
+
+                event.target.appendChild(orderInput);
+            });
+        });
     });
 </script>
 <?php 
