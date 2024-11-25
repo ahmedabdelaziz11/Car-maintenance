@@ -13,7 +13,6 @@
                             <form method="GET" id="search-form" action="<?= BASE_URL . '/home/index' ?>" class="custom-form">
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="service_id">Service</label>
                                         <select id="service_id" name="service_id" class="custom-select">
                                             <option value="">Select Service</option>
                                             <?php foreach ($services as $service): ?>
@@ -25,7 +24,6 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="car_type_id">Car Type</label>
                                         <select name="car_type_id" id="car_type_id" class="custom-select">
                                             <option value="">Select Car Type</option>
                                             <?php foreach ($carTypes as $carType): ?>
@@ -35,14 +33,12 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="category_id">Category</label>
                                         <select id="category_id" name="category_id" class="custom-select">
                                             <option value="">Select Category</option>
                                         </select>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="country_id">Country</label>
                                         <select id="country_id" name="country_id" class="custom-select">
                                             <option value="">Select Country</option>
                                             <?php foreach ($countries as $country): ?>
@@ -52,18 +48,17 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="model_from">Model From</label>
                                         <select id="model_from" name="model_from" class="custom-select">
-                                            <option value="" disabled selected>Choose Year</option>
+                                            <option value="" selected>Choose Model</option>
                                         </select>
                                     </div>
 
                                     <div class="form-group form-actions">
                                         <?php if (isset($_SESSION['user'])): ?>
                                             <?php if (isset($is_follow) && $is_follow): ?>
-                                                <button type="button" id="follow-button" style="margin-top: 25px;" class="custom-btn success-btn">Unfollow</button>
+                                                <button type="button" id="follow-button" class="custom-btn">Unfollow</button>
                                             <?php else : ?>
-                                                <button type="button" id="follow-button" style="margin-top: 25px;" class="custom-btn secondary-btn">Follow</button>
+                                                <button type="button" id="follow-button" class="custom-btn-success">Follow</button>
                                             <?php endif; ?>
                                         <?php endif; ?>
                                     </div>
@@ -145,6 +140,13 @@
                     const isFollow = isFollowInput.value === '1';
                     const followButton = document.getElementById('follow-button');
                     followButton.textContent = isFollow ? 'Unfollow' : 'Follow';
+                    if (isFollow) {
+                        followButton.classList.remove('custom-btn-success');
+                        followButton.classList.add('custom-btn');
+                    } else {
+                        followButton.classList.remove('custom-btn');
+                        followButton.classList.add('custom-btn-success');
+                    }
                 }
                 attachPaginationListeners();
             })

@@ -46,7 +46,7 @@
         }
 
         .custom-select {
-            padding: 10px;
+            padding: 5px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
@@ -56,7 +56,6 @@
 
         .custom-select:focus {
             outline: none;
-            border-color: #ff375f; /* Matches template accent color */
         }
 
         .custom-btn {
@@ -94,7 +93,7 @@
             gap: 10px;
         }
         .custom-btn-success {
-            background-color: #28a745;
+            background-color: #28a745 !important;
             border: none;
             color: #fff;
             padding: 8px 15px;
