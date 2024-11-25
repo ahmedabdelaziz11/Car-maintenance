@@ -34,9 +34,6 @@ ob_start();
                     <div class="text-btn text-button-next">Next</div>
                 </div>
                 <div class="product-tag">
-                    <?php if (session::Get('user')): ?>
-                        <button class="custom-btn" style="color:#ff9966" data-toggle="modal" data-target="#reportOfferModal">Report Offer</button>
-                    <?php endif; ?>
                     <?php if (isset($_SESSION['user'])): ?>
                         <button type="button" <?php if ($offer['is_favorite']): ?> style="color:crimson" <?php else: ?> style="color:gray" <?php endif; ?> aria-label="Wishlist" data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" data-offer-id="<?= $offer['id'] ?>" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow favorite-btn"><i class="icon icon-carce-heart"></i></button>
                     <?php endif; ?>
@@ -75,57 +72,47 @@ ob_start();
             
                 <span class="billing-information-title"><?= $offer['title'] ?></span>
                 <ul class="billing-information-lists">
-                    <li class="billing-information-list"> <span> Date</span>
-                        <span><?= date('F d, Y', strtotime($offer['date'])) ?></span>
-                    </li>
-                    <li class="billing-information-list"> <span> Service</span>
+                    <li class="billing-information-list">
                         <span><?= $offer['service_name'] ?></span>
                     </li>
-                    <li class="billing-information-list"> <span> Car Type</span>
-                        <span><?= $offer['car_type_name'] ?></span>
+                    <li class="billing-information-list"> 
+                        <span><?= $offer['car_type_name'] ?> -> <?= $offer['category_name'] ?></span>
+                        <span><p>Model from : <?= $offer['car_model_from'] ?> to : <?= $offer['car_model_to'] ?></p></span>
                     </li>
-                    <li class="billing-information-list"> <span> Category</span>
-                        <span><?= $offer['category_name'] ?></span>
-                    </li>
-                    <li class="billing-information-list"> <span> Car Model</span> 
+                    <li class="billing-information-list"> <span> Location</span> 
                         <span>
-                            <p>from : <?= $offer['car_model_from'] ?> to : <?= $offer['car_model_to'] ?></p>
+                            <?= $offer['country_name'] ?> -> <?= $offer['city_name'] ?>
                         </span> 
                     </li>
-                    <li class="billing-information-list"> <span> Country</span> 
-                        <span>
-                            <?= $offer['country_name'] ?>
-                        </span> 
-                    </li>
-                    <li class="billing-information-list"> <span> City</span> 
-                        <span>
-                            <?= $offer['city_name'] ?>
-                        </span> 
-                    </li>
-                    <li class="billing-information-list"> <span> Contact</span> 
-                        <span>
-                            <?= $offer['contact'] ?>
-                        </span> 
+                    <li class="billing-information-list"> <span> Date</span>
+                        <span><?= date('F d, Y', strtotime($offer['date'])) ?></span>
                     </li>
                 </ul>
 
                 <span class="shipping-method-title">Details</span>
                 <ul class="shipping-method-lists">
+                    <p class="text"><?= $offer['contact'] ?></p>
+                </ul>
+
+                <span class="shipping-method-title">Contact</span>
+                <ul class="shipping-method-lists">
                     <p class="text"><?= $offer['details'] ?></p>
                 </ul>
 
                 <div class="payment-card">
-                    <a style="display: inline;margin-bottom:10px" class="btn-payment" href="<?= BASE_URL . '/chat/index/'.$offer['user_id'] ?>">Send a Message to the Offer Owner</a>
-                    <a style="display: inline;margin-bottom:10px" class="btn-payment" href="<?= BASE_URL ?>/user/profile/<?= $offer['user_id'] ?>">View Owner Profile</a>
+                    <a style="display: inline;margin-top:5px" class="btn-payment" href="<?= BASE_URL . '/chat/index/'.$offer['user_id'] ?>">Private Message</a>
+                    <a style="display: inline;margin-top:5px" class="btn-payment" href="<?= BASE_URL ?>/user/profile/<?= $offer['user_id'] ?>">Owner Profile</a>
 
                     <?php if (session::Get('user')): ?>
+                        <button style="display: inline;margin-top:5px" class="btn-payment" data-toggle="modal" data-target="#reportOfferModal">Report Offer</button>
+
                         <form id="followForm" action="<?= BASE_URL ?>/user/follow" method="POST">
                             <input type="hidden" name="follower_id" value="<?= session::Get('user')['id'] ?>">
                             <input type="hidden" name="following_id" value="<?= $offer['user_id'] ?>">
                             <?php if (!$offer['is_follow_owner']): ?>
-                                <button class="btn-payment" id="followBtn" type="button">Follow</button>
+                                <button style="display: inline;margin-top:5px" class="btn-payment" id="followBtn" type="button">Follow</button>
                             <?php else: ?>
-                                <button class="btn-payment" id="followBtn" type="button">Unfollow</button>
+                                <button style="display: inline;margin-top:5px" class="btn-payment" id="followBtn" type="button">Unfollow</button>
                             <?php endif; ?>
                         </form>
                     <?php endif; ?>
