@@ -3,7 +3,7 @@ use MVC\core\session;
 $lang = session::Get('lang') ?? 'en';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= $lang ?>">
 
 <head>
     <meta charset="UTF-8">
@@ -12,16 +12,32 @@ $lang = session::Get('lang') ?? 'en';
     <meta name="car" content="car" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="<?= BASE_URL . '/assets/js/vendor/jquery-3.6.0.min.js'?>"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <?php
+        if($lang == 'ar'){
+            echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/bootstrapAr.css">';
+            echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.min.css">';
+        }else{
+            echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/bootstrap.css">';
+        }
+    ?>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <link rel="shortcut icon" href="<?= BASE_URL . '/assets/images/favicon.ico'?>" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/vendor/icomoon.css'?>" />
-    <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/plugins/swiper-bundle.min.css'?>">
-    <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/plugins/ion.rangeSlider.min.css'?>">
-    <link rel="stylesheet" href="<?= BASE_URL . '/assets/css/style2.css'?>">
+    <?php
+        if ($lang == 'ar') {
+            echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/vendor/icomoonAr.css">';
+            echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/plugins/swiper-bundleAr.min.css">';
+            echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/plugins/ion.rangeSliderAr.min.css">';
+            echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/style2_ar.css">';
+        }else{
+            echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/vendor/icomoon.css">';
+            echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/plugins/swiper-bundle.min.css">';
+            echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/plugins/ion.rangeSlider.min.css">';
+            echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/style2.css">';
+        }
+    ?>
+
 </head>
 
 <body>
@@ -45,7 +61,6 @@ $lang = session::Get('lang') ?? 'en';
                                         </g>
                                     </svg>
                                 </a>
-                                <?=  __('lang') ?>
                             </li>
 
                             <li class="list-item">
@@ -61,7 +76,7 @@ $lang = session::Get('lang') ?? 'en';
                                     <ul class="list-child">
                                         <li class="list-item">
                                             <span class="notch-bg notch-bg--emerald"></span>
-                                            <a href="#profile-menu-offcanvas" area-label="User" class="btn btn--size-33-33 btn--center btn--round offcanvas-toggle offside-menu"><img class="img-fluid" height="33" width="33" src="<?= BASE_URL . '/assets/images/header-top-user-img.jpg'?>" alt="image"></a>
+                                            <a href="#profile-menu-offcanvas" area-label="User" class="btn btn--size-33-33 btn--center btn--round offcanvas-toggle offside-menu"><img class="img-fluid" height="33" width="33" src="<?= BASE_URL . '/assets/images/user.png'?>" alt="image"></a>
                                         </li>
                                     </ul>
                                 </li>

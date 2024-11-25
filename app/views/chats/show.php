@@ -5,7 +5,7 @@ use MVC\core\session;
 ob_start(); ?>
 
 <div class="container mt-5">
-    <h1 class="mb-4">Chat with <?= htmlspecialchars($receiver['name']) ?></h1>
+    <h1 class="mb-4"><?= __('Chat with') ?> <?= htmlspecialchars($receiver['name']) ?></h1>
     <div class="card">
         <div class="card-body">
             <div class="chat-box" style="height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 15px; background-color: #f5f5f5; border-radius: 8px;">
@@ -20,7 +20,7 @@ ob_start(); ?>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p>No messages yet. Start the conversation!</p>
+                    <p><?= __('No messages yet. Start the conversation!') ?></p>
                 <?php endif; ?>
             </div>
 
@@ -29,7 +29,7 @@ ob_start(); ?>
                 <div class="input-group">
                     <textarea class="form-control" id="message" name="message" rows="2" required placeholder="Type your message..." style="border-radius: 0; border: 1px solid #ddd;"></textarea>
                     <button class="btn btn-primary" type="submit" style="border-radius: 0;">
-                        <i class="fas fa-paper-plane"></i> Send
+                        <i class="fas fa-paper-plane"></i> <?= __('Send') ?> 
                     </button>
                 </div>
             </form>

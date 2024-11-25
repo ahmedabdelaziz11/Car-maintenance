@@ -1,22 +1,22 @@
 <?php ob_start(); ?>
 
 <div class="container my-5">
-    <h1 class="text-primary mb-4">Edit Offer</h1>
+    <h1 class="text-primary mb-4"><?= __('Edit Offer') ?></h1>
     <form action="<?= BASE_URL . '/offer/edit/' . $offer['id'] ?>" method="POST" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="title">Title</label>
+            <label for="title"><?= __('Title') ?></label>
             <input type="text" name="title" id="title" class="form-control" value="<?= $offer['title'] ?>" required>
         </div>
         
         <div class="form-group">
-            <label for="details">Details</label>
+            <label for="details"><?= __('Details') ?></label>
             <textarea name="details" id="details" class="form-control" required><?= $offer['details'] ?></textarea>
         </div>
 
         <div class="form-group">
-            <label for="service_id">Service</label>
+            <label for="service_id"><?= __('Service') ?></label>
             <select name="service_id" id="service_id" class="form-control" required>
-                <option value="">Select Service</option>
+                <option value=""><?= __('Select Service') ?></option>
                 <?php foreach ($services as $service): ?>
                     <option value="<?= $service['id'] ?>" <?= $offer['service_id'] == $service['id'] ? 'selected' : '' ?>>
                         <?= $service['name'] ?>
@@ -26,9 +26,9 @@
         </div>
 
         <div class="form-group">
-            <label for="car_type_id">Car Type</label>
+            <label for="car_type_id"><?= __('Car Type') ?></label>
             <select name="car_type_id" id="car_type_id" class="form-control" required>
-                <option value="">Select Car Type</option>
+                <option value=""><?= __('Select Car Type') ?></option>
                 <?php foreach ($carTypes as $carType): ?>
                     <option value="<?= $carType['id'] ?>" <?= $offer['car_type_id'] == $carType['id'] ? 'selected' : '' ?>>
                         <?= $carType['name'] ?>
@@ -38,9 +38,9 @@
         </div>
 
         <div class="form-group">
-            <label for="category_id">Category</label>
+            <label for="category_id"><?= __('Category') ?></label>
             <select name="category_id" id="category_id" class="form-control" required>
-                <option value="">Select Category</option>
+                <option value=""><?= __('Select Category') ?></option>
                 <?php foreach ($categories as $category): ?>
                     <option value="<?= $category['id'] ?>" <?= $offer['category_id'] == $category['id'] ? 'selected' : '' ?>>
                         <?= $category['name'] ?>
@@ -50,9 +50,9 @@
         </div>
 
         <div class="form-group">
-            <label for="country_id">Country</label>
+            <label for="country_id"><?= __('Country') ?></label>
             <select name="country_id" id="country_id" class="form-control" required>
-                <option value="">Select Country</option>
+                <option value=""><?= __('Select Country') ?></option>
                 <?php foreach ($countries as $country): ?>
                     <option value="<?= $country['id'] ?>"  <?= $offer['country_id'] == $country['id'] ? 'selected' : '' ?>><?= $country['name'] ?></option>
                 <?php endforeach; ?>
@@ -60,9 +60,9 @@
         </div>
 
         <div class="form-group">
-            <label for="city_id">City</label>
+            <label for="city_id"><?= __('City') ?></label>
             <select name="city_id" id="city_id" class="form-control" required>
-                <option value="">Select City</option>
+                <option value=""><?= __('Select City') ?></option>
                 <?php foreach ($cities as $city): ?>
                     <option value="<?= $city['id'] ?>" <?= $offer['city_id'] == $city['id'] ? 'selected' : '' ?>>
                         <?= $city['name'] ?>
@@ -72,22 +72,22 @@
         </div>
 
         <div class="form-group">
-            <label for="car_model_from">Car Model From</label>
+            <label for="car_model_from"><?= __('Car Model From') ?></label>
             <select name="car_model_from" id="car_model_from" class="form-control" required>
-                <option value="" disabled>Select Start Year</option>
+                <option value="" disabled><?= __('Select Start Year') ?></option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="car_model_to">Car Model To</label>
+            <label for="car_model_to"><?= __('Car Model To') ?></label>
             <select name="car_model_to" id="car_model_to" class="form-control" required>
-                <option value="" disabled>Select End Year</option>
+                <option value="" disabled><?= __('Select End Year') ?></option>
             </select>
         </div>
-        <div id="yearError" style="color: red; display: none;">Start year must be less than or equal to the end year.</div>
+        <div id="yearError" style="color: red; display: none;"><?= __('Start year must be less than or equal to the end year.') ?></div>
 
         <div class="form-group">
-            <label for="image">Image</label>
+            <label for="image"><?= __('Main Image') ?></label>
             <input type="file" name="image" id="image" class="form-control">
             <?php if (!empty($offer['image'])): ?>
                 <img src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="Offer Image" style="width: 100px;">
@@ -95,7 +95,7 @@
         </div>
 
         <div class="form-group">
-            <label for="other_images">Other Images</label>
+            <label for="other_images"><?= __('Other Images') ?></label>
             <input type="file" id="file-selector" class="form-control" multiple>
             <br>
             <ul id="file-list"></ul>
@@ -105,11 +105,11 @@
         <div id="file-hidden-inputs"></div>
 
         <div class="form-group">
-            <label for="contact">Contact</label>
+            <label for="contact"><?= __('Contact') ?></label>
             <input type="text" name="contact" id="contact" class="form-control" value="<?= $offer['contact'] ?>" required>
         </div>
 
-        <button type="submit" class="btn custom-btn-warning">Update</button>
+        <button type="submit" class="btn custom-btn-warning"><?= __('Update') ?></button>
     </form>
 </div>
 

@@ -15,13 +15,13 @@ $nextPage = $page + 1;
     <ul class="pagination">
         <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
             <a class="page-link pagination-link" style="float: inline-start;" href="#" data-page="<?= $page - 1 ?>" aria-label="Previous">
-                <span aria-hidden="true">&laquo; Previous</span>
+                <span aria-hidden="true">&laquo; <?= __('Previous') ?></span>
             </a>
         </li>
 
         <li class="page-item <?= ($hasNextPage) ? '' : 'disabled' ?>">
             <a class="page-link pagination-link" style="float: inline-end;" href="#" data-page="<?= $page + 1 ?>" aria-label="Next">
-                <span aria-hidden="true">Next &raquo;</span>
+                <span aria-hidden="true"><?= __('Next') ?> &raquo;</span>
             </a>
         </li>
     </ul>

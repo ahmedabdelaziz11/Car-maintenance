@@ -18,7 +18,7 @@
                                     <span class="price"><?= $offer['category_name'] ?></span>
                                 </div>
                                 <div class="right">
-                                    <button data-offer-id="<?= $offer['id'] ?>" class="remove-favorite btn btn--default btn--radius btn--color-white btn--radical-red">Remove From Favorite</button>
+                                    <button data-offer-id="<?= $offer['id'] ?>" class="remove-favorite btn btn--default btn--radius btn--color-white btn--radical-red"><?= __('Remove From Favorite') ?></button>
                                 </div>
                             </div>
                         </div>

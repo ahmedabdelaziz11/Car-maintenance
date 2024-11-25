@@ -7,7 +7,7 @@
                     <path id="Icon_ionic-ios-arrow-back" data-name="Icon ionic-ios-arrow-back" d="M13.051,11.417,17,7.466a.747.747,0,0,0-1.058-1.054l-4.479,4.476a.745.745,0,0,0-.022,1.03l4.5,4.507A.747.747,0,1,0,17,15.37Z" transform="translate(-11.251 -6.194)" />
                 </svg>
             </button>
-            <span>Home</span>
+            <span><?= __('Home') ?></span>
 
         </div> <!-- End Offcanvas Header -->
         <!-- Start Offcanvas Mobile Menu Wrapper -->
@@ -38,11 +38,11 @@
                             <li class="profile-list-item">
                                 <ul class="profile-single-list">
                                     <li class="list-item">
-                                        <span class="title">Setting</span>
+                                        <span class="title"> <?= __('Setting') ?></span>
                                     </li>
                                     <li class="list-item">
                                         <a href="<?= BASE_URL . '/notification/index'; ?>" class="profile-link"><span class="icon"><i
-                                            class="icon icon-carce-bell"></i></span>Notification <span class="badge bg-danger"><?= $unreadCount; ?></span></a>
+                                            class="icon icon-carce-bell"></i></span><?= __('Notification') ?> <span class="badge bg-danger"><?= $unreadCount; ?></span></a>
                                     </li>
                                 </ul>
                             </li>
@@ -51,7 +51,7 @@
                                 <ul class="profile-single-list">
                                     <li class="list-item">
                                         <a href="<?= BASE_URL . '/user/logout'; ?>" class="profile-link"><span class="icon"><i
-                                            class="icon icon-carce-login"></i></span>Log Out</a>
+                                            class="icon icon-carce-login"></i></span><?= __('Log Out') ?></a>
                                     </li>
                                 </ul>
                             </li>

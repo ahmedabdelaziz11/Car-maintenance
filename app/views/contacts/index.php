@@ -3,23 +3,23 @@
 <div class="conversations-section section-gap-top-30">
     <div class="container">
         <div class="section-title">
-            <h2>All Conversations</h2>
+            <h2><?= __('All Conversations') ?></h2>
         </div>
         <div class="button-wrapper mb-4">
-            <a href="<?= BASE_URL . '/contact/create'; ?>" class="custom-btn-success">New Conversation</a>
+            <a href="<?= BASE_URL . '/contact/create'; ?>" class="custom-btn-success"><?= __('New Conversation') ?></a>
         </div>
 
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>User ID</th>
-                        <th>User Name</th>
-                        <th>Contact Type</th>
-                        <th>Message</th>
-                        <th>Unread Messages</th>
-                        <th>Created At</th>
-                        <th>Action</th>
+                        <th><?= __('User ID') ?></th>
+                        <th><?= __('User Name') ?></th>
+                        <th><?= __('Contact Type') ?></th>
+                        <th><?= __('Message') ?></th>
+                        <th><?= __('Unread Messages') ?></th>
+                        <th><?= __('Created At') ?></th>
+                        <th><?= __('Action') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,19 +31,19 @@
                                 <td><?= htmlspecialchars($conversation['contact_type']) ?></td>
                                 <td><?= htmlspecialchars($conversation['message']) ?></td>
                                 <td class="<?= $conversation['unread_count'] > 0 ? 'text-danger' : 'text-success'; ?>">
-                                    <?= $conversation['unread_count'] ?> unread
+                                    <?= $conversation['unread_count'] ?>  <?= __('unread') ?>
                                 </td>
                                 <td><?= htmlspecialchars($conversation['created_at']) ?></td>
                                 <td>
                                     <a href="<?= BASE_URL . '/contact/show/' . htmlspecialchars($conversation['id']); ?>" class="custom-btn-secondary">
-                                        View
+                                        <?= __('View') ?>
                                     </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="7" class="text-center">No conversations found.</td>
+                            <td colspan="7" class="text-center"><?= __('No conversations found.') ?></td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

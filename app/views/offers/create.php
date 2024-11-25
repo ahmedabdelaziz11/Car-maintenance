@@ -1,22 +1,22 @@
 <?php ob_start(); ?>
 
 <div class="container my-5">
-    <h1 class="text-primary mb-4">Create New Offer</h1>
+    <h1 class="text-primary mb-4"><?= __('Create New Offer') ?></h1>
     <form action="<?= BASE_URL . '/offer/create' ?>" method="POST" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="title">Title</label>
+            <label for="title"><?= __('Title') ?></label>
             <input type="text" name="title" id="title" class="form-control" required>
         </div>
 
         <div class="form-group">
-            <label for="details">Details</label>
+            <label for="details"><?= __('Details') ?></label>
             <textarea name="details" id="details" class="form-control" required></textarea>
         </div>
 
         <div class="form-group">
-            <label for="service_id">Service</label>
+            <label for="service_id"><?= __('Service') ?></label>
             <select name="service_id" id="service_id" class="form-control" required>
-                <option value="">Select Service</option>
+                <option value=""><?= __('Select Service') ?></option>
                 <?php foreach ($services as $service): ?>
                     <option value="<?= $service['id'] ?>"><?= $service['name'] ?></option>
                 <?php endforeach; ?>
@@ -24,9 +24,9 @@
         </div>
 
         <div class="form-group">
-            <label for="car_type_id">Car Type</label>
+            <label for="car_type_id"><?= __('Car Type') ?></label>
             <select name="car_type_id" id="car_type_id" class="form-control" required>
-                <option value="">Select Car Type</option>
+                <option value=""><?= __('Select Car Type') ?></option>
                 <?php foreach ($carTypes as $carType): ?>
                     <option value="<?= $carType['id'] ?>"><?= $carType['name'] ?></option>
                 <?php endforeach; ?>
@@ -34,16 +34,16 @@
         </div>
 
         <div class="form-group">
-            <label for="category_id">Category</label>
+            <label for="category_id"><?= __('Category') ?></label>
             <select name="category_id" id="category_id" class="form-control" required>
-                <option value="">Select Category</option>
+                <option value=""><?= __('Select Category') ?></option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="country_id">Country</label>
+            <label for="country_id"><?= __('Country') ?></label>
             <select name="country_id" id="country_id" class="form-control" required>
-                <option value="">Select Country</option>
+                <option value=""><?= __('Select Country') ?></option>
                 <?php foreach ($countries as $country): ?>
                     <option value="<?= $country['id'] ?>"><?= $country['name'] ?></option>
                 <?php endforeach; ?>
@@ -51,33 +51,33 @@
         </div>
 
         <div class="form-group">
-            <label for="city_id">City</label>
+            <label for="city_id"><?= __('City') ?></label>
             <select name="city_id" id="city_id" class="form-control" required>
-                <option value="">Select City</option>
+                <option value=""><?= __('Select City') ?></option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="car_model_from">Car Model From</label>
+            <label for="car_model_from"><?= __('Car Model From') ?></label>
             <select name="car_model_from" id="car_model_from" class="form-control" required>
-                <option value="" disabled selected>Select Start Year</option>
+                <option value="" disabled selected><?= __('Select Start Year') ?></option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="car_model_to">Car Model To</label>
+            <label for="car_model_to"><?= __('Car Model To') ?></label>
             <select name="car_model_to" id="car_model_to" class="form-control" required>
-                <option value="" disabled selected>Select End Year</option>
+                <option value="" disabled selected><?= __('Select End Year') ?></option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="image">Main Image</label>
+            <label for="image"><?= __('Main Image') ?></label>
             <input type="file" name="image" id="image" class="form-control" required>
         </div>
 
         <div class="form-group">
-            <label for="other_images">Other Images</label>
+            <label for="other_images"><?= __('Other Images') ?></label>
             <input type="file" id="file-selector" class="form-control" multiple>
             <br>
             <ul id="file-list"></ul>
@@ -86,11 +86,11 @@
         <div id="file-hidden-inputs"></div>
 
         <div class="form-group">
-            <label for="contact">Contact</label>
+            <label for="contact"><?= __('Contact') ?></label>
             <input type="text" name="contact" id="contact" class="form-control" required>
         </div>
 
-        <button type="submit" class="btn custom-btn-success">Create</button>
+        <button type="submit" class="btn custom-btn-success"><?= __('Create') ?></button>
     </form>
 </div>
 

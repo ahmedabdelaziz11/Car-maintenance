@@ -14,7 +14,7 @@
                                 <div class="form-row">
                                     <div class="form-group">
                                         <select id="service_id" name="service_id" class="custom-select">
-                                            <option value="">Select Service</option>
+                                            <option value=""><?= __('Select Service') ?></option>
                                             <?php foreach ($services as $service): ?>
                                                 <option value="<?= $service['id']; ?>" <?= isset($_GET['service_id']) && $_GET['service_id'] == $service['id'] ? 'selected' : '' ?>>
                                                     <?= $service['name']; ?>
@@ -25,7 +25,7 @@
 
                                     <div class="form-group">
                                         <select name="car_type_id" id="car_type_id" class="custom-select">
-                                            <option value="">Select Car Type</option>
+                                            <option value=""><?= __('Select Car Type') ?></option>
                                             <?php foreach ($carTypes as $carType): ?>
                                                 <option value="<?= $carType['id'] ?>"><?= $carType['name'] ?></option>
                                             <?php endforeach; ?>
@@ -34,13 +34,13 @@
 
                                     <div class="form-group">
                                         <select id="category_id" name="category_id" class="custom-select">
-                                            <option value="">Select Category</option>
+                                            <option value=""><?= __('Select Category') ?></option>
                                         </select>
                                     </div>
 
                                     <div class="form-group">
                                         <select id="country_id" name="country_id" class="custom-select">
-                                            <option value="">Select Country</option>
+                                            <option value=""><?= __('Select Country') ?></option>
                                             <?php foreach ($countries as $country): ?>
                                                 <option value="<?= $country['id'] ?>"><?= $country['name'] ?></option>
                                             <?php endforeach; ?>
@@ -49,7 +49,7 @@
 
                                     <div class="form-group">
                                         <select id="model_from" name="model_from" class="custom-select">
-                                            <option value="" selected>Choose Model</option>
+                                            <option value="" selected><?= __('Choose Model') ?></option>
                                         </select>
                                     </div>
 

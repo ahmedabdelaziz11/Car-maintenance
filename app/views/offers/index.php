@@ -2,9 +2,9 @@
 
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center">
-        <h1 class="text-primary">Manage Your Offers</h1>
+        <h1 class="text-primary"> <?= __('Manage Your Offers') ?></h1>
         <a href="<?= BASE_URL . '/offer/create' ?>" class="btn custom-btn-success">
-            <i class="fas fa-plus"></i> Create New Offer
+            <i class="fas fa-plus"></i> <?= __('Create New Offer') ?>
         </a>
     </div>
 
@@ -12,10 +12,10 @@
         <table class="table table-striped table-hover">
             <thead class="thead-dark">
                 <tr>
-                    <th>Title</th>
-                    <th>Details</th>
-                    <th>Date</th>
-                    <th class="text-center">Actions</th>
+                    <th><?= __('Title') ?></th>
+                    <th><?= __('Details') ?></th>
+                    <th><?= __('Date') ?></th>
+                    <th class="text-center"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -26,10 +26,10 @@
                         <td><?= $offer['date'] ?></td>
                         <td class="text-center">
                             <a href="<?= BASE_URL . '/offer/edit/' . $offer['id'] ?>" class="btn custom-btn-warning">
-                                <i class="fas fa-edit"></i> Edit
+                                <i class="fas fa-edit"></i> <?= __('Edit') ?>
                             </a>
                             <button type="button" class="btn custom-btn-danger delete-btn" data-id="<?= $offer['id'] ?>" data-toggle="modal" data-target="#deleteModal">
-                                <i class="fas fa-trash-alt"></i> Delete
+                                <i class="fas fa-trash-alt"></i> <?= __('Delete') ?>
                             </button>
                         </td>
                     </tr>
@@ -44,17 +44,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <h5 class="modal-title" id="deleteModalLabel"><?= __('Confirm Deletion') ?></h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this offer?
+                <?= __('Are you sure you want to delete this offer?') ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn custom-btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn custom-btn-danger" id="confirmDeleteBtn">Delete</button>
+                <button type="button" class="btn custom-btn-secondary" data-dismiss="modal"><?= __('Cancel') ?></button>
+                <button type="button" class="btn custom-btn-danger" id="confirmDeleteBtn"><?= __('Delete') ?></button>
             </div>
         </div>
     </div>

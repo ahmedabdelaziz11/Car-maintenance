@@ -30,8 +30,8 @@ ob_start();
                     </div>
                 </div>
                 <div class="gallery-nav-btn">
-                    <div class="text-btn text-button-prev">Prev</div>
-                    <div class="text-btn text-button-next">Next</div>
+                    <div class="text-btn text-button-prev"> <?= __('Prev') ?></div>
+                    <div class="text-btn text-button-next"> <?= __('Next') ?></div>
                 </div>
                 <div class="product-tag">
                     <?php if (isset($_SESSION['user'])): ?>
@@ -79,32 +79,32 @@ ob_start();
                         <span><?= $offer['car_type_name'] ?> -> <?= $offer['category_name'] ?></span>
                         <span><p>Model from : <?= $offer['car_model_from'] ?> to : <?= $offer['car_model_to'] ?></p></span>
                     </li>
-                    <li class="billing-information-list"> <span> Location</span> 
+                    <li class="billing-information-list"> <span> <?= __('Location') ?></span> 
                         <span>
                             <?= $offer['country_name'] ?> -> <?= $offer['city_name'] ?>
                         </span> 
                     </li>
-                    <li class="billing-information-list"> <span> Date</span>
+                    <li class="billing-information-list"> <span> <?= __('Date') ?></span>
                         <span><?= date('F d, Y', strtotime($offer['date'])) ?></span>
                     </li>
                 </ul>
 
-                <span class="shipping-method-title">Details</span>
+                <span class="shipping-method-title"><?= __('Details') ?></span>
                 <ul class="shipping-method-lists">
                     <p class="text"><?= $offer['contact'] ?></p>
                 </ul>
 
-                <span class="shipping-method-title">Contact</span>
+                <span class="shipping-method-title"><?= __('Contact') ?></span>
                 <ul class="shipping-method-lists">
                     <p class="text"><?= $offer['details'] ?></p>
                 </ul>
 
                 <div class="payment-card">
-                    <a style="display: inline;margin-top:5px" class="btn-payment" href="<?= BASE_URL . '/chat/index/'.$offer['user_id'] ?>">Private Message</a>
-                    <a style="display: inline;margin-top:5px" class="btn-payment" href="<?= BASE_URL ?>/user/profile/<?= $offer['user_id'] ?>">Owner Profile</a>
+                    <a style="display: inline;margin-top:5px" class="btn-payment" href="<?= BASE_URL . '/chat/index/'.$offer['user_id'] ?>"><?= __('Private Message') ?></a>
+                    <a style="display: inline;margin-top:5px" class="btn-payment" href="<?= BASE_URL ?>/user/profile/<?= $offer['user_id'] ?>"><?= __('Owner Profile') ?></a>
 
                     <?php if (session::Get('user')): ?>
-                        <button style="display: inline;margin-top:5px" class="btn-payment" data-toggle="modal" data-target="#reportOfferModal">Report Offer</button>
+                        <button style="display: inline;margin-top:5px" class="btn-payment" data-toggle="modal" data-target="#reportOfferModal"><?= __('Report Offer') ?></button>
 
                         <form id="followForm" action="<?= BASE_URL ?>/user/follow" method="POST">
                             <input type="hidden" name="follower_id" value="<?= session::Get('user')['id'] ?>">
@@ -125,7 +125,7 @@ ob_start();
     <div class="billing-info section-gap-top-25">
         <div class="container px-0">
             <div class="billing-information-card">
-                <span class="billing-information-title">Comments</span>
+                <span class="billing-information-title"><?= __('Comments') ?></span>
                 <ul class="billing-information-lists">
                     <?php if (!empty($offer['comments'])): ?>
                         <div class="comments-list">
@@ -135,14 +135,14 @@ ob_start();
                                     <p><?= $comment['comment'] ?></p>
                                     <p><small><?= date('F d, Y h:i A', strtotime($comment['date'])) ?></small></p>
                                     <?php if (session::Get('user')): ?>
-                                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="<?= $comment['id'] ?>">Report Comment</a>
+                                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="<?= $comment['id'] ?>"><?= __('Delete') ?></a>
                                     <?php endif; ?>
                                 </div>
                             <?php endforeach; ?>
                         </div>
                     <?php else: ?>
                         <div class="comments-list">
-                            <p id="default-comment">No comments yet. Be the first to comment!</p>
+                            <p id="default-comment"><?= __('No comments yet. Be the first to comment!') ?></p>
                         </div>
                     <?php endif; ?>       
                 </ul>
@@ -152,10 +152,10 @@ ob_start();
                         <div class="add-comment mt-4">
                             <form id="comment-form" method="POST">
                                 <div class="form-group">
-                                    <label for="comment">Comment</label>
+                                    <label for="comment"><?= __('Comment') ?></label>
                                     <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-payment">Submit Comment</button>
+                                <button type="submit" class="btn btn-payment"><?= __('Submit Comment') ?></button>
                             </form>
                         </div>
                     <?php endif; ?>
@@ -169,20 +169,20 @@ ob_start();
             <div class="modal-content">
                 <form id="report-offer-form">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="reportOfferModalLabel">Report Offer</h5>
+                        <h5 class="modal-title" id="reportOfferModalLabel"><?= __('Report Offer') ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="reportDescriptionOffer">Details</label>
+                            <label for="reportDescriptionOffer"><?= __('Details') ?></label>
                             <textarea class="form-control" id="reportDescriptionOffer" name="description" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit Report</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= __('Close') ?></button>
+                        <button type="submit" class="btn btn-primary"><?= __('Submit Report') ?></button>
                     </div>
                 </form>
             </div>
@@ -193,20 +193,20 @@ ob_start();
             <div class="modal-content">
                 <form id="report-comment-form">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="reportCommentModalLabel">Report Comment</h5>
+                        <h5 class="modal-title" id="reportCommentModalLabel"><?= __('Report Comment') ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="reportDescriptionComment">Details</label>
+                            <label for="reportDescriptionComment"><?= __('Details') ?></label>
                             <textarea class="form-control" id="reportDescriptionComment" name="description" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit Report</button>
+                        <button type="button" class="btn custom-btn-secondary" data-dismiss="modal"> <?= __('Close') ?></button>
+                        <button type="submit" class="btn custom-btn-primary"> <?= __('Submit Report') ?></button>
                     </div>
                     <input type="hidden" id="comment_id" name="comment_id">
                 </form>

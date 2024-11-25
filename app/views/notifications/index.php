@@ -5,7 +5,7 @@
         <div class="product-wrapper">
             <div class="product-wrapper-content--4">
                 <?php if (empty($notifications)): ?>
-                    <p class="text-center">No notifications available at the moment.</p>
+                    <p class="text-center"><?= __('No notifications available at the moment.') ?></p>
                 <?php else: ?>
                     <?php foreach ($notifications as $notification): ?>
                         <div class="single-product-item product-item--style-4">
