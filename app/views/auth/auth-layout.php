@@ -1,6 +1,6 @@
 <?php
 use MVC\core\session;
-$lang = session::Get('lang') ?? 'en';
+$lang = session::Get('lang') ?? 'ar';
 ?>
 <!DOCTYPE html>
 <html lang="<?= $lang ?>">
