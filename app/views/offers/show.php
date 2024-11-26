@@ -135,7 +135,7 @@ ob_start();
                                     <p><?= $comment['comment'] ?></p>
                                     <p><small><?= date('F d, Y h:i A', strtotime($comment['date'])) ?></small></p>
                                     <?php if (session::Get('user')): ?>
-                                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="<?= $comment['id'] ?>"><?= __('Delete') ?></a>
+                                        <a href="#" class="btn custom-btn-warning" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="<?= $comment['id'] ?>"><?= __('Delete') ?></a>
                                     <?php endif; ?>
                                 </div>
                             <?php endforeach; ?>
@@ -175,14 +175,14 @@ ob_start();
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="form-group" style="min-width: 100%;">
                             <label for="reportDescriptionOffer"><?= __('Details') ?></label>
                             <textarea class="form-control" id="reportDescriptionOffer" name="description" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= __('Close') ?></button>
-                        <button type="submit" class="btn btn-primary"><?= __('Submit Report') ?></button>
+                        <button type="button" class="btn custom-btn-secondary" data-dismiss="modal"><?= __('Close') ?></button>
+                        <button type="submit" class="btn custom-btn-success"><?= __('Submit Report') ?></button>
                     </div>
                 </form>
             </div>
@@ -280,7 +280,7 @@ ob_start();
                         <p><strong>${data.user_name}:</strong></p>
                         <p>${data.comment}</p>
                         <p><small>${data.date}</small></p>
-                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="${data.id}">Report Comment</a>
+                        <a href="#" class="btn custom-btn-warning" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="${data.id}">Report Comment</a>
 
                     </div>`;
                 commentList.insertAdjacentHTML('beforeend', newComment);

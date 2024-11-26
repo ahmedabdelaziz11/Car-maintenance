@@ -28,7 +28,7 @@ ob_start(); ?>
             <form method="POST" action="<?= BASE_URL . '/chat/send/' . $receiver['id'] ?>" class="mt-3">
                 <div class="input-group">
                     <textarea class="form-control" id="message" name="message" rows="2" required placeholder="Type your message..." style="border-radius: 0; border: 1px solid #ddd;"></textarea>
-                    <button class="btn btn-primary" type="submit" style="border-radius: 0;">
+                    <button class="custom-btn" type="submit" style="border-radius: 0;">
                         <i class="fas fa-paper-plane"></i> <?= __('Send') ?> 
                     </button>
                 </div>
