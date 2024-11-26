@@ -25,7 +25,24 @@ class offer extends model{
 
     public function getOffersByUserId($userId)
     {
-        return $this->select()->where('user_id', '=', $userId)->all();
+        $offer = $this->select([
+                'offers.*', 
+                'services.name AS service_name', 
+                'categories.name AS category_name',
+                'car_types.name AS car_type_name',
+                'cities.name AS city_name',
+                'countries.name AS country_name',
+        ])
+        ->join('services', 'offers.service_id = services.id')
+        ->join('car_types', 'offers.car_type_id = car_types.id')
+        ->join('categories', 'offers.category_id = categories.id')
+        ->join('cities', 'offers.city_id = cities.id')
+        ->join('countries', 'offers.country_id = countries.id')
+        ->where('offers.user_id', '=', $userId)
+        ->where('is_active','=',1)
+        ->all();
+        
+        return $offer;
     }
 
     public function getAllWithPaginated($service_id = null, $car_type_id = null, $category_id = null, $model_from = null, $country_id =null , $page = 1, $limit = 9)
