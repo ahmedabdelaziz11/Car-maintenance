@@ -10,12 +10,6 @@ use MVC\models\user;
 use MVC\models\userFollow;
 
 class UserController extends controller{
-
-    public function index(){
-        $userModel = new user();
-        print_r( $userModel->getAllUsers());
-    }
-
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
