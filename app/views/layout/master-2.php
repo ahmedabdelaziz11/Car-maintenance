@@ -11,6 +11,8 @@ $lang = session::Get('lang') ?? 'en';
     <title>Car</title>
     <meta name="car" content="car" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/png">
+
     <script src="<?= BASE_URL . '/assets/js/vendor/jquery-3.6.0.min.js'?>"></script>
     <?php
         if($lang == 'ar'){
