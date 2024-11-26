@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../assets/css/vendor/icomoon.css" />
     <link rel="stylesheet" href="../assets/css/plugins/swiper-bundle.min.css">
     <link rel="stylesheet" href="../assets/css/plugins/ion.rangeSlider.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style2.css">
 </head>
 
 <body>
