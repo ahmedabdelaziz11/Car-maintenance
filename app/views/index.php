@@ -12,7 +12,7 @@
                         <div class="search-n-filter-area">
                             <form method="GET" id="search-form" action="<?= BASE_URL . '/home/index' ?>" class="custom-form">
                                 <div class="form-row">
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-6 col-12">
                                         <select id="service_id" name="service_id" class="custom-select">
                                             <option value=""><?= __('Select Service') ?></option>
                                             <?php foreach ($services as $service): ?>
@@ -23,7 +23,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-6 col-12">
                                         <select name="car_type_id" id="car_type_id" class="custom-select">
                                             <option value=""><?= __('Select Car Type') ?></option>
                                             <?php foreach ($carTypes as $carType): ?>
@@ -32,13 +32,13 @@
                                         </select>
                                     </div>
 
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-6 col-12">
                                         <select id="category_id" name="category_id" class="custom-select">
                                             <option value=""><?= __('Select Category') ?></option>
                                         </select>
                                     </div>
 
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-6 col-12">
                                         <select id="country_id" name="country_id" class="custom-select">
                                             <option value=""><?= __('Select Country') ?></option>
                                             <?php foreach ($countries as $country): ?>
@@ -47,13 +47,13 @@
                                         </select>
                                     </div>
 
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-6 col-12">
                                         <select id="model_from" name="model_from" class="custom-select">
                                             <option value="" selected><?= __('Choose Model') ?></option>
                                         </select>
                                     </div>
 
-                                    <div class="form-group form-actions col-6">
+                                    <div class="form-group form-actions col-6 col-12">
                                         <?php if (isset($_SESSION['user'])): ?>
                                             <?php if (isset($is_follow) && $is_follow): ?>
                                                 <button type="button" id="follow-button" class="custom-btn">Unfollow</button>
