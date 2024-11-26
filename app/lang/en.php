@@ -115,4 +115,10 @@ return [
     'Name' => 'Name',
     'Already have an account?' => 'Already have an account?',
     'Sign Up' => 'Sign Up',
+    'Share Link' => 'Share Link',
+    'Share this link via' => 'Share this link via',
+    'Or copy the link' => 'Or copy the link',
+    'Copy' => 'Copy',
+    'Copied' => 'Copied',
+
 ];

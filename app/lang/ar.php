@@ -115,4 +115,9 @@ return [
     'Name' => 'الاسم',
     'Already have an account?' => 'هل لديك حساب بالفعل؟',
     'Sign Up' => 'التسجيل',
+    'Share Link' => 'مشاركة الرابط',
+    'Share this link via' => 'مشاركة هذا الرابط عبر',
+    'Or copy the link' => 'أو انسخ الرابط',
+    'Copy' => 'نسخ',
+    'Copied' => 'تم النسخ',
 ];

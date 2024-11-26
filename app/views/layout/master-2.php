@@ -22,6 +22,7 @@ $lang = session::Get('lang') ?? 'ar';
             echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/bootstrap.css">';
         }
     ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
