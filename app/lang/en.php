@@ -120,5 +120,6 @@ return [
     'Or copy the link' => 'Or copy the link',
     'Copy' => 'Copy',
     'Copied' => 'Copied',
+    'Type your message...' => 'Type your message...'
 
 ];
