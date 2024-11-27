@@ -51,7 +51,7 @@ ob_start(); ?>
                     messageDiv.className = 'message mb-3 text-end';
                     messageDiv.innerHTML = `
                         <div class="d-inline-block p-2 bg-primary text-white" style="border-radius: 12px; max-width: 80%;">
-                            <strong>You:</strong>
+                            <strong>You</strong>
                             <p class="mb-1">${response.message}</p>
                             <small class="text-muted">${response.created_at}</small>
                         </div>
@@ -87,7 +87,7 @@ ob_start(); ?>
                         messageDiv.className = `message mb-3 ${isSender ? 'text-end' : 'text-start'}`;
                         messageDiv.innerHTML = `
                             <div class="d-inline-block p-2 ${isSender ? 'bg-primary text-white' : 'bg-light text-dark'}" style="border-radius: 12px; max-width: 80%;">
-                                <strong>${isSender ? 'You' : <?= json_encode($receiver['name']) ?>}:</strong>
+                                <strong>${isSender ? 'You' : <?= json_encode($receiver['name']) ?>}</strong>
                                 <p class="mb-1">${message.message}</p>
                                 <small class="text-muted">${new Date(message.created_at).toLocaleString()}</small>
                             </div>
