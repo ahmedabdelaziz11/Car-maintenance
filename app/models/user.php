@@ -80,4 +80,24 @@ class user extends model{
         $admin = $this->select()->where('id', '=', $adminId)->row();
         return json_decode($admin['contact_types'], true) ?? [];
     }
+
+    public function GetAdminDashboardData(){
+        $this->sql = "SELECT count(*) as total FROM offers";
+        $offerCount = $this->row()['total'];
+        $this->sql = "SELECT count(*) as total FROM users WHERE role = 3";
+        $userCount = $this->row()['total'];
+        $this->sql = "SELECT count(*) as total FROM offer_comments";
+        $commentCount = $this->row()['total'];
+        $this->sql = "SELECT count(*) as total FROM reports";
+        $reportCount = $this->row()['total'];
+        $this->sql = "SELECT count(*) as total FROM favorites";
+        $favoriteCount = $this->row()['total'];
+        return[
+            'offerCount' => $offerCount,
+            'userCount' => $userCount,
+            'commentCount' => $commentCount,
+            'reportCount' => $reportCount,
+            'favoriteCount' => $favoriteCount
+        ];
+    }
 }

@@ -140,4 +140,11 @@ class AdminController extends controller{
         $userModel = new user();
         return  $userModel->getByEmail($email,$id);
     }
+
+    public function dashboard()
+    {
+        $user = new user();
+        $data = $user->GetAdminDashboardData();
+        $this->view('admins/dashboard', ['data' => $data]);
+    }
 }
