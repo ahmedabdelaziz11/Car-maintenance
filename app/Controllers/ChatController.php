@@ -29,7 +29,10 @@ class ChatController extends controller{
         {
             $messages  = $chatModel->getChat($user_id);
             $receiver  = $userModel->getById($user_id);
-            return $this->view('chats/show', ['messages' => $messages, 'receiver' => $receiver,'usersIHaveChatWith' => $usersIHaveChatWith]);
+            if($receiver)
+            {
+                return $this->view('chats/show', ['messages' => $messages, 'receiver' => $receiver,'usersIHaveChatWith' => $usersIHaveChatWith]);
+            }
         }
         return $this->view('chats/index', ['messages' => $messages, 'receiver' => $receiver,'usersIHaveChatWith' => $usersIHaveChatWith]);
     }

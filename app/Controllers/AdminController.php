@@ -24,6 +24,7 @@ class AdminController extends controller{
     
     public function index()
     {
+        var_dump(session::Get('user'));
         $user = new user();
         $admins = $user->GetAllAdmins();
         $this->view('admins/index', ['admins' => $admins]);
