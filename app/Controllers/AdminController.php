@@ -18,7 +18,9 @@ class AdminController extends controller{
         }
         if($user['role'] != 1)
         {
-            die('ليس مسموح لك');
+            header("HTTP/1.1 403 Forbidden");
+            echo "You do not have permission to access this resource.";
+            exit;
         }
     }
     
@@ -55,33 +57,37 @@ class AdminController extends controller{
     {
         $userModel = new user();
         $admin = $userModel->getById($id);
-        $assignedTypes = $userModel->getAllowedContactTypes($id);
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $errors = $this->validateEditRequest($id);
-            if (empty($errors)) {
-                $contactTypes = $_POST['contact_types'] ?? [];
+        if ($admin) {
+            $assignedTypes = $userModel->getAllowedContactTypes($id);
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $errors = $this->validateEditRequest($id);
+                if (empty($errors)) {
+                    $contactTypes = $_POST['contact_types'] ?? [];
 
-                $jsonContactTypes = json_encode($contactTypes);
-                $data = [
-                    'id' => $id,
-                    'name' => $_POST['name'],
-                    'email' => $_POST['email'],
-                    'role' => $_POST['role'],
-                    'contact_types' => $jsonContactTypes
-                ];
+                    $jsonContactTypes = json_encode($contactTypes);
+                    $data = [
+                        'id' => $id,
+                        'name' => $_POST['name'],
+                        'email' => $_POST['email'],
+                        'role' => $_POST['role'],
+                        'contact_types' => $jsonContactTypes
+                    ];
 
-                if (!empty($_POST['password'])) {
-                    $data['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                    if (!empty($_POST['password'])) {
+                        $data['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                    }
+                    $userModel->updateRow($data);
+                    header('Location: ' . BASE_URL . '/admin');
+                    exit;
+                } else {
+                    $errorMessage = implode("<br>", $errors);
+                    $this->view('admins/edit', ['errorMessage' => $errorMessage,'admin' => $admin,'assignedTypes' => $assignedTypes]);
                 }
-                $userModel->updateRow($data);
-                header('Location: ' . BASE_URL . '/admin');
-                exit;
-            } else {
-                $errorMessage = implode("<br>", $errors);
-                $this->view('admins/edit', ['errorMessage' => $errorMessage,'admin' => $admin,'assignedTypes' => $assignedTypes]);
             }
+            $this->view('admins/edit', ['admin' => $admin,'assignedTypes' => $assignedTypes]);
         }
-        $this->view('admins/edit', ['admin' => $admin,'assignedTypes' => $assignedTypes]);
+        header('Location: ' . BASE_URL . '/admin');
+        exit;
     }
 
     public function delete($id)
