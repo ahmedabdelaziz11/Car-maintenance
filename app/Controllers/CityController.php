@@ -62,24 +62,27 @@ class CityController extends controller{
         $countries = (new country())->getAll();
 
         $city = $cityModel->getById($id);
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $errors = $this->validateEditRequest($id);
-            if (empty($errors)) {
-                $data = [
-                    'id' => $id,
-                    'name' => $_POST['name'],
-                    'country_id' => $_POST['country_id'],
-                ];
-                $cityModel->updateRow($data);
-                header('Location: ' . BASE_URL . '/city');
-                exit;
-            } else {
-                $errorMessage = implode("<br>", $errors);
-                $this->view('cities/edit', ['errorMessage' => $errorMessage,'city' => $city,'countries' => $countries]);
+        if($city)
+        {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $errors = $this->validateEditRequest($id);
+                if (empty($errors)) {
+                    $data = [
+                        'id' => $id,
+                        'name' => $_POST['name'],
+                        'country_id' => $_POST['country_id'],
+                    ];
+                    $cityModel->updateRow($data);
+                    header('Location: ' . BASE_URL . '/city');
+                    exit;
+                } else {
+                    $errorMessage = implode("<br>", $errors);
+                    $this->view('cities/edit', ['errorMessage' => $errorMessage,'city' => $city,'countries' => $countries]);
+                }
             }
+            $this->view('cities/edit', ['city' => $city,'countries' => $countries]);
         }
-        $this->view('cities/edit', ['city' => $city,'countries' => $countries]);
+        header('Location: ' . BASE_URL . '/city');
     }
 
     public function delete($id)

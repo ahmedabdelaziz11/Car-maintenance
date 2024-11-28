@@ -2,18 +2,11 @@
 
 namespace MVC\controllers;
 
-use MVC\Traits\ImageUploaderTrait;
 use MVC\core\controller;
 use MVC\core\session;
-use MVC\models\carType;
-use MVC\models\category;
-use MVC\models\favorite;
-use MVC\models\follow;
 use MVC\models\notification;
 use MVC\models\offer;
 use MVC\models\offerComment;
-use MVC\models\offerImage;
-use MVC\models\service;
 
 class CommentController extends controller{
 
@@ -70,8 +63,10 @@ class CommentController extends controller{
     public function delete($id)
     {
         $offerCommentModel = new offerComment();
-
-        $offerCommentModel->deleteRow($id);
+        $comment = $offerCommentModel->getById($id);
+        if ($comment && $comment['user_id'] == $_SESSION['user']['id']) {
+            $offerCommentModel->deleteRow($id);
+        }
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }

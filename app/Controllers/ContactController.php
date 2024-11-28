@@ -49,7 +49,6 @@ class ContactController extends controller {
         } else {
             $this->view('contacts/index', ['conversations' => []]);
         }
-
     }
 
     public function create() {
