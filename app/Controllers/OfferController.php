@@ -143,74 +143,78 @@ class OfferController extends controller{
         $cities     = $cityModel->getAll();
 
         $categories = $categoryModel->categoryByCarTypeId($offer['car_type_id']);
-    
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $errors = $this->validateEditRequest();
-            if (empty($errors)) {
-                $data = [
-                    'id' => $id,
-                    'title' => $_POST['title'],
-                    'details' => $_POST['details'],
-                    'user_id' => $_SESSION['user']['id'],
-                    'service_id' => $_POST['service_id'],
-                    'car_type_id' => $_POST['car_type_id'],
-                    'category_id' => $_POST['category_id'],
-                    'country_id' => $_POST['country_id'],
-                    'city_id' => $_POST['city_id'],
-                    'car_model_from' => $_POST['car_model_from'],
-                    'car_model_to' => $_POST['car_model_to'],
-                    'contact' => $_POST['contact'],
-                    'is_active' => 1
-                ];
-    
-                if (!empty($_FILES['other_images']['name'][0])) {
-                    foreach ($offer['other_images'] as $img) {
-                        $oldImagePath = ROOT . 'public/uploads/offers/' . $img['image'];
-                        if (file_exists($oldImagePath)) {
-                            unlink($oldImagePath);
+        if($offer)
+        {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $errors = $this->validateEditRequest();
+                if (empty($errors)) {
+                    $data = [
+                        'id' => $id,
+                        'title' => $_POST['title'],
+                        'details' => $_POST['details'],
+                        'user_id' => $_SESSION['user']['id'],
+                        'service_id' => $_POST['service_id'],
+                        'car_type_id' => $_POST['car_type_id'],
+                        'category_id' => $_POST['category_id'],
+                        'country_id' => $_POST['country_id'],
+                        'city_id' => $_POST['city_id'],
+                        'car_model_from' => $_POST['car_model_from'],
+                        'car_model_to' => $_POST['car_model_to'],
+                        'contact' => $_POST['contact'],
+                        'is_active' => 1
+                    ];
+        
+                    if (!empty($_FILES['other_images']['name'][0])) {
+                        foreach ($offer['other_images'] as $img) {
+                            $oldImagePath = ROOT . 'public/uploads/offers/' . $img['image'];
+                            if (file_exists($oldImagePath)) {
+                                unlink($oldImagePath);
+                            }
+                            $offerImageModel = new offerImage();
+                            $offerImageModel->deleteRow($img['id']);
                         }
-                        $offerImageModel = new offerImage();
-                        $offerImageModel->deleteRow($img['id']);
-                    }
-                    $uploadedImages = $this->uploadImages($_FILES['other_images'], ROOT . 'public/uploads/offers/');
-                    $imageOrders = $_POST['image_order'];
-                    foreach ($uploadedImages as $index => $uploadedImage) {
-                        $order = $imageOrders[$index];
-                        $offerImageModel = new offerImage();
-                        $offerImageModel->create([
-                            'offer_id' => $id, 
-                            'image' => $uploadedImage,
-                            'order' => $order
-                        ]);
-                    }
-                }    
-    
-                $offerModel->updateRow($data);
-    
-                header('Location: ' . BASE_URL . '/offer');
-                exit;
-            } else {
-                $errorMessage = implode("<br>", $errors);
-                $this->view('offers/edit', [
-                    'services' => $services,
-                    'carTypes' => $carTypes,
-                    'categories' => $categories,
-                    'errorMessage' => $errorMessage,
-                    'offer' => $offer,
-                    'cities' => $cities,
-                    'countries' => $countries,
-                ]);
+                        $uploadedImages = $this->uploadImages($_FILES['other_images'], ROOT . 'public/uploads/offers/');
+                        $imageOrders = $_POST['image_order'];
+                        foreach ($uploadedImages as $index => $uploadedImage) {
+                            $order = $imageOrders[$index];
+                            $offerImageModel = new offerImage();
+                            $offerImageModel->create([
+                                'offer_id' => $id, 
+                                'image' => $uploadedImage,
+                                'order' => $order
+                            ]);
+                        }
+                    }    
+        
+                    $offerModel->updateRow($data);
+        
+                    header('Location: ' . BASE_URL . '/offer');
+                    exit;
+                } else {
+                    $errorMessage = implode("<br>", $errors);
+                    $this->view('offers/edit', [
+                        'services' => $services,
+                        'carTypes' => $carTypes,
+                        'categories' => $categories,
+                        'errorMessage' => $errorMessage,
+                        'offer' => $offer,
+                        'cities' => $cities,
+                        'countries' => $countries,
+                    ]);
+                }
             }
+        
+            $this->view('offers/edit', [
+                'services' => $services,
+                'carTypes' => $carTypes,
+                'categories' => $categories,
+                'offer' => $offer,
+                'cities' => $cities,
+                'countries' => $countries,
+            ]);
         }
-    
-        $this->view('offers/edit', [
-            'services' => $services,
-            'carTypes' => $carTypes,
-            'categories' => $categories,
-            'offer' => $offer,
-            'cities' => $cities,
-            'countries' => $countries,
-        ]);
+        header('Location: ' . BASE_URL . '/offer');
+        exit;
     }
 
     public function getCitiesByCountry($countryId)
@@ -233,20 +237,23 @@ class OfferController extends controller{
     {
         $offerModel = new offer();
         $offer = $offerModel->getById($id);
-        $oldImagePath = ROOT . 'public/uploads/offers/' . $offer['image'];
-        if (file_exists($oldImagePath)) {
-            unlink($oldImagePath);
-        }
-
-        foreach ($offer['other_images'] as $img) {
-            $oldImagePath = ROOT . 'public/uploads/offers/' . $img['image'];
+        if($offer)
+        {
+            $oldImagePath = ROOT . 'public/uploads/offers/' . $offer['image'];
             if (file_exists($oldImagePath)) {
                 unlink($oldImagePath);
             }
-            $offerImageModel = new offerImage();
-            $offerImageModel->deleteRow($img['id']);
+    
+            foreach ($offer['other_images'] as $img) {
+                $oldImagePath = ROOT . 'public/uploads/offers/' . $img['image'];
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+                $offerImageModel = new offerImage();
+                $offerImageModel->deleteRow($img['id']);
+            }
+            $offerModel->deleteRow($id);
         }
-        $offerModel->deleteRow($id);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }

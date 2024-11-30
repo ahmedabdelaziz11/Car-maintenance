@@ -100,6 +100,10 @@ class UserController extends controller{
         $offerModel = new offer();
 
         $user = $userModel->getById($userId);
+        if(!$user)
+        {
+            $this->view('404', []);
+        }
         $offers = $offerModel->getOffersByUserId($userId);
 
         $this->view('users/profile', [

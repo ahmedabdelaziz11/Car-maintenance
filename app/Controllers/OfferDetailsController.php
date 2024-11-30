@@ -16,12 +16,16 @@ class OfferDetailsController extends controller{
             $notificationModel->updateRow(['id' => $notification_id,'is_read' => 1]);
         }
         $offerModel = new offer();
+        $check = $offerModel->checkIfExist($id);
         $offer = $offerModel->getById($id);
-    
-        $this->view('offers/show', [
-            'offer' => $offer,
-            'offerOwner' => $offer['user_id'],
-        ]);
+        if($check)
+        {
+            $this->view('offers/show', [
+                'offer' => $offer,
+                'offerOwner' => $offer['user_id'],
+            ]);
+        }
+        $this->view('404', []);
     } 
 
     public function getCategoriesByCarType($carTypeId)

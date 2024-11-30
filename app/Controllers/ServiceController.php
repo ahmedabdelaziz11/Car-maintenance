@@ -67,7 +67,10 @@ class ServiceController extends controller{
     {
         $serviceModel = new Service();
         $service = $serviceModel->getById($id);
-
+        if(!$service)
+        {
+            $this->view('404', []);
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = $this->validateEditRequest($id);
             if (empty($errors)) {
@@ -98,6 +101,10 @@ class ServiceController extends controller{
     {
         $serviceModel = new Service();
         $service = $serviceModel->getById($id);
+        if(!$service)
+        {
+            $this->view('404', []);
+        }
         $oldImagePath = ROOT . 'public/uploads/services/' . $service['image'];
         if (file_exists($oldImagePath)) {
             unlink($oldImagePath);

@@ -88,7 +88,10 @@ class HomeController extends controller{
     
     public function changLang($lang)
     {
-        $_SESSION['lang'] = $lang;
+        if(in_array($lang,['ar','en']))
+        {
+            $_SESSION['lang'] = $lang;
+        }
         $response = ['success' => true];
         echo json_encode($response);
     }

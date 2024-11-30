@@ -60,23 +60,26 @@ class CountryController extends controller{
     {
         $countryModel = new country();
         $country = $countryModel->getById($id);
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $errors = $this->validateEditRequest($id);
-            if (empty($errors)) {
-                $data = [
-                    'id' => $id,
-                    'name' => $_POST['name'],
-                ];
-                $countryModel->updateRow($data);
-                header('Location: ' . BASE_URL . '/country');
-                exit;
-            } else {
-                $errorMessage = implode("<br>", $errors);
-                $this->view('countries/edit', ['errorMessage' => $errorMessage,'country' => $country]);
+        if($country)
+        {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $errors = $this->validateEditRequest($id);
+                if (empty($errors)) {
+                    $data = [
+                        'id' => $id,
+                        'name' => $_POST['name'],
+                    ];
+                    $countryModel->updateRow($data);
+                    header('Location: ' . BASE_URL . '/country');
+                    exit;
+                } else {
+                    $errorMessage = implode("<br>", $errors);
+                    $this->view('countries/edit', ['errorMessage' => $errorMessage,'country' => $country]);
+                }
             }
+            $this->view('countries/edit', ['country' => $country]);
         }
-        $this->view('countries/edit', ['country' => $country]);
+        header('Location: ' . BASE_URL . '/country');
     }
 
     public function delete($id)

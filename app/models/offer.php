@@ -127,6 +127,11 @@ class offer extends model{
     
         return $this->all();
     }
+    
+    public function checkIfExist($id)
+    {
+        return $this->select()->where('id', '=', $id)->row();
+    }
 
     public function getById($id)
     {
