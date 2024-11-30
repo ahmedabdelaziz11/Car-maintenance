@@ -20,7 +20,9 @@ class CountryController extends controller{
         }
         if($user['role'] != 1)
         {
-            die('ليس مسموح لك');
+            header("HTTP/1.1 403 Forbidden");
+            echo "You do not have permission to access this resource.";
+            exit;
         }
     }
     

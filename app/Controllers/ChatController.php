@@ -39,7 +39,10 @@ class ChatController extends controller{
 
     public function getMessages($user_id)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $userModel = new user();
+        $receiver  = $userModel->getById($user_id);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $receiver) {
             $chatModel = new chat();
             $messages = $chatModel->getChat($user_id);
 
@@ -47,15 +50,20 @@ class ChatController extends controller{
             echo json_encode(['status' => 'success', 'messages' => $messages]);
             exit;
         }
+        echo json_encode(['status' => 'success', 'messages' => null]);
+        exit;
     }
 
     public function send($receiver_id)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $message = $_POST['message'];
+            $userModel = new user();
+            $receiver  = $userModel->getById($receiver_id);
+
             $sender_id = session::get('user')['id'];
 
-            if (!empty($message)) {
+            if (!empty($message) && $receiver) {
                 $chatModel = new chat();
                 $chatModel->create([
                     'sender_id' => $sender_id,

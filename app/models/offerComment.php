@@ -12,6 +12,11 @@ class offerComment extends model{
         $this->table = "offer_comments";
     }
 
+    public function getById($id)
+    {
+        return $this->select()->where('id', '=', $id)->row();
+    }
+
     public function create($data)
     {
         return $this->insert($data)->execute();

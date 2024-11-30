@@ -19,7 +19,9 @@ class CategoryController extends controller{
         }
         if($user['role'] != 1)
         {
-            die('ليس مسموح لك');
+            header("HTTP/1.1 403 Forbidden");
+            echo "You do not have permission to access this resource.";
+            exit;
         }
     }
     
@@ -58,26 +60,30 @@ class CategoryController extends controller{
     {
         $categoryModel = new category();
         $carTypes = (new carType())->getAll();
-
         $category = $categoryModel->getById($id);
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $errors = $this->validateEditRequest($id);
-            if (empty($errors)) {
-                $data = [
-                    'id' => $id,
-                    'name' => $_POST['name'],
-                    'car_type_id' => $_POST['car_type_id'],
-                ];
-                $categoryModel->updateRow($data);
-                header('Location: ' . BASE_URL . '/category');
-                exit;
-            } else {
-                $errorMessage = implode("<br>", $errors);
-                $this->view('categories/edit', ['errorMessage' => $errorMessage,'category' => $category,'carType' => $carTypes]);
+        if($category)
+        {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $errors = $this->validateEditRequest($id);
+                if (empty($errors)) {
+                    $data = [
+                        'id' => $id,
+                        'name' => $_POST['name'],
+                        'car_type_id' => $_POST['car_type_id'],
+                    ];
+                    $categoryModel->updateRow($data);
+                    header('Location: ' . BASE_URL . '/category');
+                    exit;
+                } else {
+                    $errorMessage = implode("<br>", $errors);
+                    $this->view('categories/edit', ['errorMessage' => $errorMessage,'category' => $category,'carType' => $carTypes]);
+                }
             }
+            $this->view('categories/edit', ['category' => $category,'carTypes' => $carTypes]);
         }
-        $this->view('categories/edit', ['category' => $category,'carTypes' => $carTypes]);
+        header('Location: ' . BASE_URL . '/category');
+        exit;
     }
 
     public function delete($id)
