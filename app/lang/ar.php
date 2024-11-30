@@ -120,5 +120,8 @@ return [
     'Or copy the link' => 'أو انسخ الرابط',
     'Copy' => 'نسخ',
     'Copied' => 'تم النسخ',
-    'Type your message...' => 'اكتب رسالتك ...'
+    'Type your message...' => 'اكتب رسالتك ...',
+    'follow' => 'نسخ',
+    'un follow' => 'نسخ',
+
 ];

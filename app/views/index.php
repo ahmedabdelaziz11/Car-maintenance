@@ -1,75 +1,67 @@
 <?php ob_start(); ?>
 <div class="offcanvas-overlay"></div>
-
-    <div class="search-n-filter-section section-gap-top-25">
-        <div class="container">
-            <div class="search-n-filter-area">
-                <div class="search-box product-item--style-4">
-                    <div class="search-n-filter-section section-gap-top-25">
-                        <div class="container">
-                            <div class="search-n-filter-area">
-                                <form method="GET" id="search-form" action="<?= BASE_URL . '/home/index' ?>" class="custom-form">
-                                    <div class="form-row">
-                                        <div class="form-group col-6">
-                                            <select id="service_id" name="service_id" class="custom-select">
-                                                <option value=""><?= __('Select Service') ?></option>
-                                                <?php foreach ($services as $service): ?>
-                                                    <option value="<?= $service['id']; ?>" <?= isset($_GET['service_id']) && $_GET['service_id'] == $service['id'] ? 'selected' : '' ?>>
-                                                        <?= $service['name']; ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-6">
-                                            <select name="car_type_id" id="car_type_id" class="custom-select">
-                                                <option value=""><?= __('Select Car Type') ?></option>
-                                                <?php foreach ($carTypes as $carType): ?>
-                                                    <option value="<?= $carType['id'] ?>"><?= $carType['name'] ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-6">
-                                            <select id="category_id" name="category_id" class="custom-select">
-                                                <option value=""><?= __('Select Category') ?></option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-6">
-                                            <select id="country_id" name="country_id" class="custom-select">
-                                                <option value=""><?= __('Select Country') ?></option>
-                                                <?php foreach ($countries as $country): ?>
-                                                    <option value="<?= $country['id'] ?>"><?= $country['name'] ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-6 col-md-6 col-12">
-                                            <select id="model_from" name="model_from" class="custom-select">
-                                                <option value="" selected><?= __('Choose Model') ?></option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group form-actions col-6">
-                                            <?php if (isset($_SESSION['user'])): ?>
-                                                <?php if (isset($is_follow) && $is_follow): ?>
-                                                    <button type="button" id="follow-button" class="custom-btn">Unfollow</button>
-                                                <?php else : ?>
-                                                    <button type="button" id="follow-button" class="custom-btn-success">Follow</button>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </form>
+<div class="container">
+    <div class="search-n-filter-area">
+        <div class="search-box product-item--style-4">
+            <div style="width: 100%" class="">
+                <form style="width: 100%" method="GET" id="search-form" action="<?= BASE_URL . '/home/index' ?>">
+                    <div style="width: 100%" class="container">
+                        <div class="catagories-wrapper">
+                            <div class="catagories-wrapper-content ">
+                                <div class="single-product-item product-item--style-2">
+                                    <select id="service_id" name="service_id" class="custom-select">
+                                        <option value=""><?= __('Select Service') ?></option>
+                                        <?php foreach ($services as $service): ?>
+                                            <option value="<?= $service['id']; ?>" <?= isset($_GET['service_id']) && $_GET['service_id'] == $service['id'] ? 'selected' : '' ?>>
+                                                <?= $service['name']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="single-product-item product-item--style-2">
+                                    <select name="car_type_id" id="car_type_id" class="custom-select">
+                                        <option value=""><?= __('Select Car Type') ?></option>
+                                        <?php foreach ($carTypes as $carType): ?>
+                                            <option value="<?= $carType['id'] ?>"><?= $carType['name'] ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="single-product-item product-item--style-2">
+                                    <select id="category_id" name="category_id" class="custom-select">
+                                        <option value=""><?= __('Select Category') ?></option>
+                                    </select>
+                                </div>
+                                <div class="single-product-item product-item--style-2">
+                                    <select id="country_id" name="country_id" class="custom-select">
+                                        <option value=""><?= __('Select Country') ?></option>
+                                        <?php foreach ($countries as $country): ?>
+                                            <option value="<?= $country['id'] ?>"><?= $country['name'] ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="single-product-item product-item--style-2">
+                                    <select id="model_from" name="model_from" class="custom-select">
+                                        <option value="" selected><?= __('Choose Model') ?></option>
+                                    </select>
+                                </div>
+                                <div class="single-product-item product-item--style-2">
+                                    <?php if (isset($_SESSION['user'])): ?>
+                                        <?php if (isset($is_follow) && $is_follow): ?>
+                                            <button type="button" id="follow-button" style="width:100%" class="custom-btn">Unfollow</button>
+                                        <?php else : ?>
+                                            <button type="button" id="follow-button" style="width:100%" class="custom-btn-success">Follow</button>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-<div class="catagories-section section-gap-top-50 elements">
+</div>
+<div class="catagories-section section-gap-top-25 elements">
 
 </div>
 
@@ -79,32 +71,32 @@
     if (followButton) {
         setButtonColor(followButton.textContent.trim());
 
-        followButton.addEventListener('click', function () {
+        followButton.addEventListener('click', function() {
             const form = document.getElementById('search-form');
             const queryString = serializeForm(form);
             const action = followButton.textContent.trim() === 'Follow' ? 'follow' : 'unfollow';
             const url = `<?= BASE_URL ?>/home/index?${queryString}&action=${action}`;
 
             fetch(url, {
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const newText = action === 'follow' ? 'Unfollow' : 'Follow';
-                    followButton.textContent = newText;
-                    setButtonColor(newText);
-                } else {
-                    alert('Failed to update follow status.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const newText = action === 'follow' ? 'Unfollow' : 'Follow';
+                        followButton.textContent = newText;
+                        setButtonColor(newText);
+                    } else {
+                        alert('Failed to update follow status.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
         });
     }
 
@@ -192,7 +184,7 @@
                     fetchOffers();
                 });
         } else {
-            fetchOffers(); 
+            fetchOffers();
         }
     });
 
@@ -217,7 +209,7 @@
         const page = new URLSearchParams(window.location.search).get('page') || 1;
         fetchOffers(page);
         attachInputListeners();
-        attachPaginationListeners(); 
+        attachPaginationListeners();
     });
 
     window.addEventListener('popstate', () => {
@@ -256,6 +248,7 @@
 </script>
 
 <?php require_once(VIEW . 'partials/share-modal.php'); ?>
+
 
 <?php
 $content = ob_get_clean();
