@@ -8,19 +8,18 @@
                     <p class="text-center"><?= __('No notifications available at the moment.') ?></p>
                 <?php else: ?>
                     <?php foreach ($notifications as $notification): ?>
-                        <div class="single-product-item product-item--style-4">
-                            <div class="content">
-                                <div class="content--left">
-                                    <a href="<?= BASE_URL . '/OfferDetails/show/' . $notification['offer_id'] . '/' . $notification['id'] ?>" class="title">
-                                        <strong><?= htmlspecialchars($notification['message']); ?></strong>
-                                    </a>
-                                    <p><?= htmlspecialchars($notification['date']); ?></p>
+                        <a style="margin: 20px;" href="<?= BASE_URL . '/OfferDetails/show/' . $notification['offer_id'] . '/' . $notification['id'] ?>">
+                            <div class="single-product-item product-item--style-4" style="<?= $notification['is_read'] ? 'background-color: #EAEBE8;' : ''; ?>">
+                                <div class="content">
+                                    <div class="content--left">
+                                        <div class="title">
+                                            <strong><?= htmlspecialchars($notification['message']); ?></strong>
+                                            <p><?= htmlspecialchars($notification['date']); ?></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <a href="#?" aria-label="Remove Notification" class="cart-link">
-                                <i class="icon icon-carce-x-circle"></i>
-                            </a>
-                        </div>
+                        </a>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
