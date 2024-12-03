@@ -188,6 +188,16 @@ class offer extends model{
         return $this->execute();
     }
 
+    public function updateRowForSpecificUser($data)
+    {
+        $id = $data['id'];
+        $user_id = $data['user_id'];
+        unset($data['id']);
+        unset($data['user_id']);
+        $this->update($data)->where('id', '=', $id)->where('user_id', '=', $user_id);
+        return $this->execute();
+    }
+
     public function deleteRow($id)
     {
         return $this->delete($id)->execute();

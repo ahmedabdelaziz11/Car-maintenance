@@ -123,5 +123,6 @@ return [
     'Type your message...' => 'Type your message...',
     'follow' => 'follow',
     'un follow' => 'un follow',
+    'Add Offer' => 'Add Offer'
 
 ];

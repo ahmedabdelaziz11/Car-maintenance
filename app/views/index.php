@@ -60,7 +60,13 @@
             </div>
         </div>
     </div>
+    <div class="search-box mt-2">
+        <a  href="<?= BASE_URL . '/offer/create' ?>" class="btn-primary custom-btn m-1 text-center" style="width:100%"><?= __('Create New Offer') ?></a>
+    </div>
 </div>
+
+
+
 <div class="catagories-section section-gap-top-25 elements">
 
 </div>

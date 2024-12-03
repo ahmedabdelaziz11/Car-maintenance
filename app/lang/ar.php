@@ -123,5 +123,5 @@ return [
     'Type your message...' => 'اكتب رسالتك ...',
     'follow' => 'نسخ',
     'un follow' => 'نسخ',
-
+    'Add Offer' => 'أضافة عرض',
 ];

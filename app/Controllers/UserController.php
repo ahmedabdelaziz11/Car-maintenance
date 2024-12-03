@@ -61,7 +61,10 @@ class UserController extends controller{
                         'email' => $authenticatedUser['email'],
                         'role' => $authenticatedUser['role']
                     ]);
-                    
+                    if($authenticatedUser['role'] == 1 || $authenticatedUser['role'] == 2){
+                        header('Location: ' . BASE_URL . '/admin/dashboard');
+                        exit;
+                    }
                     header('Location: ' . BASE_URL . '/');
                     exit;
                 } else {

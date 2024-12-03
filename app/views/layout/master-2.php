@@ -52,19 +52,32 @@ $lang = session::Get('lang') ?? 'ar';
                 <!-- Start User Event Area -->
                 <div class="header-area">
                     <div class="header-top-area header-top-area--style-2">
-                        <ul class="event-list">
-                            <li class="list-item">
-                                <a href="#mobile-menu-offcanvas" area-label="mobile menu offcanvas svg icon" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow main-menu offcanvas-toggle offside-menu">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                                        <g id="Group_1" data-name="Group 1" transform="translate(-28 -63)">
-                                            <path id="Rectangle_3" data-name="Rectangle 3" d="M0,0H5A2,2,0,0,1,7,2V5A2,2,0,0,1,5,7H2A2,2,0,0,1,0,5V0A0,0,0,0,1,0,0Z" transform="translate(28 63)" fill="#ff375f" />
-                                            <path id="Rectangle_6" data-name="Rectangle 6" d="M2,0H5A2,2,0,0,1,7,2V5A2,2,0,0,1,5,7H0A0,0,0,0,1,0,7V2A2,2,0,0,1,2,0Z" transform="translate(28 72)" fill="#ff375f" />
-                                            <path id="Rectangle_4" data-name="Rectangle 4" d="M2,0H7A0,0,0,0,1,7,0V5A2,2,0,0,1,5,7H2A2,2,0,0,1,0,5V2A2,2,0,0,1,2,0Z" transform="translate(37 63)" fill="#ff375f" />
-                                            <path id="Rectangle_5" data-name="Rectangle 5" d="M2,0H5A2,2,0,0,1,7,2V7A0,0,0,0,1,7,7H2A2,2,0,0,1,0,5V2A2,2,0,0,1,2,0Z" transform="translate(37 72)" fill="#ff375f" />
-                                        </g>
-                                    </svg>
-                                </a>
-                            </li>
+                        <ul class="event-list mb-3">
+                            <?php if (!isset($_SESSION['user'])): ?>
+                                <li class="list-item">
+                                    <a href="<?= BASE_URL . '/user/login'; ?>" aria-label="<?= __('Login') ?>" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ff375f">
+                                            <path d="M6 3a1 1 0 011-1h6a1 1 0 011 1v10a1 1 0 01-1 1H7a1 1 0 01-1-1v-1h1v1h6V3H7v1H6V3zm2.854 2.854a.5.5 0 00-.708-.708L5.5 7.293 3.854 5.646a.5.5 0 10-.708.708l2 2a.5.5 0 00.708 0l3-3z"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="list-item">
+                                    <a href="<?= BASE_URL . '/user/register'; ?>" aria-label="<?= __('Register') ?>" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ff375f">
+                                            <path d="M8 0a4 4 0 100 8A4 4 0 008 0zM3 5.5a.5.5 0 01.5-.5H6v-2a.5.5 0 011 0v2h2.5a.5.5 0 010 1H7v2.5a.5.5 0 01-1 0V6H3.5a.5.5 0 01-.5-.5zm5 4.5c-4.418 0-5.979 2.243-6 3.75V15h12v-1.25c-.021-1.507-1.582-3.75-6-3.75z"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (isset($_SESSION['user'])): ?>
+                                <li class="list-item">
+                                    <a href="<?= BASE_URL . '/user/logout'; ?>" aria-label="<?= __('Log Out') ?>" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ff375f">
+                                            <path d="M6 3a1 1 0 011-1h6a1 1 0 011 1v10a1 1 0 01-1 1H7a1 1 0 01-1-1v-1h1v1h6V3H7v1H6V3zM3.146 8.854a.5.5 0 000-.708l2-2a.5.5 0 10-.708-.708L2.293 8l2.145 2.146a.5.5 0 10.708-.708l-2-2z"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
 
                             <li class="list-item">
                                 <div class="toggle-btn <?= $lang === 'en' ? 'toggled' : '' ?>" onclick="toggleLanguage(this)">
@@ -73,15 +86,21 @@ $lang = session::Get('lang') ?? 'ar';
                                     <span class="en">EN</span>
                                 </div>
                             </li>
-
                             <?php if (isset($_SESSION['user'])): ?>
                                 <li class="list-item">
-                                    <ul class="list-child">
-                                        <li class="list-item">
-                                            <span class="notch-bg notch-bg--emerald"></span>
-                                            <a href="#profile-menu-offcanvas" area-label="User" class="btn btn--size-33-33 btn--center btn--round offcanvas-toggle offside-menu"><img class="img-fluid" height="33" width="33" src="<?= BASE_URL . '/assets/images/user.png'?>" alt="image"></a>
-                                        </li>
-                                    </ul>
+                                    <a href="<?= BASE_URL . '/offer'; ?>" aria-label="<?= __('offer') ?>" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ff375f">
+                                            <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm4.5 8.5h-4v4a.5.5 0 01-1 0v-4h-4a.5.5 0 010-1h4v-4a.5.5 0 011 0v4h4a.5.5 0 010 1z"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+
+                                <li class="list-item">
+                                    <a href="<?= BASE_URL . '/my-desires'; ?>" aria-label="My Desires Page" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ff375f">
+                                            <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.08-.641 2.578.314 3.994C3.345 8.293 8 12.125 8 12.125s4.655-3.832 6.286-5.078c.955-1.416.837-2.914.314-3.994C13.486.878 10.4.28 8.717 2.011L8 2.748zM8 15s-5-4.133-6.5-6.164c-1.46-1.97-1.6-4.602-.646-6.158C2.745.78 5.322.246 7.082 1.972L8 2.88l.918-.908C10.678.246 13.255.78 14.146 2.678c.954 1.556.814 4.188-.646 6.158C13 10.867 8 15 8 15z"></path>
+                                        </svg>
+                                    </a>
                                 </li>
                             <?php endif; ?>
                         </ul>

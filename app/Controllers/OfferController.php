@@ -236,24 +236,7 @@ class OfferController extends controller{
     public function delete($id)
     {
         $offerModel = new offer();
-        $offer = $offerModel->getById($id);
-        if($offer)
-        {
-            $oldImagePath = ROOT . 'public/uploads/offers/' . $offer['image'];
-            if (file_exists($oldImagePath)) {
-                unlink($oldImagePath);
-            }
-    
-            foreach ($offer['other_images'] as $img) {
-                $oldImagePath = ROOT . 'public/uploads/offers/' . $img['image'];
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-                $offerImageModel = new offerImage();
-                $offerImageModel->deleteRow($img['id']);
-            }
-            $offerModel->deleteRow($id);
-        }
+        $offerModel->updateRowForSpecificUser(['id' => $id,'user_id' => $_SESSION['user']['id'], 'is_active' => 0]);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }
