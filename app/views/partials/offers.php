@@ -7,8 +7,9 @@
                         <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>">
                             <img width="150" height="69" class="img-fluid" src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="<?= $offer['title'] ?>">
                         </a>
-                        <button class="btn btn-primary share-button" onclick="openShareModal('<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>')">مشاركة</button>
-                        <!-- <a href="wishlist.html" aria-label="Wishlist" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow"><i class="icon icon-carce-heart"></i></a> -->
+                        <button class="btn btn-primary share-button" onclick="openShareModal('<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>')">
+                            <i class="fa fa-share-alt" aria-hidden="true" style="color: #ff375f;"></i>
+                        </button>
                     </div>
                     <div class="content">
                         <div class="content--left">
