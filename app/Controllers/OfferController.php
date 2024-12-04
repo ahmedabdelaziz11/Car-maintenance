@@ -135,16 +135,15 @@ class OfferController extends controller{
         $categoryModel = new category();
         $carTypeModel = new CarType();
         $cityModel = new city();
-        
-        $offer      = $offerModel->getById($id);
-        $services   = $serviceModel->getAll();
-        $carTypes   = $carTypeModel->getAll();
-        $countries  = $countryModel->getAll();
-        $cities     = $cityModel->getAll();
-
-        $categories = $categoryModel->categoryByCarTypeId($offer['car_type_id']);
-        if($offer)
+        $check     = $offerModel->checkIfExist($id);
+        if($check)
         {
+            $offer      = $offerModel->getById($id);
+            $services   = $serviceModel->getAll();
+            $carTypes   = $carTypeModel->getAll();
+            $countries  = $countryModel->getAll();
+            $cities     = $cityModel->getAll();
+            $categories = $categoryModel->categoryByCarTypeId($offer['car_type_id']);
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors = $this->validateEditRequest();
                 if (empty($errors)) {
