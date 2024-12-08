@@ -142,4 +142,6 @@ return [
     'User not found.' => 'المستخدم غير موجود.',
     'Invalid OTP. Please try again.' => 'رمز التحقق غير صحيح. الرجاء المحاولة مرة أخرى.',
     'Phone number verified successfully!' => 'تم التحقق من رقم الهاتف بنجاح!',
+    'Profile Update' => 'تحديث الملف الشخصى',
+    'Update' => 'تحديث',
 ];

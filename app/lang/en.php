@@ -142,4 +142,6 @@ return [
     'User not found.' => 'User not found.',
     'Invalid OTP. Please try again.' => 'Invalid OTP. Please try again.',
     'Phone number verified successfully!' => 'Phone number verified successfully!',
+    'Profile Update' => 'Profile Update',
+    'Update' => 'Update',
 ];

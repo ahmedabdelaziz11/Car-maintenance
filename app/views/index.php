@@ -67,7 +67,7 @@
         </div>
     </div>
     <div class="search-box mt-2">
-        <a  href="<?= BASE_URL . '/offer/create' ?>" class="btn-primary custom-btn m-1 text-center" style="width:100%"><?= __('Create New Offer') ?></a>
+        <a href="<?= BASE_URL . '/offer/create' ?>" class="btn-primary custom-btn m-1 text-center" style="width:100%"><?= __('Create New Offer') ?></a>
     </div>
 </div>
 
@@ -79,6 +79,38 @@
 
 
 <script>
+    function toggleFavorite(offerId, button) {
+        const isFavorite = button.getAttribute('data-favorite') === 'true';
+
+        fetch('<?= BASE_URL . "/offer/favorite/" ?>' + offerId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    favorite: !isFavorite
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.setAttribute('data-favorite', !isFavorite);
+                    button.style.color = !isFavorite ? 'crimson' : 'gray';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    document.querySelectorAll('.favorite-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const offerId = this.getAttribute('data-offer-id'); 
+            toggleFavorite(offerId, this); 
+        });
+    });
+
     const followButton = document.getElementById('follow-button');
     if (followButton) {
         setButtonColor(followButton.textContent.trim());

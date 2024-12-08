@@ -4,6 +4,23 @@
             <?php foreach ($offers as $offer): ?>
                 <div class="single-product-item product-item--style-2">
                     <div class="image product-item--bg-neon-carrot">
+                        <?php if (isset($_SESSION['user'])): ?>
+                            <button 
+                                type="button" 
+                                style="
+                                    color: <?= $offer['is_favorite'] ? 'crimson' : 'gray' ?>; 
+                                    background: none; 
+                                    <?= $_SESSION['lang'] == 'en' 
+                                        ? 'justify-content: end; display: flex; margin-right: 25px;' 
+                                        : 'justify-content: end; display: flex; margin-left: 25px;'; ?>"
+                                aria-label="Wishlist" 
+                                data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" 
+                                data-offer-id="<?= $offer['id'] ?>" 
+                                class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red favorite-btn" 
+                                onClick="toggleFavorite(<?= $offer['id'] ?>, this)">
+                                <i class="icon icon-carce-heart"></i>
+                            </button>
+                        <?php endif; ?>
                         <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>">
                             <img width="150" height="69" class="img-fluid" src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="<?= $offer['title'] ?>">
                         </a>
@@ -15,7 +32,7 @@
                         <div class="content--left">
                             <div style="margin-bottom:15px;">
                                 <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>" class="title">
-                                        <?= $offer['car_type_name'] ?>
+                                    <?= $offer['car_type_name'] ?>
                                 </a>
                                 <a style="padding:10px;" href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>" class="title">
                                     <?= $offer['category_name'] ?>

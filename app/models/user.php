@@ -3,6 +3,7 @@
 namespace MVC\models;
 
 use MVC\core\model;
+use MVC\core\session;
 
 class user extends model{
 
@@ -24,12 +25,24 @@ class user extends model{
 
     public function getByUsername($username)
     {
-        return $this->select()->where('name', '=', $username)->row();
+        $userId = session::Get('user')['id'];
+        $sql = $this->select()->where('name', '=', $username);
+        if($userId)
+        {
+            $sql->where('id','!=',$userId);
+        }
+        return $sql->row();
     }
 
     public function getByPhone($phone)
     {
-        return $this->select()->where('phone', '=', $phone)->row();
+        $userId = session::Get('user')['id'];
+        $sql = $this->select()->where('phone', '=', $phone);
+        if($userId)
+        {
+            $sql->where('id','!=',$userId);
+        }
+        return $sql->row();
     }
 
     public function getByEmail($email, $id = null)
