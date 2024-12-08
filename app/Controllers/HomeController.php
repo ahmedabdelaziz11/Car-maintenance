@@ -10,6 +10,7 @@ use MVC\models\country;
 use MVC\models\follow;
 use MVC\models\offer;
 use MVC\models\service;
+use MVC\models\user;
 
 class HomeController extends controller{
 
@@ -95,4 +96,84 @@ class HomeController extends controller{
         $response = ['success' => true];
         echo json_encode($response);
     }
+
+    public function verifyPhoneNumberView()
+    {
+        if(session::Get('user') && session::Get('user')['is_phone_verified'] == 0)
+        {
+            $this->view('verify-phone-number', []);
+        }
+        header('Location: ' . BASE_URL . '/');
+    }
+
+    public function verifyPhoneNumber()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode([
+                'success' => false,
+                'message' => __('Invalid request method.'),
+            ]);
+            exit;
+        }
+    
+        $otp = trim($_POST['otp'] ?? '');
+        if (empty($otp)) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('OTP is required.'),
+            ]);
+            exit;
+        }
+    
+        $user = Session::Get('user');
+        if (!$user || !isset($user['id'])) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('User is not authenticated.'),
+            ]);
+            exit;
+        }
+    
+        $userModel = new user();
+        $dbUser = $userModel->select(['id', 'otp', 'is_phone_verified'])
+            ->where('id', '=', $user['id'])
+            ->row();
+    
+        if (!$dbUser) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('User not found.'),
+            ]);
+            exit;
+        }
+    
+        if ($dbUser['otp'] !== $otp) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('Invalid OTP. Please try again.'),
+            ]);
+            exit;
+        }
+    
+        $updateStatus = $userModel->update([
+            'is_phone_verified' => 1, 
+            'otp'    => null,
+        ])->where('id', '=', $dbUser['id'])->execute();
+        $_SESSION['user']['is_phone_verified'] = 1;
+    
+        if ($updateStatus) {
+            echo json_encode([
+                'success' => true,
+                'message' => __('Phone number verified successfully!'),
+                'redirectUrl' => BASE_URL . '/',
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => __('Failed to update user status. Please try again later.'),
+            ]);
+        }
+    }   
+    
 }

@@ -95,6 +95,15 @@
 </div>
 
 <script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        const submitButton = this.querySelector('[type="submit"]');
+        if (submitButton.disabled) {
+            event.preventDefault();
+            return;
+        }
+        submitButton.disabled = true;
+        submitButton.textContent = "<?= __('Submitting...') ?>";
+    });
     document.getElementById('car_type_id').addEventListener('change', function() {
         var carTypeId = this.value;
         var categorySelect = document.getElementById('category_id');
@@ -170,7 +179,7 @@
         function handleFromYearChange() {
             const fromYear = parseInt(carModelFrom.value);
             if (!isNaN(fromYear)) {
-                populateYearOptions(carModelTo, fromYear + 1, currentYear);
+                populateYearOptions(carModelTo, fromYear, currentYear);
             }
         }
 

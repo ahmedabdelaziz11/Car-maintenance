@@ -1,6 +1,12 @@
 <?php ob_start(); ?>
 <div class="offcanvas-overlay"></div>
 <div class="container">
+    <?php if (isset($_SESSION['user']) && $_SESSION['user']['is_phone_verified'] == 0) : ?>
+        <div class="search-box product-item--style-4 mb-2" style="display: flex; justify-content: space-between;">
+            <p> <?= __('Verify your phone number') ?> </p>
+            <a href="<?= BASE_URL . '/home/verifyPhoneNumberView' ?>" class="custom-btn-success"><?= __('Verify') ?></a>
+        </div>
+    <?php endif; ?>
     <div class="search-n-filter-area">
         <div class="search-box product-item--style-4">
             <div style="width: 100%" class="">

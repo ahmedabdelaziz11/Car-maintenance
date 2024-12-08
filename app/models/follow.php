@@ -50,6 +50,21 @@ class follow extends model{
 
     public function deleteRow($id)
     {
-        return $this->delete($id)->execute();
+        return $this->where('user_id','=',$_SESSION['user']['id']) 
+        ->delete($id)
+        ->execute();
+    }
+
+    public function getFollows()
+    {
+        return $this->select([
+            'follows.*', 
+            'services.name as service_name', 
+            'categories.name as category_name', 
+        ])
+        ->join('services', 'services.id = follows.service_id')
+        ->join('categories', 'categories.id = follows.category_id')
+        ->where('follows.user_id','=',$_SESSION['user']['id']) 
+        ->all();
     }
 }

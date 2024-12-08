@@ -32,4 +32,14 @@ class userFollow extends model{
             ->where('following_id', '=', $user_id)
             ->all();
     }
+
+    public function getFollowing()
+    {
+        return $this->select([
+            '*', 
+        ])
+        ->join('users', 'user_follows.following_id = users.id')
+        ->where('user_follows.follower_id','=',$_SESSION['user']['id']) 
+        ->all();
+    }
 }

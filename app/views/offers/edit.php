@@ -109,11 +109,20 @@
             <input type="text" name="contact" id="contact" class="form-control" value="<?= $offer['contact'] ?>" required>
         </div>
 
-        <button type="submit" class="btn custom-btn-warning"><?= __('Update') ?></button>
+        <button type="submit" class="btn custom-btn-warning" id="submitButton"><?= __('Update') ?></button>
     </form>
 </div>
 
 <script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        const submitButton = this.querySelector('[type="submit"]');
+        if (submitButton.disabled) {
+            event.preventDefault();
+            return;
+        }
+        submitButton.disabled = true;
+        submitButton.textContent = "<?= __('Submitting...') ?>";
+    });
     document.getElementById('car_type_id').addEventListener('change', function() {
         var carTypeId = this.value;
         var categorySelect = document.getElementById('category_id');
@@ -176,7 +185,7 @@
 
         populateYearOptions(carModelFrom, startYear, currentYear, selectedFromYear);
 
-        populateYearOptions(carModelTo, parseInt(selectedFromYear) + 1, currentYear, selectedToYear);
+        populateYearOptions(carModelTo, parseInt(selectedFromYear), currentYear, selectedToYear);
 
         carModelFrom.addEventListener('change', handleFromYearChange);
         carModelTo.addEventListener('change', validateYearSelection);

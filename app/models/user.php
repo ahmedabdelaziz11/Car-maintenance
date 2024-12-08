@@ -12,11 +12,6 @@ class user extends model{
         $this->table = "users";
     }
 
-    public function GetAllUsers(){
-        $data =  $this->select()->all(); 
-        return $data;
-    }
-
     public function GetAllAdmins(){
         $data =  $this->where('role','!=',3)->select(['id','name','email','role'])->all(); 
         return $data;
@@ -25,6 +20,16 @@ class user extends model{
     public function getById($id)
     {
         return $this->select()->where('id', '=', $id)->row();
+    }
+
+    public function getByUsername($username)
+    {
+        return $this->select()->where('name', '=', $username)->row();
+    }
+
+    public function getByPhone($phone)
+    {
+        return $this->select()->where('phone', '=', $phone)->row();
     }
 
     public function getByEmail($email, $id = null)
@@ -69,8 +74,11 @@ class user extends model{
         $this->insert([
             'name'     => $data['name'],
             'email'    => $data['email'],
+            'phone'    => $data['phone'],
             'password' => $data['password'],
             'role'     => $data['role'],
+            'otp'      => rand(100000,999999),
+            'is_phone_verified'      => 0,
         ])->execute();
 
         return "Registration successful!";
