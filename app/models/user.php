@@ -25,7 +25,10 @@ class user extends model{
 
     public function getByUsername($username)
     {
-        $userId = session::Get('user')['id'];
+        $userId = null;
+        if(isset(session::Get('user')['id'])){
+            $userId = session::Get('user')['id'];
+        }
         $sql = $this->select()->where('name', '=', $username);
         if($userId)
         {
@@ -36,7 +39,10 @@ class user extends model{
 
     public function getByPhone($phone)
     {
-        $userId = session::Get('user')['id'];
+        $userId = null;
+        if(isset(session::Get('user')['id'])){
+            $userId = session::Get('user')['id'];
+        }
         $sql = $this->select()->where('phone', '=', $phone);
         if($userId)
         {
