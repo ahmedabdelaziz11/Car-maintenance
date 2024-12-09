@@ -23,12 +23,13 @@ class UserController extends controller
             ];
 
             $errors = $this->validateRegisterInput($inputData);
+            $errorMessage = implode("<br>", $errors);
 
             if (!empty($errors)) {
-                $this->view('auth/register', ['errors' => $errors]);
+                $this->view('auth/register', ['errorMessage' => $errorMessage]);
                 return;
             }
-            
+
             $user = new user();
 
             $result = $user->register([
@@ -51,8 +52,7 @@ class UserController extends controller
 
     public function updateProfile()
     {
-        if(!session::Get('user'))
-        {
+        if (!session::Get('user')) {
             header('Location: ' . BASE_URL . '/user/login');
             exit;
         }
@@ -65,11 +65,12 @@ class UserController extends controller
                 'password'         => isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])) : null,
                 'confirm_password' => isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : null,
             ];
-            
+
             $errors = $this->validateUpdateProfileInput($inputData);
+            $errorMessage = implode("<br>", $errors);
 
             if (!empty($errors)) {
-                $this->view('auth/update-profile', ['errors' => $errors]);
+                $this->view('auth/update-profile', ['errorMessage' => $errorMessage]);
                 return;
             }
             $user = new user();
@@ -80,31 +81,31 @@ class UserController extends controller
                 'phone' => $_POST['phone'],
             ]);
 
-            if($_POST['phone'] != session::Get('user')['id'])
-            {
+            if ($_POST['phone'] != session::Get('user')['id']) {
                 $user->updateRow([
                     'id' => session::Get('user')['id'],
-                    'otp' => rand(100000,999999),
+                    'otp' => rand(100000, 999999),
                     'is_phone_verified' => 0,
                 ]);
             }
 
-            if(!empty($_POST['password']))
-            {
+            if (!empty($_POST['password'])) {
                 $user->updateRow([
                     'id' => session::Get('user')['id'],
                     'password' => password_hash($_POST['password'], PASSWORD_BCRYPT),
                 ]);
             }
-            $authenticatedUser = $user->select(['id', 'name', 'phone','email', 'password', 'role','is_phone_verified'])
+
+            $authenticatedUser = $user->select(['id', 'name', 'phone', 'email', 'password', 'role', 'is_phone_verified'])
                 ->where('id', '=', session::Get('user')['id'])
                 ->row();
+
             Session::Set('user', [
-                'id' => $authenticatedUser['id'],
-                'name' => $authenticatedUser['name'],
+                'id'    => $authenticatedUser['id'],
+                'name'  => $authenticatedUser['name'],
                 'phone' => $authenticatedUser['phone'],
                 'email' => $authenticatedUser['email'],
-                'role' => $authenticatedUser['role'],
+                'role'  => $authenticatedUser['role'],
                 'is_phone_verified' => $authenticatedUser['is_phone_verified'],
             ]);
 
@@ -115,28 +116,28 @@ class UserController extends controller
         exit;
     }
 
-
     public function login()
     {
         $errorMessage = "";
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $identifier = trim($_POST['identifier']);
             $password = trim($_POST['password']);
-    
+
             if (empty($identifier) || empty($password)) {
-                $errorMessage = "Username/Phone and password are required!";
+                $errorMessage = __("Username/Phone and password are required!");
             } else {
                 $user = new User();
 
-                $authenticatedUser = $user->select(['id', 'name', 'phone','email', 'password', 'role','is_phone_verified'])
+                $authenticatedUser = $user->select(['id', 'name', 'phone', 'email', 'password', 'role', 'is_phone_verified'])
                     ->where('phone', '=', $identifier)
                     ->row();
-                if(!$authenticatedUser) {
-                    $authenticatedUser = $user->select(['id', 'name', 'phone','email', 'password', 'role','is_phone_verified'])
+
+                if (!$authenticatedUser) {
+                    $authenticatedUser = $user->select(['id', 'name', 'phone', 'email', 'password', 'role', 'is_phone_verified'])
                         ->where('name', '=', $identifier)
                         ->row();
                 }
-    
+
                 if ($authenticatedUser && password_verify($password, $authenticatedUser['password'])) {
                     Session::Set('user', [
                         'id' => $authenticatedUser['id'],
@@ -146,20 +147,19 @@ class UserController extends controller
                         'role' => $authenticatedUser['role'],
                         'is_phone_verified' => $authenticatedUser['is_phone_verified'],
                     ]);
-    
+
                     if ($authenticatedUser['role'] == 1 || $authenticatedUser['role'] == 2) {
                         header('Location: ' . BASE_URL . '/admin/dashboard');
                         exit;
                     }
-    
+
                     header('Location: ' . BASE_URL . '/');
                     exit;
                 } else {
-                    $errorMessage = 'Invalid login credentials.';
+                    $errorMessage = __('Invalid login credentials.');
                 }
             }
         }
-    
         $this->view('auth/login', ['errorMessage' => $errorMessage]);
     }
 
@@ -191,9 +191,8 @@ class UserController extends controller
         $userModel = new user();
         $offerModel = new offer();
 
-        if($userId == null)
-        {
-            $this->view('auth/update-profile',[]);
+        if ($userId == null) {
+            $this->view('auth/update-profile', []);
         }
 
         $user = $userModel->getById($userId);
@@ -212,97 +211,138 @@ class UserController extends controller
     {
         $input = json_decode(file_get_contents('php://input'), true);
 
-        if (!isset($input['value']) || empty($input['value'])) {
-            echo json_encode(['error' => 'Username is required.']);
+        if (!isset($input['value']) || empty(trim($input['value']))) {
             http_response_code(400);
+            echo json_encode(['error' => __('Username is required.')]);
             return;
         }
 
         $username = trim($input['value']);
+        if (strlen($username) < 3) {
+            http_response_code(400);
+            echo json_encode(['error' => __('Username must be at least 3 characters long.')]);
+            return;
+        }
+
+        if (strlen($username) > 20) {
+            http_response_code(400);
+            echo json_encode(['error' => __('Username cannot exceed 20 characters.')]);
+            return;
+        }
+
         $userModel = new user();
+        $exists = $userModel->getByUsername($username) !== null;
 
-        $exists = $userModel->getByUsername($username) == null ? false : true;
+        if ($exists) {
+            http_response_code(400);
+            echo json_encode(['error' => __('Username is already taken.')]);
+            return;
+        }
 
-        echo json_encode(['exists' => $exists]);
+        echo json_encode(['message' => __('Username is available.')]);
     }
 
     public function validateEmail()
     {
         $input = json_decode(file_get_contents('php://input'), true);
 
-        if (!isset($input['value']) || empty($input['value'])) {
-            echo json_encode(['error' => 'Email is required.']);
+        if (!isset($input['value']) || empty(trim($input['value']))) {
             http_response_code(400);
+            echo json_encode(['error' => __('Email is required.')]);
             return;
         }
 
         $email = trim($input['value']);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode(['error' => 'Invalid email format.']);
             http_response_code(400);
+            echo json_encode(['error' => __('Invalid email format.')]);
             return;
         }
+
         $userModel = new user();
+        $exists = $userModel->getByEmail($email) !== null;
 
-        $exists =  $userModel->getByEmail($email) == null ? false : true;
+        if ($exists) {
+            http_response_code(400);
+            echo json_encode(['error' => __('Email is already taken.')]);
+            return;
+        }
 
-        echo json_encode(['exists' => $exists]);
+        http_response_code(200);
+        echo json_encode(['message' => __('Email is available.')]);
     }
 
     public function validatePhone()
     {
         $input = json_decode(file_get_contents('php://input'), true);
-
-        if (!isset($input['value']) || empty($input['value'])) {
-            echo json_encode(['error' => 'Phone number is required.']);
+    
+        if (!isset($input['value']) || empty(trim($input['value']))) {
             http_response_code(400);
+            echo json_encode(['error' => __('Phone number is required.')]);
             return;
         }
-
+    
         $phone = trim($input['value']);
+    
         $userModel = new user();
-
-        $exists = $userModel->getByPhone($phone) == null ? false : true;
-
-        echo json_encode(['exists' => $exists]);
+        $exists = $userModel->getByPhone($phone) !== null;
+    
+        if ($exists) {
+            http_response_code(400);
+            echo json_encode(['error' => __('Phone number is already taken.')]);
+            return;
+        }
+    
+        http_response_code(200);
+        echo json_encode(['message' => __('Phone number is available.')]);
     }
 
     private function validateRegisterInput($inputData)
     {
         $errors = [];
         $userModel = new user();
-
-        if (empty($inputData['username'])) {
-            $errors['username'] = "Username is required.";
-        }elseif ($userModel->getByUsername($inputData['username']) != null){
-            $errors['username'] = "Username is already taken.";
+    
+        $username = $inputData['username'] ?? '';
+        if (empty($username)) {
+            $errors['username'] = __("Username is required.");
+        } else{
+            if ($userModel->getByUsername($username) != null) {
+                $errors['username'] = __("Username is already taken.");
+            }
+            if (strlen($username) < 3) {
+                $errors['username'] = __('Username must be at least 3 characters long.');
+            }
+            if (strlen($username) > 20) {
+                $errors['username'] = __('Username cannot exceed 20 characters.');
+            }
         }
 
-        if (empty($inputData['email'])) {
-            $errors['email'] = "Email is required.";
-        } elseif (!filter_var($inputData['email'], FILTER_VALIDATE_EMAIL)) {
-            $errors['email'] = "Invalid email format.";
-        } elseif ($userModel->getByEmail($inputData['email']) != null) {
-            $errors['email'] = "Email is already taken.";
+        $email = $inputData['email'] ?? '';
+        if (empty($email)) {
+            $errors['email'] = __("Email is required.");
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = __("Invalid email format.");
+        } elseif ($userModel->getByEmail($email) != null) {
+            $errors['email'] = __("Email is already taken.");
         }
-
-        if (empty($inputData['phone'])) {
-            $errors['phone'] = "Phone number is required.";
-        } elseif ($userModel->getByPhone($inputData['phone']) != null) {
-            $errors['phone'] = "phone number is already taken.";
+    
+        $phone = $inputData['phone'] ?? '';
+        if (empty($phone)) {
+            $errors['phone'] = __("Phone number is required.");
+        } elseif ($userModel->getByPhone($phone) != null) {
+            $errors['phone'] = __("Phone number is already taken.");
         }
-
-        if (empty($inputData['password'])) {
-            $errors['password'] = "Password is required.";
-        } elseif (strlen($inputData['password']) < 6) {
-            $errors['password'] = "Password must be at least 6 characters long.";
+        $password = $inputData['password'] ?? '';
+        $confirmPassword = $inputData['confirm_password'] ?? '';
+        if (empty($password)) {
+            $errors['password'] = __("Password is required.");
+        } elseif (strlen($password) < 6) {
+            $errors['password'] = __("Password must be at least 6 characters long.");
+        } elseif ($password !== $confirmPassword) {
+            $errors['confirm_password'] = __("Passwords do not match.");
         }
-
-        if ($inputData['password'] !== $inputData['confirm_password']) {
-            $errors['confirm_password'] = "Passwords do not match.";
-        }
-
+    
         return $errors;
     }
 
@@ -310,33 +350,47 @@ class UserController extends controller
     {
         $errors = [];
         $userModel = new user();
+        $currentUserId = session::Get('user')['id'];
 
-        if (empty($inputData['username'])) {
-            $errors['username'] = "Username is required.";
-        }elseif ($userModel->getByUsername($inputData['username']) != null){
-            $errors['username'] = "Username is already taken.";
+        $username = $inputData['username'] ?? '';
+        if (empty($username)) {
+            $errors['username'] = __("Username is required.");
+        } else{
+            if ($userModel->getByUsername($username) != null) {
+                $errors['username'] = __("Username is already taken.");
+            }
+            if (strlen($username) < 3) {
+                $errors['username'] = __('Username must be at least 3 characters long.');
+            }
+            if (strlen($username) > 20) {
+                $errors['username'] = __('Username cannot exceed 20 characters.');
+            }
         }
 
-        if (empty($inputData['email'])) {
-            $errors['email'] = "Email is required.";
-        } elseif (!filter_var($inputData['email'], FILTER_VALIDATE_EMAIL)) {
-            $errors['email'] = "Invalid email format.";
-        } elseif ($userModel->getByEmail($inputData['email'],session::Get('user')['id']) != null) {
-            $errors['email'] = "Email is already taken.";
+        $email = $inputData['email'] ?? '';
+        if (empty($email)) {
+            $errors['email'] = __("Email is required.");
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = __("Invalid email format.");
+        } elseif ($userModel->getByEmail($email,$currentUserId) != null) {
+            $errors['email'] = __("Email is already taken.");
         }
 
-        if (empty($inputData['phone'])) {
-            $errors['phone'] = "Phone number is required.";
-        } elseif ($userModel->getByPhone($inputData['phone']) != null) {
-            $errors['phone'] = "phone number is already taken.";
+        $phone = $inputData['phone'] ?? '';
+        if (empty($phone)) {
+            $errors['phone'] = __("Phone number is required.");
+        } elseif ($userModel->getByPhone($phone) != null) {
+            $errors['phone'] = __("Phone number is already taken.");
         }
 
-        if (!empty($inputData['password']) && strlen($inputData['password']) < 6) {
-            $errors['password'] = "Password must be at least 6 characters long.";
+        $password = $inputData['password'] ?? '';
+        $confirmPassword = $inputData['confirm_password'] ?? '';
+        if (!empty($password) && strlen($password) < 6) {
+            $errors['password'] = __("Password must be at least 6 characters long.");
         }
 
-        if (!empty($inputData['password']) && $inputData['password'] !== $inputData['confirm_password']) {
-            $errors['confirm_password'] = "Passwords do not match.";
+        if (!empty($password) && $password !== $confirmPassword) {
+            $errors['confirm_password'] = __("Passwords do not match.");
         }
 
         return $errors;

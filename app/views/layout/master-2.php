@@ -14,7 +14,6 @@ $lang = session::Get('lang') ?? 'ar';
     <meta name="car" content="car" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/png">
-
     <script src="<?= BASE_URL . '/assets/js/vendor/jquery-3.6.0.min.js' ?>"></script>
     <?php
     if ($lang == 'ar') {
@@ -51,6 +50,15 @@ $lang = session::Get('lang') ?? 'ar';
         <!-- ...:::Start User Event Section:::... -->
         <header class="header-section">
             <div class="container">
+                <section class="pt-4">
+                    <div class="container px-lg-5">
+                        <?php if (isset($errorMessage) && $errorMessage != ""): ?>
+                            <div class="error-message" id="error-message">
+                                <?= $errorMessage ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
                 <!-- Start User Event Area -->
                 <div class="header-area">
                     <div class="header-top-area header-top-area--style-2">

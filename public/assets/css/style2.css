@@ -3891,3 +3891,9 @@ span.ripple {
     min-width: 150px;
     max-width: 300px;
 }
+
+.error-message {
+  color: red;
+  display: none;
+  margin-top: 10px;
+}

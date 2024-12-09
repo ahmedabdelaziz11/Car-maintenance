@@ -52,17 +52,17 @@
         const inputElement = document.getElementById(inputId);
         const validationElement = document.getElementById(validationId);
 
-        let timeout = null; 
+        let timeout = null;
 
         inputElement.addEventListener('input', () => {
-            clearTimeout(timeout); 
-            validationElement.textContent = 'Validating...'; 
+            clearTimeout(timeout);
+            validationElement.textContent = "<?= __('Validating...') ?>";
             validationElement.style.color = 'blue';
 
             timeout = setTimeout(() => {
                 const value = inputElement.value.trim();
                 if (!value) {
-                    validationElement.textContent = `${inputId.charAt(0).toUpperCase() + inputId.slice(1)} cannot be empty.`;
+                    validationElement.textContent = "<?= __('This field cannot be empty.') ?>";
                     validationElement.style.color = 'red';
                     return;
                 }
@@ -76,24 +76,24 @@
                     body: JSON.stringify({ value: value })
                 })
                     .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
+                        if (!response.ok) throw response.json();
                         return response.json();
                     })
                     .then(data => {
-                        if (data.exists) {
-                            validationElement.textContent = `${inputId.charAt(0).toUpperCase() + inputId.slice(1)} is already taken.`;
+                        if (data.error) {
+                            validationElement.textContent = data.error;
                             validationElement.style.color = 'red';
                         } else {
-                            validationElement.textContent = `${inputId.charAt(0).toUpperCase() + inputId.slice(1)} is available.`;
+                            validationElement.textContent = "<?= __('This value is available.') ?>";
                             validationElement.style.color = 'green';
                         }
                     })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        validationElement.textContent = 'Error validating field. Please try again.';
+                    .catch(async errorResponse => {
+                        const error = await errorResponse;
+                        validationElement.textContent = error.error || "<?= __('An unexpected error occurred. Please try again.') ?>";
                         validationElement.style.color = 'red';
                     });
-            }, 2500); 
+            }, 2500);
         });
     };
 
@@ -105,7 +105,6 @@
         document.querySelectorAll('.toggle-password').forEach(toggle => {
             toggle.addEventListener('click', () => {
                 const input = toggle.previousElementSibling;
-                const icon = toggle.querySelector('i');
 
                 if (input.type === 'password') {
                     input.type = 'text';
@@ -117,7 +116,36 @@
     };
 
     togglePasswordVisibility();
+
+    document.querySelector('.default-form-wrapper').addEventListener('submit', (event) => {
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm_password');
+        const passwordValidationMessage = document.createElement('p');
+
+        const existingMessage = document.getElementById('password-validation-message');
+        if (existingMessage) existingMessage.remove();
+
+        if (passwordInput.value.length < 6) {
+            event.preventDefault();
+            passwordValidationMessage.id = 'password-validation-message';
+            passwordValidationMessage.textContent = "<?= __('Password must be at least 6 characters long.') ?>";
+            passwordValidationMessage.style.color = 'red';
+            passwordValidationMessage.style.fontSize = '12px';
+            passwordInput.parentElement.appendChild(passwordValidationMessage);
+            return;
+        }
+
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            event.preventDefault();
+            passwordValidationMessage.id = 'password-validation-message';
+            passwordValidationMessage.textContent = "<?= __('Passwords do not match.') ?>";
+            passwordValidationMessage.style.color = 'red';
+            passwordValidationMessage.style.fontSize = '12px';
+            confirmPasswordInput.parentElement.appendChild(passwordValidationMessage);
+        }
+    });
 </script>
+
 
 <?php
 $content = ob_get_clean();

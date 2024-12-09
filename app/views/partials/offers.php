@@ -10,7 +10,7 @@
                                 style="
                                     color: <?= $offer['is_favorite'] ? 'crimson' : 'gray' ?>; 
                                     background: none; 
-                                    <?= $_SESSION['lang'] == 'en' 
+                                    <?= isset($_SESSION['lang']) && $_SESSION['lang'] == 'en' 
                                         ? 'justify-content: end; display: flex; margin-right: 25px;' 
                                         : 'justify-content: end; display: flex; margin-left: 25px;'; ?>"
                                 aria-label="Wishlist" 
