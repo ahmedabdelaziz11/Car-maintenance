@@ -158,7 +158,7 @@ class HomeController extends controller{
     
         $updateStatus = $userModel->update([
             'is_phone_verified' => 1, 
-            'otp'    => null,
+            'otp'    => 0,
         ])->where('id', '=', $dbUser['id'])->execute();
         $_SESSION['user']['is_phone_verified'] = 1;
     
