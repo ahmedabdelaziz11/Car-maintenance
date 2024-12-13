@@ -39,6 +39,7 @@ class AdminController extends controller{
                 $data = [
                     'name' => $_POST['name'],
                     'email' => $_POST['email'],
+                    'phone' => $_POST['phone'],
                     'role' => $_POST['role'],
                     'password' => password_hash($_POST['password'], PASSWORD_BCRYPT)
                 ];
@@ -69,6 +70,7 @@ class AdminController extends controller{
                         'id' => $id,
                         'name' => $_POST['name'],
                         'email' => $_POST['email'],
+                        'phone' => $_POST['phone'],
                         'role' => $_POST['role'],
                         'contact_types' => $jsonContactTypes
                     ];
@@ -101,8 +103,20 @@ class AdminController extends controller{
     public function validateCreateRequest()
     {
         $errors = [];
+        $userModel = new user();
+
         if (empty($_POST['name'])) {
             $errors[] = 'اسم المسؤول مطلوب';
+        }else{
+            if ($userModel->getByUsername($_POST['name']) != null) {
+                $errors['username'] = __("Username is already taken.");
+            }
+            if (strlen($_POST['name']) < 3) {
+                $errors['username'] = __('Username must be at least 3 characters long.');
+            }
+            if (strlen($_POST['name']) > 20) {
+                $errors['username'] = __('Username cannot exceed 20 characters.');
+            }
         }
 
         if (empty($_POST['email'])) {
@@ -111,6 +125,13 @@ class AdminController extends controller{
             if ($this->isEmailExists($_POST['email'])) {
                 $errors[] = 'البريد الالكتروني مستخدم بالفعل';
             }
+        }
+
+        $phone = $_POST['phone'] ?? '';
+        if (empty($phone)) {
+            $errors['phone'] = __("Phone number is required.");
+        } elseif ($userModel->getByPhone($phone) != null) {
+            $errors['phone'] = __("Phone number is already taken.");
         }
 
         if (empty($_POST['password'])) {
@@ -126,8 +147,20 @@ class AdminController extends controller{
 
     public function validateEditRequest($id) {
         $errors = [];
+        $userModel = new user();
+
         if (empty($_POST['name'])) {
             $errors[] = 'اسم المسؤول مطلوب';
+        }else{
+            if ($userModel->getByUsername($_POST['name']) != null) {
+                $errors['username'] = __("Username is already taken.");
+            }
+            if (strlen($_POST['name']) < 3) {
+                $errors['username'] = __('Username must be at least 3 characters long.');
+            }
+            if (strlen($_POST['name']) > 20) {
+                $errors['username'] = __('Username cannot exceed 20 characters.');
+            }
         }
 
         if (empty($_POST['email'])) {
@@ -136,6 +169,13 @@ class AdminController extends controller{
             if ($this->isEmailExists($_POST['email'], $id)) {
                 $errors[] = 'البريد الالكتروني مستخدم بالفعل';
             }
+        }
+
+        $phone = $_POST['phone'] ?? '';
+        if (empty($phone)) {
+            $errors['phone'] = __("Phone number is required.");
+        } elseif ($userModel->getByPhone($phone) != null) {
+            $errors['phone'] = __("Phone number is already taken.");
         }
 
         return $errors;
