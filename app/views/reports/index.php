@@ -39,7 +39,7 @@
                         <td><?= htmlspecialchars($report['description']); ?></td>
                         <td><?= date('F d, Y', strtotime($report['created_at'])); ?></td>
                         <td> 
-                            <?php if (!empty($report['offer_id'])): ?>
+                            <?php if (!empty($report['offer_id']) && $report['offer_is_active'] != 0): ?>
                                 <!-- Button to delete an offer -->
                                 <button type="button" class="btn btn-danger delete-btn" data-id="<?= $report['offer_id'] ?>" data-type="offer" data-toggle="modal" data-target="#deleteModal">
                                     Delete Offer
@@ -98,8 +98,7 @@
             if (contentId && contentType) {
                 var form = document.createElement('form');
                 form.method = 'POST';
-                // Set the form action based on whether it's an offer or a comment
-                form.action = contentType === 'offer' ? `<?= BASE_URL . '/offer/delete/' ?>${contentId}` : `<?= BASE_URL . '/comment/delete/' ?>${contentId}`;
+                form.action = contentType === 'offer' ? `<?= BASE_URL . '/report/deleteOffer/' ?>${contentId}` : `<?= BASE_URL . '/comment/delete/' ?>${contentId}`;
                 document.body.appendChild(form);
                 form.submit();
             }

@@ -16,6 +16,7 @@ class report extends model{
         $this->select([
             'reports.*',
             'offers.title as offer_title', 
+            'offers.is_active as offer_is_active', 
             'offer_user.name as offer_user_name', 
             'reporter.name as reporter_name',
             'offer_comments.comment as comment_text', 

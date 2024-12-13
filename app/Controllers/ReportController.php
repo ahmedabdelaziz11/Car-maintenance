@@ -4,6 +4,7 @@ namespace MVC\controllers;
 
 use MVC\core\controller;
 use MVC\core\session;
+use MVC\models\offer;
 use MVC\models\report;
 
 
@@ -78,5 +79,18 @@ class ReportController extends controller{
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid report data.']);
         }
+    }
+
+    public function deleteOffer($id)
+    {
+        if(!session::Get('user')  || !session::Get('user')['role'] == 3)
+        {
+            header('Location: ' . BASE_URL . '/user/login');
+            exit;
+        }
+        $offerModel = new offer();
+        $offerModel->updateRow(['id' => $id , 'is_active' => 0]);
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit;
     }
 }
