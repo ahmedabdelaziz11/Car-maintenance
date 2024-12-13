@@ -3910,13 +3910,25 @@ span.ripple {
     opacity: 1 !important;
 }
 
-.form-group {
-    min-width: 150px;
-    max-width: 300px;
-}
-
 .error-message {
     color: red;
     display: none;
     margin-top: 10px;
+}
+
+.image-offer {
+    display: inline-block;
+    overflow: hidden;
+}
+
+.image-offer img {
+    transition: transform 0.3s ease;
+}
+
+.image-offer img:hover {
+    transform: scale(1.5);
+}
+
+.form-group {
+    width: 100% !important;
 }

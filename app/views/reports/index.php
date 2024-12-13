@@ -108,5 +108,5 @@
 
 <?php
 $content = ob_get_clean();
-require_once(VIEW . 'layout/master.php');
+require_once(VIEW . 'layout/master-2.php');
 ?>

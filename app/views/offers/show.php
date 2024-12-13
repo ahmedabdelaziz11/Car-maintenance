@@ -11,7 +11,7 @@ ob_start();
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="product-gallery-single-item">
-                                <div class="image">
+                                <div class="image image-offer">
                                     <img class="img-fluid" width="276" height="172" src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="<?= $offer['title'] ?>">
                                 </div>
                             </div>
@@ -20,7 +20,7 @@ ob_start();
                             <?php foreach ($offer['other_images'] as $other_image): ?>
                                 <div class="swiper-slide">
                                     <div class="product-gallery-single-item">
-                                        <div class="image">
+                                        <div class="image image-offer">
                                             <img class="img-fluid" width="276" height="172" src="<?= BASE_URL . '/uploads/offers/' . $other_image['image'] ?>" alt="<?= $offer['title'] ?>">
                                         </div>
                                     </div>
@@ -44,7 +44,7 @@ ob_start();
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="product-thumb-single-item">
-                                <div class="image">
+                                <div class="image image-offer">
                                     <img class="img-fluid" width="45" height="45" src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="<?= $offer['title'] ?>">
                                 </div>
                             </div>
@@ -53,7 +53,7 @@ ob_start();
                             <?php foreach ($offer['other_images'] as $other_image): ?>
                                 <div class="swiper-slide">
                                     <div class="product-thumb-single-item">
-                                        <div class="image">
+                                        <div class="image image-offer">
                                             <img class="img-fluid" width="45" height="45" src="<?= BASE_URL . '/uploads/offers/' . $other_image['image'] ?>" alt="<?= $offer['title'] ?>">
                                         </div>
                                     </div>
@@ -397,6 +397,15 @@ ob_start();
 </script>
 
 <?php
+
+$metaTags = [
+    'og:title' => htmlspecialchars($offer['title']),
+    'og:description' => htmlspecialchars($offer['details']),
+    'og:image' => BASE_URL . '/uploads/offers/' . $offer['image'],
+    'og:url' => BASE_URL . '/OfferDetails/show/' . $offer['id'],
+    'og:type' => 'website'
+];
+
 $content = ob_get_clean();
 require_once(VIEW . 'layout/master-2.php');
 ?>

@@ -1,36 +1,37 @@
 <?php ob_start(); ?>
+<div class="container">
 
-<h1>Admins</h1>
-<a href="<?= BASE_URL . '/admin/create'; ?>" class="btn btn-primary">Add Admin</a>
+    <h1>Admins</h1>
+    <a href="<?= BASE_URL . '/admin/create'; ?>" class="btn btn-primary">Add Admin</a>
 
-<table class="table mt-4">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>EMAIL</th>
-            <th>ROLE</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($admins as $admin): ?>
+    <table class="table mt-4">
+        <thead>
             <tr>
-                <td><?= $admin['id'] ?></td>
-                <td><?= $admin['name'] ?></td>
-                <td><?= $admin['email'] ?></td>
-                <td><?= $admin['role'] == 1 ? "admin" : "supervisor" ?></td>
-                <td>
-                    <a href="<?= BASE_URL . '/admin/edit/' . $admin['id'] ?>" class="btn btn-warning">Edit</a>
-                    <button type="button" class="btn btn-danger delete-btn" data-id="<?= $admin['id'] ?>" data-toggle="modal" data-target="#deleteModal">
-                        Delete
-                    </button>
-                </td>
+                <th>ID</th>
+                <th>Name</th>
+                <th>EMAIL</th>
+                <th>ROLE</th>
+                <th>Actions</th>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+            <?php foreach ($admins as $admin): ?>
+                <tr>
+                    <td><?= $admin['id'] ?></td>
+                    <td><?= $admin['name'] ?></td>
+                    <td><?= $admin['email'] ?></td>
+                    <td><?= $admin['role'] == 1 ? "admin" : "supervisor" ?></td>
+                    <td>
+                        <a href="<?= BASE_URL . '/admin/edit/' . $admin['id'] ?>" class="btn btn-warning">Edit</a>
+                        <button type="button" class="btn btn-danger delete-btn" data-id="<?= $admin['id'] ?>" data-toggle="modal" data-target="#deleteModal">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 
 <!-- Delete Confirmation Modal -->
@@ -78,5 +79,5 @@
 
 <?php 
 $content = ob_get_clean(); 
-require_once(VIEW . 'layout/master.php'); 
+require_once(VIEW . 'layout/master-2.php'); 
 ?>

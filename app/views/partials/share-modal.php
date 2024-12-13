@@ -46,9 +46,9 @@
         }, 3000);
     });
 
-    function openShareModal(offerUrl) {
-        const facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(offerUrl);
-        const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(offerUrl);
+    function openShareModal(offerUrl, offerTitle, offerDescription, offerImage) {
+        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(offerUrl)}`;
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(offerTitle + " - " + offerUrl)}`;
 
         document.getElementById('facebookShare').setAttribute('href', facebookUrl);
         document.getElementById('whatsappShare').setAttribute('href', whatsappUrl);

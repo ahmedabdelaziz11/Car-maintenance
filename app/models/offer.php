@@ -91,7 +91,7 @@ class offer extends model{
         $totalCountResult = $totalQuery->row();
         $totalCount = $totalCountResult['total_count'] ?? 0;
     
-        $this->sql .= " LIMIT $limit OFFSET $offset";
+        $this->sql .= "Order By Id DESC LIMIT $limit OFFSET $offset";
         $results = $this->all();
     
         $hasNextPage = (($page * $limit) < $totalCount);

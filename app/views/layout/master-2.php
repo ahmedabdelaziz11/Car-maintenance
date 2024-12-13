@@ -13,6 +13,11 @@ $lang = session::Get('lang') ?? 'ar';
     <title>Car</title>
     <meta name="car" content="car" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php if (isset($metaTags)): ?>
+        <?php foreach ($metaTags as $property => $value): ?>
+            <meta property="<?= $property; ?>" content="<?= $value; ?>">
+        <?php endforeach; ?>
+    <?php endif; ?>
     <link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/png">
     <script src="<?= BASE_URL . '/assets/js/vendor/jquery-3.6.0.min.js' ?>"></script>
     <?php
@@ -34,6 +39,7 @@ $lang = session::Get('lang') ?? 'ar';
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/plugins/swiper-bundleAr.min.css">';
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/plugins/ion.rangeSliderAr.min.css">';
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/style2_ar.css">';
+
     } else {
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/vendor/icomoon.css">';
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/plugins/swiper-bundle.min.css">';
@@ -41,7 +47,18 @@ $lang = session::Get('lang') ?? 'ar';
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/style2.css">';
     }
     ?>
+    <style>
+        @font-face {
+            font-family: 'Aljazeera';
+            src: url('<?= BASE_URL ?>/assets/fonts/Aljazeera.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
 
+        body {
+            font-family: 'Aljazeera', Arial, sans-serif;
+        }
+    </style>
 </head>
 
 <body>
@@ -118,6 +135,21 @@ $lang = session::Get('lang') ?? 'ar';
                                         </svg>
                                     </a>
                                 </li>
+                                <?php if($_SESSION['user']['role'] != 3):?>
+                                    <li class="list-item">
+                                        <a href="<?= BASE_URL . '/admin/dashboard'; ?>" 
+                                        aria-label="<?= __('Dashboard') ?>" 
+                                        class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
+                                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                                width="16" 
+                                                height="16" 
+                                                viewBox="0 0 24 24" 
+                                                fill="#ff375f">
+                                                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z"></path>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </ul>
                     </div>

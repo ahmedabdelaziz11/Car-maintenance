@@ -1,4 +1,5 @@
 <?php ob_start(); ?>
+<div class="container">
 
 <h1>تعديل نوع سيارة</h1>
 
@@ -14,8 +15,9 @@
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
+</div>
 
 <?php 
 $content = ob_get_clean(); 
-require_once(VIEW . 'layout/master.php'); 
+require_once(VIEW . 'layout/master-2.php'); 
 ?>

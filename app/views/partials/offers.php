@@ -4,6 +4,17 @@
             <?php foreach ($offers as $offer): ?>
                 <div class="single-product-item product-item--style-2">
                     <div class="image product-item--bg-neon-carrot">
+                    <button class="btn btn-primary share-button" 
+                        onclick="openShareModal(
+                            '<?= BASE_URL . '/OfferDetails/show/' . $offer['id']; ?>', 
+                            '<?= addslashes($offer['title']); ?>', 
+                            '<?= BASE_URL . '/uploads/offers/' . $offer['image']; ?>'
+                        )">
+                        <i class="fa fa-share-alt" aria-hidden="true" style="color: #ff375f;"></i>
+                    </button>
+                        <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>">
+                            <img width="150" height="69" class="img-fluid" src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="<?= $offer['title'] ?>">
+                        </a>
                         <?php if (isset($_SESSION['user'])): ?>
                             <button 
                                 type="button" 
@@ -11,8 +22,8 @@
                                     color: <?= $offer['is_favorite'] ? 'crimson' : 'gray' ?>; 
                                     background: none; 
                                     <?= isset($_SESSION['lang']) && $_SESSION['lang'] == 'en' 
-                                        ? 'justify-content: end; display: flex; margin-right: 25px;' 
-                                        : 'justify-content: end; display: flex; margin-left: 25px;'; ?>"
+                                        ? 'left: 0px;top: 3px;' 
+                                        : 'right: 0px;top: 3px;'; ?>"
                                 aria-label="Wishlist" 
                                 data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" 
                                 data-offer-id="<?= $offer['id'] ?>" 
@@ -21,12 +32,6 @@
                                 <i class="icon icon-carce-heart"></i>
                             </button>
                         <?php endif; ?>
-                        <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>">
-                            <img width="150" height="69" class="img-fluid" src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="<?= $offer['title'] ?>">
-                        </a>
-                        <button class="btn btn-primary share-button" onclick="openShareModal('<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>')">
-                            <i class="fa fa-share-alt" aria-hidden="true" style="color: #ff375f;"></i>
-                        </button>
                     </div>
                     <div class="content">
                         <div class="content--left">
