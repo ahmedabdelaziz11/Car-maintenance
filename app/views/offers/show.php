@@ -172,7 +172,6 @@ ob_start();
         </div>
     </div>
     <?php require_once(VIEW . 'partials/share-modal.php'); ?>
-
     <div class="modal fade" id="reportOfferModal" tabindex="-1" role="dialog" aria-labelledby="reportOfferModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
