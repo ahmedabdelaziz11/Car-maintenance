@@ -37,6 +37,14 @@ ob_start();
                     <?php if (isset($_SESSION['user'])): ?>
                         <button type="button" <?php if ($offer['is_favorite']): ?> style="color:crimson" <?php else: ?> style="color:gray" <?php endif; ?> aria-label="Wishlist" data-favorite="<?= $offer['is_favorite'] ? 'true' : 'false' ?>" data-offer-id="<?= $offer['id'] ?>" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow favorite-btn"><i class="icon icon-carce-heart"></i></button>
                     <?php endif; ?>
+                    <button class="btn btn-primary share-button" 
+                        onclick="openShareModal(
+                            '<?= BASE_URL . '/OfferDetails/show/' . $offer['id']; ?>', 
+                            '<?= addslashes($offer['title']); ?>', 
+                            '<?= BASE_URL . '/uploads/offers/' . $offer['image']; ?>'
+                        )">
+                        <i class="fa fa-share-alt" aria-hidden="true" style="color: #ff375f;"></i>
+                    </button>
                 </div>
             </div>
             <div class="product-thumb-image">
@@ -163,6 +171,7 @@ ob_start();
             </div>
         </div>
     </div>
+    <?php require_once(VIEW . 'partials/share-modal.php'); ?>
 
     <div class="modal fade" id="reportOfferModal" tabindex="-1" role="dialog" aria-labelledby="reportOfferModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
