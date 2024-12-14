@@ -30,6 +30,7 @@
                 <option value="" disabled>اخنر دور المسؤول</option>
                 <option value="1" <?= $admin['role'] == 1 ? 'selected' : '' ?>>Super Admin</option>
                 <option value="2" <?= $admin['role'] == 2 ? 'selected' : '' ?>>Supervisor</option>
+                <option value="2" <?= $admin['role'] == 3 ? 'selected' : '' ?>>User</option>
             </select>
         </div>
         <div class="form-group">

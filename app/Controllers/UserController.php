@@ -81,11 +81,19 @@ class UserController extends controller
                 'phone' => $_POST['phone'],
             ]);
 
-            if ($_POST['phone'] != session::Get('user')['id']) {
+            if ($_POST['phone'] != session::Get('user')['phone']) {
                 $user->updateRow([
                     'id' => session::Get('user')['id'],
                     'otp' => rand(100000, 999999),
                     'is_phone_verified' => 0,
+                ]);
+            }
+
+            if ($_POST['email'] != session::Get('user')['email']) {
+                $user->updateRow([
+                    'id' => session::Get('user')['id'],
+                    'email_otp' => rand(100000, 999999),
+                    'is_email_verified' => 0,
                 ]);
             }
 
@@ -96,7 +104,7 @@ class UserController extends controller
                 ]);
             }
 
-            $authenticatedUser = $user->select(['id', 'name', 'phone', 'email', 'password', 'role', 'is_phone_verified'])
+            $authenticatedUser = $user->select(['id', 'name', 'phone', 'email', 'password', 'role', 'is_phone_verified','is_email_verified'])
                 ->where('id', '=', session::Get('user')['id'])
                 ->row();
 
@@ -107,6 +115,7 @@ class UserController extends controller
                 'email' => $authenticatedUser['email'],
                 'role'  => $authenticatedUser['role'],
                 'is_phone_verified' => $authenticatedUser['is_phone_verified'],
+                'is_email_verified' => $authenticatedUser['is_email_verified'],
             ]);
 
             header('Location: ' . BASE_URL . '/user/profile');
@@ -128,12 +137,12 @@ class UserController extends controller
             } else {
                 $user = new User();
 
-                $authenticatedUser = $user->select(['id', 'name', 'phone', 'email', 'password', 'role', 'is_phone_verified'])
+                $authenticatedUser = $user->select(['id', 'name', 'phone', 'email', 'password', 'role', 'is_phone_verified','is_email_verified'])
                     ->where('phone', '=', $identifier)
                     ->row();
 
                 if (!$authenticatedUser) {
-                    $authenticatedUser = $user->select(['id', 'name', 'phone', 'email', 'password', 'role', 'is_phone_verified'])
+                    $authenticatedUser = $user->select(['id', 'name', 'phone', 'email', 'password', 'role', 'is_phone_verified','is_email_verified'])
                         ->where('name', '=', $identifier)
                         ->row();
                 }
@@ -146,6 +155,7 @@ class UserController extends controller
                         'email' => $authenticatedUser['email'],
                         'role' => $authenticatedUser['role'],
                         'is_phone_verified' => $authenticatedUser['is_phone_verified'],
+                        'is_email_verified' => $authenticatedUser['is_email_verified'],
                     ]);
 
                     if ($authenticatedUser['role'] == 1 || $authenticatedUser['role'] == 2) {

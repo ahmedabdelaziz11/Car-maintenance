@@ -20,7 +20,19 @@
                     <td><?= $admin['id'] ?></td>
                     <td><?= $admin['name'] ?></td>
                     <td><?= $admin['email'] ?></td>
-                    <td><?= $admin['role'] == 1 ? "admin" : "supervisor" ?></td>
+                    <td>
+                        <?php
+                            if ($admin['role'] == 1) {
+                                echo "admin";
+                            } elseif ($admin['role'] == 2) {
+                                echo "supervisor";
+                            } elseif ($admin['role'] == 3) {
+                                echo "user";
+                            } else {
+                                echo "unknown role";
+                            }
+                        ?>
+                    </td>
                     <td>
                         <a href="<?= BASE_URL . '/admin/edit/' . $admin['id'] ?>" class="btn btn-warning">Edit</a>
                         <button type="button" class="btn btn-danger delete-btn" data-id="<?= $admin['id'] ?>" data-toggle="modal" data-target="#deleteModal">

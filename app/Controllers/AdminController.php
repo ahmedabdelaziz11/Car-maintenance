@@ -50,7 +50,6 @@ class AdminController extends controller{
                 $this->view('admins/create', ['errorMessage' => $errorMessage]);
             }
         }
-
         $this->view('admins/create', []);
     }
 

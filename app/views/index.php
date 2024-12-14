@@ -7,6 +7,12 @@
             <a href="<?= BASE_URL . '/home/verifyPhoneNumberView' ?>" class="custom-btn-success"><?= __('Verify') ?></a>
         </div>
     <?php endif; ?>
+    <?php if (isset($_SESSION['user']) && $_SESSION['user']['is_email_verified'] == 0) : ?>
+        <div class="search-box product-item--style-4 mb-2" style="display: flex; justify-content: space-between;">
+            <p> <?= __('Verify your email number') ?> </p>
+            <a href="<?= BASE_URL . '/home/verifyEmailView' ?>" class="custom-btn-success"><?= __('Verify') ?></a>
+        </div>
+    <?php endif; ?>
     <div class="search-n-filter-area">
         <div class="search-box product-item--style-4">
             <div style="width: 100%" class="">

@@ -14,7 +14,7 @@ class user extends model{
     }
 
     public function GetAllAdmins(){
-        $data =  $this->where('role','!=',3)->select(['id','name','email','role'])->all(); 
+        $data =  $this->select(['id','name','email','role','phone'])->all(); 
         return $data;
     }
 
@@ -97,7 +97,9 @@ class user extends model{
             'password' => $data['password'],
             'role'     => $data['role'],
             'otp'      => rand(100000,999999),
-            'is_phone_verified'      => 0,
+            'email_otp' => rand(100000,999999),
+            'is_phone_verified' => 0,
+            'is_email_verified' => 0,
         ])->execute();
 
         return "Registration successful!";
@@ -105,7 +107,8 @@ class user extends model{
 
     public function getAllowedContactTypes($adminId) {
         $admin = $this->select()->where('id', '=', $adminId)->row();
-        return json_decode($admin['contact_types'], true) ?? [];
+        $types = $admin['contact_types'] ?? '';
+        return json_decode($types, true) ?? [];
     }
 
     public function GetAdminDashboardData(){

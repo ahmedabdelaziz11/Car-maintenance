@@ -163,4 +163,7 @@ return [
     'Password must be at least 6 characters long.' => 'Password must be at least 6 characters long.',
     'Passwords do not match.' => 'Passwords do not match.',
     'Invalid login credentials.' => 'Invalid login credentials.',
+
+    'Verify your email number' => 'Verify your email number',
+    'Email verified successfully!' => 'Email verified successfully!',
 ];

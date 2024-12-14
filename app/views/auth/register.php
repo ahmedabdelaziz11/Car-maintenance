@@ -48,26 +48,26 @@
 </main>
 
 <script>
-    const validateField = (inputId, apiUrl, validationId) => {
-        const inputElement = document.getElementById(inputId);
-        const validationElement = document.getElementById(validationId);
+    const validateUsername = () => {
+        const usernameInput = document.getElementById('username');
+        const usernameValidation = document.getElementById('username-validation');
 
         let timeout = null;
 
-        inputElement.addEventListener('input', () => {
+        usernameInput.addEventListener('input', () => {
             clearTimeout(timeout);
-            validationElement.textContent = "<?= __('Validating...') ?>";
-            validationElement.style.color = 'blue';
+            usernameValidation.textContent = "<?= __('Validating...') ?>";
+            usernameValidation.style.color = 'blue';
 
             timeout = setTimeout(() => {
-                const value = inputElement.value.trim();
+                const value = usernameInput.value.trim();
                 if (!value) {
-                    validationElement.textContent = "<?= __('This field cannot be empty.') ?>";
-                    validationElement.style.color = 'red';
+                    usernameValidation.textContent = "<?= __('This field cannot be empty.') ?>";
+                    usernameValidation.style.color = 'red';
                     return;
                 }
 
-                fetch(apiUrl, {
+                fetch('<?= BASE_URL ?>/user/validateUsername', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -81,25 +81,101 @@
                     })
                     .then(data => {
                         if (data.error) {
-                            validationElement.textContent = data.error;
-                            validationElement.style.color = 'red';
+                            usernameValidation.textContent = data.error;
+                            usernameValidation.style.color = 'red';
                         } else {
-                            validationElement.textContent = "<?= __('This value is available.') ?>";
-                            validationElement.style.color = 'green';
+                            usernameValidation.textContent = "<?= __('This value is available.') ?>";
+                            usernameValidation.style.color = 'green';
                         }
                     })
                     .catch(async errorResponse => {
                         const error = await errorResponse;
-                        validationElement.textContent = error.error || "<?= __('An unexpected error occurred. Please try again.') ?>";
-                        validationElement.style.color = 'red';
+                        usernameValidation.textContent = error.error || "<?= __('An unexpected error occurred. Please try again.') ?>";
+                        usernameValidation.style.color = 'red';
                     });
             }, 2500);
         });
     };
 
-    validateField('username', '<?= BASE_URL ?>/user/validateUsername', 'username-validation');
-    validateField('email', '<?= BASE_URL ?>/user/validateEmail', 'email-validation');
-    validateField('phone', '<?= BASE_URL ?>/user/validatePhone', 'phone-validation');
+    validateUsername();
+
+    document.querySelector('.default-form-wrapper').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const emailValidation = document.getElementById('email-validation');
+        const phoneValidation = document.getElementById('phone-validation');
+
+        const validateFieldOnSubmit = async (input, apiUrl, validationElement) => {
+            const value = input.value.trim();
+            if (!value) {
+                validationElement.textContent = "<?= __('This field cannot be empty.') ?>";
+                validationElement.style.color = 'red';
+                return false;
+            }
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ value: value })
+                });
+
+                const data = await response.json();
+                if (!response.ok || data.error) {
+                    validationElement.textContent = data.error || "<?= __('Validation failed.') ?>";
+                    validationElement.style.color = 'red';
+                    return false;
+                }
+
+                validationElement.textContent = "<?= __('This value is available.') ?>";
+                validationElement.style.color = 'green';
+                return true;
+            } catch (error) {
+                validationElement.textContent = "<?= __('An unexpected error occurred. Please try again.') ?>";
+                validationElement.style.color = 'red';
+                return false;
+            }
+        };
+
+        const isEmailValid = await validateFieldOnSubmit(emailInput, '<?= BASE_URL ?>/user/validateEmail', emailValidation);
+        const isPhoneValid = await validateFieldOnSubmit(phoneInput, '<?= BASE_URL ?>/user/validatePhone', phoneValidation);
+
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm_password');
+        const passwordValidationMessage = document.createElement('p');
+
+        const existingMessage = document.getElementById('password-validation-message');
+        if (existingMessage) existingMessage.remove();
+
+        let isPasswordValid = true;
+
+        if (passwordInput.value.length < 6) {
+            isPasswordValid = false;
+            passwordValidationMessage.id = 'password-validation-message';
+            passwordValidationMessage.textContent = "<?= __('Password must be at least 6 characters long.') ?>";
+            passwordValidationMessage.style.color = 'red';
+            passwordValidationMessage.style.fontSize = '12px';
+            passwordInput.parentElement.appendChild(passwordValidationMessage);
+        }
+
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            isPasswordValid = false;
+            passwordValidationMessage.id = 'password-validation-message';
+            passwordValidationMessage.textContent = "<?= __('Passwords do not match.') ?>";
+            passwordValidationMessage.style.color = 'red';
+            passwordValidationMessage.style.fontSize = '12px';
+            confirmPasswordInput.parentElement.appendChild(passwordValidationMessage);
+        }
+
+        if (isEmailValid && isPhoneValid && isPasswordValid) {
+            event.target.submit();
+        }
+    });
 
     const togglePasswordVisibility = () => {
         document.querySelectorAll('.toggle-password').forEach(toggle => {
@@ -116,36 +192,7 @@
     };
 
     togglePasswordVisibility();
-
-    document.querySelector('.default-form-wrapper').addEventListener('submit', (event) => {
-        const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirm_password');
-        const passwordValidationMessage = document.createElement('p');
-
-        const existingMessage = document.getElementById('password-validation-message');
-        if (existingMessage) existingMessage.remove();
-
-        if (passwordInput.value.length < 6) {
-            event.preventDefault();
-            passwordValidationMessage.id = 'password-validation-message';
-            passwordValidationMessage.textContent = "<?= __('Password must be at least 6 characters long.') ?>";
-            passwordValidationMessage.style.color = 'red';
-            passwordValidationMessage.style.fontSize = '12px';
-            passwordInput.parentElement.appendChild(passwordValidationMessage);
-            return;
-        }
-
-        if (passwordInput.value !== confirmPasswordInput.value) {
-            event.preventDefault();
-            passwordValidationMessage.id = 'password-validation-message';
-            passwordValidationMessage.textContent = "<?= __('Passwords do not match.') ?>";
-            passwordValidationMessage.style.color = 'red';
-            passwordValidationMessage.style.fontSize = '12px';
-            confirmPasswordInput.parentElement.appendChild(passwordValidationMessage);
-        }
-    });
 </script>
-
 
 <?php
 $content = ob_get_clean();
