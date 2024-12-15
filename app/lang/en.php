@@ -167,4 +167,18 @@ return [
     'Email verified successfully!' => 'Email verified successfully!',
     'Your OTP is ' => 'Your OTP is ',
     'Your OTP' => 'Your OTP',
+    'Forgot Password ?' => 'Forgot Password ?',
+    'Forgot Your Password ?' => 'Forgot Your Password ?',
+    'Enter your email address, and we will send you an OTP to reset your password.' => 'Enter your email address, and we will send you an OTP to reset your password.',
+    'Email Address' => 'Email Address',
+    'Send OTP' => 'Send OTP',
+    'Enter OTP' => 'Enter OTP',
+    'New Password' => 'New Password',
+    'Confirm Password' => 'Confirm Password',
+    'Reset Password' => 'Reset Password',
+    'Your OTP to reset your password is ' => 'Your OTP to reset your password is ',
+    'Your OTP for Password Reset' => 'Your OTP for Password Reset',
+    'Passwords do not match.' => 'Passwords do not match.',
+    'Password has been reset successfully.' => 'Password has been reset successfully.',
+    
 ];

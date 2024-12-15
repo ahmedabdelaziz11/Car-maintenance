@@ -26,7 +26,9 @@
                     </ul>
                     <button type="submit" style="width: 100%;margin-top: 10px;" class="btn btn--block btn--radius btn--size-xlarge btn--color-white btn--bg-maya-blue text-center"><?= __('LogIn') ?></button>
                 </form>
-
+                <div class="forgot-password text-center mt-2">
+                    <a href="<?= BASE_URL . '/user/forgotPassword'; ?>" class="btn--color-radical-red"><?= __('Forgot Password ?') ?></a>
+                </div>
             </div>
             <div class="create-account-text text-center"><?= __('Don\'t have an account?') ?><a href="<?= BASE_URL . '/user/register'; ?>" class="btn--color-radical-red"><?= __('Create now') ?></a></div>
             <div class="page-progress-wrapper">

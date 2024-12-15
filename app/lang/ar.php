@@ -167,4 +167,18 @@ return [
     'Email verified successfully!' => 'تم التحقق من البريد الإلكتروني بنجاح!',
     'Your OTP is ' => 'رمز التحقق الخاص بك هو ',
     'Your OTP' => 'رمز التحقق الخاص بك',
+    'Forgot Password ?' => 'هل نسيت كلمة المرور؟',
+    'Forgot Your Password ?' => 'هل نسيت كلمة المرور الخاصة بك؟',
+    'Enter your email address, and we will send you an OTP to reset your password.' => 'أدخل عنوان بريدك الإلكتروني، وسنرسل لك رمز التحقق لإعادة تعيين كلمة المرور.',
+    'Email Address' => 'عنوان البريد الإلكتروني',
+    'Send OTP' => 'إرسال رمز التحقق',
+    'Enter OTP' => 'أدخل رمز التحقق',
+    'New Password' => 'كلمة المرور الجديدة',
+    'Confirm Password' => 'تأكيد كلمة المرور',
+    'Reset Password' => 'إعادة تعيين كلمة المرور',
+    'Your OTP to reset your password is ' => 'رمز التحقق لإعادة تعيين كلمة المرور هو ',
+    'Your OTP for Password Reset' => 'رمز التحقق لإعادة تعيين كلمة المرور',
+    'Passwords do not match.' => 'كلمات السر غير متطابقة.',
+    'Password has been reset successfully.' => 'تم إعادة تعيين كلمة السر بنجاح.',
+
 ];

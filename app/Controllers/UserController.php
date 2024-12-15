@@ -411,4 +411,61 @@ class UserController extends controller
 
         return $errors;
     }
+
+    public function forgotPassword()
+    {
+        $this->view('auth/forget-password', []);
+    }
+
+    public function sendOtp()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'];
+            $userModel = new user();
+            $user = $userModel->getByEmail($email);
+            if ($user) {
+                $otp = rand(100000, 999999);
+                $userModel->updateRow([
+                    'id' => $user['id'],
+                    'password_otp' => $otp,
+                ]);
+                $body = __('Your OTP to reset your password is ') . $otp;
+                $subject = __('Your OTP for Password Reset');
+                $this->sendEmail($_POST['email'],$subject,$body);
+                echo json_encode(['success' => true]);
+                exit;
+            } else {
+                echo json_encode(['success' => false, 'message' => 'No user found with this email.']);
+                exit;
+            }
+        }
+    }
+
+    public function resetPassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $otp = $_POST['otp'];
+            $newPassword = $_POST['new-password'];
+            $confirmPassword = $_POST['confirm-password'];
+
+            if ($newPassword !== $confirmPassword) {
+                return 'Passwords do not match.';
+            }
+            $userModel = new user();
+            $user = $userModel->getByPasswordOtp($otp);
+
+            if ($user) {
+                $userModel->updateRow([
+                    'id' => $user['id'],
+                    'password' => password_hash($newPassword, PASSWORD_BCRYPT),
+                    'password_otp' => 0,
+                ]);
+
+                $this->view('auth/login', []);
+                exit;
+            } else {
+                $this->view('auth/forget-password', []);
+            }
+        }
+    }
 }

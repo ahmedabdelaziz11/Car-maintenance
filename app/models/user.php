@@ -38,6 +38,12 @@ class user extends model{
         return $sql->row();
     }
 
+    public function getByPasswordOtp($otp)
+    {
+
+        return $this->select()->where('password_otp', '=', $otp)->row();
+    }
+
     public function getByPhone($phone)
     {
         $userId = null;
