@@ -227,7 +227,7 @@ class HomeController extends controller{
             exit;
         }
     
-        if ($dbUser['otp'] !== $otp) {
+        if ($dbUser['email_otp'] !== $otp) {
             echo json_encode([
                 'success' => false,
                 'message' => __('Invalid OTP. Please try again.'),

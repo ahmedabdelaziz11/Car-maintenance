@@ -4,9 +4,10 @@ namespace MVC\models;
 
 use MVC\core\model;
 use MVC\core\session;
+use MVC\Traits\MailTrait;
 
 class user extends model{
-
+    use MailTrait;
     public function __construct()
     {
         parent::__construct();  
@@ -89,7 +90,7 @@ class user extends model{
         }
 
         $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
-
+        $emailOtp = rand(100000,999999);
         $this->insert([
             'name'     => $data['name'],
             'email'    => $data['email'],
@@ -97,10 +98,14 @@ class user extends model{
             'password' => $data['password'],
             'role'     => $data['role'],
             'otp'      => rand(100000,999999),
-            'email_otp' => rand(100000,999999),
+            'email_otp' => $emailOtp,
             'is_phone_verified' => 0,
             'is_email_verified' => 0,
         ])->execute();
+
+        $body = __('Your OTP is ') . $emailOtp;
+        $subject = __('Your OTP');
+        $this->sendEmail($_POST['email'],$subject,$body);
 
         return "Registration successful!";
     }

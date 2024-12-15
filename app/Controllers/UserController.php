@@ -8,9 +8,11 @@ use MVC\core\session;
 use MVC\models\offer;
 use MVC\models\user;
 use MVC\models\userFollow;
+use MVC\Traits\MailTrait;
 
 class UserController extends controller
 {
+    use MailTrait;
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -90,11 +92,15 @@ class UserController extends controller
             }
 
             if ($_POST['email'] != session::Get('user')['email']) {
+                $emailOtp = rand(100000, 999999);
                 $user->updateRow([
                     'id' => session::Get('user')['id'],
-                    'email_otp' => rand(100000, 999999),
+                    'email_otp' => $emailOtp,
                     'is_email_verified' => 0,
                 ]);
+                $body = __('Your OTP is ') . $emailOtp;
+                $subject = __('Your OTP');
+                $this->sendEmail($_POST['email'],$subject,$body);
             }
 
             if (!empty($_POST['password'])) {

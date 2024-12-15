@@ -163,5 +163,8 @@ return [
     'Password must be at least 6 characters long.' => 'يجب أن تكون كلمة المرور مكونة من 6 أحرف على الأقل.',
     'Passwords do not match.' => 'كلمات المرور غير متطابقة.',
     'Invalid login credentials.' => 'بيانات تسجيل الدخول غير صالحة.',
-
+    'Verify your email number' => 'تحقق من رقم بريدك الإلكتروني',
+    'Email verified successfully!' => 'تم التحقق من البريد الإلكتروني بنجاح!',
+    'Your OTP is ' => 'رمز التحقق الخاص بك هو ',
+    'Your OTP' => 'رمز التحقق الخاص بك',
 ];
