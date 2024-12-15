@@ -180,5 +180,12 @@ return [
     'Your OTP for Password Reset' => 'رمز التحقق لإعادة تعيين كلمة المرور',
     'Passwords do not match.' => 'كلمات السر غير متطابقة.',
     'Password has been reset successfully.' => 'تم إعادة تعيين كلمة السر بنجاح.',
-
+    'Frequently Asked Questions' => 'الأسئلة الشائعة',
+    'About Us' => 'من نحن',
+    'Terms And Conditions' => 'الشروط والأحكام',
+    'Privacy Policy' => 'سياسة الخصوصية',
+    'Terms And Conditions' => 'الشروط والأحكام',
+    'Privacy Policy' => 'سياسة الخصوصية',
+    'FQA' => 'الأسئلة الشائعة',
+    'About Us' => 'من نحن',
 ];

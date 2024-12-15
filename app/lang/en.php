@@ -180,5 +180,12 @@ return [
     'Your OTP for Password Reset' => 'Your OTP for Password Reset',
     'Passwords do not match.' => 'Passwords do not match.',
     'Password has been reset successfully.' => 'Password has been reset successfully.',
-    
+    'Frequently Asked Questions' => 'Frequently Asked Questions',
+    'About Us' => 'About Us',
+    'Terms And Conditions' => 'Terms And Conditions',
+    'Privacy Policy' => 'Privacy Policy',
+    'FQA' => 'FQA',
+    'About Us' => 'About Us',
+    'Terms And Conditions' => 'Terms And Conditions',
+    'Privacy Policy' => 'Privacy Policy',
 ];

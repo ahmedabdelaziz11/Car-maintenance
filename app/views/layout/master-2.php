@@ -39,7 +39,6 @@ $lang = session::Get('lang') ?? 'ar';
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/plugins/swiper-bundleAr.min.css">';
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/plugins/ion.rangeSliderAr.min.css">';
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/style2_ar.css">';
-
     } else {
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/vendor/icomoon.css">';
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/plugins/swiper-bundle.min.css">';
@@ -80,6 +79,19 @@ $lang = session::Get('lang') ?? 'ar';
                 <div class="header-area">
                     <div class="header-top-area header-top-area--style-2">
                         <ul class="event-list mb-3">
+                            <div class="dropdown">
+                                <button class="dropdown-button" onclick="toggleDropdown()" aria-label="Open menu">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                        <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm4.5 8.5h-4v4a.5.5 0 01-1 0v-4h-4a.5.5 0 010-1h4v-4a.5.5 0 011 0v4h4a.5.5 0 010 1z"></path>
+                                    </svg>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?= BASE_URL . '/page/fqa'; ?>"><?= __('FQA') ?></a></li>
+                                    <li><a href="<?= BASE_URL . '/page/aboutUs'; ?>"><?= __('About Us') ?></a></li>
+                                    <li><a href="<?= BASE_URL . '/page/termsAndConditions'; ?>"><?= __('Terms And Conditions') ?></a></li>
+                                    <li><a href="<?= BASE_URL . '/page/privacyPolicy'; ?>"><?= __('Privacy Policy') ?></a></li>
+                                </ul>
+                            </div>
                             <?php if (!isset($_SESSION['user'])): ?>
                                 <li class="list-item">
                                     <a href="<?= BASE_URL . '/user/login'; ?>" aria-label="<?= __('Login') ?>" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
@@ -135,15 +147,15 @@ $lang = session::Get('lang') ?? 'ar';
                                         </svg>
                                     </a>
                                 </li>
-                                <?php if($_SESSION['user']['role'] != 3):?>
+                                <?php if ($_SESSION['user']['role'] != 3): ?>
                                     <li class="list-item">
-                                        <a href="<?= BASE_URL . '/admin/dashboard'; ?>" 
-                                        aria-label="<?= __('Dashboard') ?>" 
-                                        class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
-                                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                                width="16" 
-                                                height="16" 
-                                                viewBox="0 0 24 24" 
+                                        <a href="<?= BASE_URL . '/admin/dashboard'; ?>"
+                                            aria-label="<?= __('Dashboard') ?>"
+                                            class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 24 24"
                                                 fill="#ff375f">
                                                 <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z"></path>
                                             </svg>
@@ -229,6 +241,20 @@ $lang = session::Get('lang') ?? 'ar';
 
             xhr.send();
         }
+    </script>
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.querySelector('.dropdown');
+            dropdown.classList.toggle('open');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) => {
+            const dropdown = document.querySelector('.dropdown');
+            if (!dropdown.contains(event.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
     </script>
 </body>
 
