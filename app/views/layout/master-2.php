@@ -86,6 +86,32 @@ $lang = session::Get('lang') ?? 'ar';
                                     </svg>
                                 </button>
                                 <ul class="dropdown-menu">
+                                    <?php if (isset($_SESSION['user'])): ?>
+                                        <li>
+                                            <a href="<?= BASE_URL . '/user/profile'; ?>" aria-label="<?= __('profile') ?>">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#ff375f">
+                                                    <path d="M12 12c2.485 0 4.5-2.015 4.5-4.5S14.485 3 12 3 7.5 5.015 7.5 7.5 9.515 12 12 12zm0 1.5c-3.037 0-9 1.517-9 4.5v1.5h18v-1.5c0-2.983-5.963-4.5-9-4.5z"></path>
+                                                </svg>
+                                                <?= __('Profile Update') ?>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?= BASE_URL . '/offer'; ?>" aria-label="<?= __('offer') ?>">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ff375f">
+                                                    <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm4.5 8.5h-4v4a.5.5 0 01-1 0v-4h-4a.5.5 0 010-1h4v-4a.5.5 0 011 0v4h4a.5.5 0 010 1z"></path>
+                                                </svg>
+                                                <?= __('Manage Your Offers') ?>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?= BASE_URL . '/contact'; ?>" aria-label="<?= __('Contact Us') ?>">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ff375f">
+                                                    <path d="M2.5 2a2.5 2.5 0 00-2.5 2.5v7a2.5 2.5 0 002.5 2.5h11a2.5 2.5 0 002.5-2.5v-7a2.5 2.5 0 00-2.5-2.5h-11zm0 1h11a1.5 1.5 0 011.5 1.5v.637l-6 3.6-6-3.6v-.637a1.5 1.5 0 011.5-1.5zm12.5 2.555v5.945a1.5 1.5 0 01-1.5 1.5h-11a1.5 1.5 0 01-1.5-1.5v-5.945l6 3.6 6-3.6z"></path>
+                                                </svg>
+                                                <?= __('Contact Us') ?>
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
                                     <li><a href="<?= BASE_URL . '/page/fqa'; ?>"><?= __('FQA') ?></a></li>
                                     <li><a href="<?= BASE_URL . '/page/aboutUs'; ?>"><?= __('About Us') ?></a></li>
                                     <li><a href="<?= BASE_URL . '/page/termsAndConditions'; ?>"><?= __('Terms And Conditions') ?></a></li>
@@ -126,27 +152,6 @@ $lang = session::Get('lang') ?? 'ar';
                                 </div>
                             </li>
                             <?php if (isset($_SESSION['user'])): ?>
-                                <li class="list-item">
-                                    <a href="<?= BASE_URL . '/user/profile'; ?>" aria-label="<?= __('profile') ?>" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#ff375f">
-                                            <path d="M12 12c2.485 0 4.5-2.015 4.5-4.5S14.485 3 12 3 7.5 5.015 7.5 7.5 9.515 12 12 12zm0 1.5c-3.037 0-9 1.517-9 4.5v1.5h18v-1.5c0-2.983-5.963-4.5-9-4.5z"></path>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="<?= BASE_URL . '/offer'; ?>" aria-label="<?= __('offer') ?>" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ff375f">
-                                            <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm4.5 8.5h-4v4a.5.5 0 01-1 0v-4h-4a.5.5 0 010-1h4v-4a.5.5 0 011 0v4h4a.5.5 0 010 1z"></path>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="<?= BASE_URL . '/contact'; ?>" aria-label="<?= __('Contact Us') ?>" class="btn btn--size-33-33 btn--center btn--round btn--color-radical-red btn--bg-white btn--box-shadow">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ff375f">
-                                            <path d="M2.5 2a2.5 2.5 0 00-2.5 2.5v7a2.5 2.5 0 002.5 2.5h11a2.5 2.5 0 002.5-2.5v-7a2.5 2.5 0 00-2.5-2.5h-11zm0 1h11a1.5 1.5 0 011.5 1.5v.637l-6 3.6-6-3.6v-.637a1.5 1.5 0 011.5-1.5zm12.5 2.555v5.945a1.5 1.5 0 01-1.5 1.5h-11a1.5 1.5 0 01-1.5-1.5v-5.945l6 3.6 6-3.6z"></path>
-                                        </svg>
-                                    </a>
-                                </li>
                                 <?php if ($_SESSION['user']['role'] != 3): ?>
                                     <li class="list-item">
                                         <a href="<?= BASE_URL . '/admin/dashboard'; ?>"

@@ -49,10 +49,10 @@ class OfferController extends controller{
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = $this->validateCreateRequest();
-    
+            
             if (empty($errors)) {
-                $uploadedImage = $this->uploadImage($_FILES['image'], ROOT . 'public/uploads/offers/');
-    
+                $uploadedImages = $this->uploadImages($_FILES['other_images'], ROOT . 'public/uploads/offers/');
+                $mainImage = $uploadedImages[0];
                 $data = [
                     'title' => $_POST['title'],
                     'details' => $_POST['details'],
@@ -65,7 +65,7 @@ class OfferController extends controller{
                     'city_id' => $_POST['city_id'],
                     'car_model_from' => $_POST['car_model_from'],
                     'car_model_to' => $_POST['car_model_to'],
-                    'image' => $uploadedImage,
+                    'image' => $mainImage,
                     'contact' => $_POST['contact'],
                     'is_active' => 1
                 ];
@@ -75,10 +75,10 @@ class OfferController extends controller{
                 $userFollowModel = new userFollow();
                 $offerId = $offerModel->create($data);
     
-                if (!empty($_FILES['other_images']['name'][0])) {
-                    $uploadedImages = $this->uploadImages($_FILES['other_images'], ROOT . 'public/uploads/offers/');
-                    $imageOrders = $_POST['image_order'];
-                    foreach ($uploadedImages as $index => $uploadedImage) {
+
+                $imageOrders = $_POST['image_order'];
+                foreach ($uploadedImages as $index => $uploadedImage) {
+                    if($index != 0){
                         $order = $imageOrders[$index];
                         $offerImageModel = new offerImage();
                         $offerImageModel->create([
@@ -88,6 +88,7 @@ class OfferController extends controller{
                         ]);
                     }
                 }
+                
                 $userIdsFollowsOffer = $followModel->getUserIdsFollowsOffer($_POST['service_id'],$_POST['category_id']);
                 foreach($userIdsFollowsOffer as $row)
                 {
@@ -162,7 +163,7 @@ class OfferController extends controller{
                         'contact' => $_POST['contact'],
                         'is_active' => 1
                     ];
-        
+
                     if (!empty($_FILES['other_images']['name'][0])) {
                         foreach ($offer['other_images'] as $img) {
                             $oldImagePath = ROOT . 'public/uploads/offers/' . $img['image'];
@@ -175,18 +176,21 @@ class OfferController extends controller{
                         $uploadedImages = $this->uploadImages($_FILES['other_images'], ROOT . 'public/uploads/offers/');
                         $imageOrders = $_POST['image_order'];
                         foreach ($uploadedImages as $index => $uploadedImage) {
-                            $order = $imageOrders[$index];
-                            $offerImageModel = new offerImage();
-                            $offerImageModel->create([
-                                'offer_id' => $id, 
-                                'image' => $uploadedImage,
-                                'order' => $order
-                            ]);
+                            if($index == 0)
+                            {
+                                $data['image'] = $uploadedImage;
+                            }else{
+                                $order = $imageOrders[$index];
+                                $offerImageModel = new offerImage();
+                                $offerImageModel->create([
+                                    'offer_id' => $id, 
+                                    'image' => $uploadedImage,
+                                    'order' => $order
+                                ]);
+                            }
                         }
                     }    
-        
                     $offerModel->updateRow($data);
-        
                     header('Location: ' . BASE_URL . '/offer');
                     exit;
                 } else {
@@ -316,15 +320,6 @@ class OfferController extends controller{
         if (empty($_POST['contact'])) {
             $errors[] = 'جهة الاتصال مطلوبة.';
         }
-    
-        if (empty($_FILES['image']['name'])) {
-            $errors[] = 'الصورة مطلوبة.';
-        } else {
-            $imageErrors = $this->validateImage($_FILES['image']);
-            if (!empty($imageErrors)) {
-                $errors = array_merge($errors, $imageErrors);
-            }
-        }
 
         if (!empty($_FILES['other_images']['name'][0])) {
             foreach ($_FILES['other_images']['name'] as $key => $imageName) {
@@ -344,6 +339,8 @@ class OfferController extends controller{
                     $errors[] = 'خطأ في تحميل الصورة رقم ' . ($key + 1) . '.';
                 }
             }
+        }else{
+            $errors[] = 'يجب أن يكون هناك صورة واحدة على الأقل.';
         }
     
         return $errors;

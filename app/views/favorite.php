@@ -13,7 +13,7 @@
                                     <img width="90" height="90" src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="<?= $offer['title'] ?>">
                                 </div>
                                 <div class="content">
-                                    <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>" class="title"><?= $offer['title'] ?></a>
+                                    <a href="<?= BASE_URL . '/' . $offer['id'] ?>" class="title"><?= $offer['title'] ?></a>
                                     <div class="details">
                                         <div class="left">
                                             <span class="brand"><?= $offer['service_name'] ?></span>

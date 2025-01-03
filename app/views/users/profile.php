@@ -20,17 +20,17 @@
                     <?php foreach ($offers as $offer): ?>
                         <div class="single-product-item product-item--style-2">
                             <div class="image product-item--bg-neon-carrot">
-                                <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>">
+                                <a href="<?= BASE_URL . '/' . $offer['id'] ?>">
                                     <img width="150" height="69" class="img-fluid" src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="<?= $offer['title'] ?>">
                                 </a>
                             </div>
                             <div class="content">
                                 <div class="content--left">
                                     <div style="margin-bottom:15px;">
-                                        <a href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>" class="title">
+                                        <a href="<?= BASE_URL . '/' . $offer['id'] ?>" class="title">
                                                 <?= $offer['car_type_name'] ?>
                                         </a>
-                                        <a style="padding:10px;" href="<?= BASE_URL . '/OfferDetails/show/' . $offer['id'] ?>" class="title">
+                                        <a style="padding:10px;" href="<?= BASE_URL . '/' . $offer['id'] ?>" class="title">
                                             <?= $offer['category_name'] ?>
                                         </a>
                                     </div>

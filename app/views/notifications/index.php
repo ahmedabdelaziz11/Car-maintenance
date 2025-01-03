@@ -8,7 +8,7 @@
                     <p class="text-center"><?= __('No notifications available at the moment.') ?></p>
                 <?php else: ?>
                     <?php foreach ($notifications as $notification): ?>
-                        <a style="margin: 20px;" href="<?= BASE_URL . '/OfferDetails/show/' . $notification['offer_id'] . '/' . $notification['id'] ?>">
+                        <a style="margin: 20px;" href="<?= BASE_URL . '/' . $notification['offer_id'] . '/' . $notification['id'] ?>">
                             <div class="single-product-item product-item--style-4" style="<?= $notification['is_read'] ? 'background-color: #EAEBE8;' : ''; ?>">
                                 <div class="content">
                                     <div class="content--left">

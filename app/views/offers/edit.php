@@ -7,7 +7,7 @@
             <label for="title"><?= __('Title') ?></label>
             <input type="text" name="title" id="title" class="form-control" value="<?= $offer['title'] ?>" required>
         </div>
-        
+
         <div class="form-group">
             <label for="details"><?= __('Details') ?></label>
             <textarea name="details" id="details" class="form-control" required><?= $offer['details'] ?></textarea>
@@ -54,7 +54,7 @@
             <select name="country_id" id="country_id" class="form-control" required>
                 <option value=""><?= __('Select Country') ?></option>
                 <?php foreach ($countries as $country): ?>
-                    <option value="<?= $country['id'] ?>"  <?= $offer['country_id'] == $country['id'] ? 'selected' : '' ?>><?= $country['name'] ?></option>
+                    <option value="<?= $country['id'] ?>" <?= $offer['country_id'] == $country['id'] ? 'selected' : '' ?>><?= $country['name'] ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -87,14 +87,6 @@
         <div id="yearError" style="color: red; display: none;"><?= __('Start year must be less than or equal to the end year.') ?></div>
 
         <div class="form-group">
-            <label for="image"><?= __('Main Image') ?></label>
-            <input type="file" name="image" id="image" class="form-control">
-            <?php if (!empty($offer['image'])): ?>
-                <img src="<?= BASE_URL . '/uploads/offers/' . $offer['image'] ?>" alt="Offer Image" style="width: 100px;">
-            <?php endif; ?>
-        </div>
-
-        <div class="form-group">
             <label for="other_images"><?= __('Other Images') ?></label>
             <input type="file" id="file-selector" class="form-control" multiple>
             <br>
@@ -114,7 +106,7 @@
 </div>
 
 <script>
-    document.querySelector('form').addEventListener('submit', function (event) {
+    document.querySelector('form').addEventListener('submit', function(event) {
         const submitButton = this.querySelector('[type="submit"]');
         if (submitButton.disabled) {
             event.preventDefault();
@@ -171,11 +163,11 @@
             xhr.send();
         }
     });
-    
-    document.addEventListener('DOMContentLoaded', function () {
+
+    document.addEventListener('DOMContentLoaded', function() {
         const currentYear = new Date().getFullYear();
         const startYear = 1980;
-        
+
         const carModelFrom = document.getElementById('car_model_from');
         const carModelTo = document.getElementById('car_model_to');
         const yearError = document.getElementById('yearError');
@@ -231,22 +223,39 @@
 
         <?php if (!empty($offer['other_images'])): ?>
             const existingImages = <?php echo json_encode($offer['other_images']); ?>;
-            existingImages.forEach((img, index) => {
+
+            const fetchImage = (img, index) => {
                 const imageUrl = `<?= BASE_URL . '/uploads/offers/' ?>${img.image}`;
-                fetch(imageUrl)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        const file = new File([blob], `image_${index}.jpg`, { type: blob.type });
-                        files.push(file);
-                        updateFileList();
+                return fetch(imageUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to fetch image: ${imageUrl}`);
+                        }
+                        return response.blob();
                     })
-                    .catch(error => {
-                        console.error('Error fetching image:', error);
+                    .then(blob => {
+                        const file = new File([blob], `image_${index}.jpg`, {
+                            type: blob.type
+                        });
+                        return file;
                     });
-            });
+            };
+
+            // Use Promise.all to ensure order is maintained
+            Promise.all(existingImages.map((img, index) => fetchImage(img, index)))
+                .then(filesArray => {
+                    filesArray.forEach(file => {
+                        files.push(file);
+                    });
+                    updateFileList();
+                })
+                .catch(error => {
+                    console.error('Error fetching images:', error);
+                });
         <?php endif; ?>
 
-        fileSelector.addEventListener('change', function (event) {
+
+        fileSelector.addEventListener('change', function(event) {
             for (let i = 0; i < event.target.files.length; i++) {
                 files.push(event.target.files[i]);
             }
@@ -320,14 +329,14 @@
                 const orderInput = document.createElement('input');
                 orderInput.type = 'hidden';
                 orderInput.name = 'image_order[]';
-                orderInput.value = index + 1; 
+                orderInput.value = index + 1;
 
                 event.target.appendChild(orderInput);
             });
         });
     });
 </script>
-<?php 
-$content = ob_get_clean(); 
-require_once(VIEW . 'layout/master-2.php'); 
+<?php
+$content = ob_get_clean();
+require_once(VIEW . 'layout/master-2.php');
 ?>

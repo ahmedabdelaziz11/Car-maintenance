@@ -30,9 +30,11 @@
                     <a href="<?= BASE_URL . '/user/forgotPassword'; ?>" class="btn--color-radical-red"><?= __('Forgot Password ?') ?></a>
                 </div>
             </div>
-            <div class="create-account-text text-center"><?= __('Don\'t have an account?') ?><a href="<?= BASE_URL . '/user/register'; ?>" class="btn--color-radical-red"><?= __('Create now') ?></a></div>
+            <div class="create-account-text text-center"><?= __('Don\'t have an account?') ?></div>
             <div class="page-progress-wrapper">
-                <a href="<?= BASE_URL . '/user/register'; ?>" class="btn--center btn--round btn--size-58-58 btn--color-white btn--radical-red progress-btn progress-btn--50"><i class="icon icon-carce-ios-arrow-forward"></i></a>
+                <a href="<?= BASE_URL . '/user/register'; ?>" class="btn--center btn--round btn--size-58-58 btn--color-white btn--radical-red progress-btn progress-btn--50">
+                    <?= __('Create now') ?>
+                </a>
             </div>
         </div>
     </div>

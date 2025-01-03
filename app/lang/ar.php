@@ -70,7 +70,7 @@ return [
     'Select Start Year' => 'اختر سنة البداية',
     'Car Model To' => 'موديل السيارة إلى',
     'Select End Year' => 'اختر سنة النهاية',
-    'Other Images' => 'صور إضافية',
+    'Other Images' => 'صور',
     'Contact' => 'الاتصال',
     'Create' => 'إنشاء',
     'Edit Offer' => 'تعديل العرض',

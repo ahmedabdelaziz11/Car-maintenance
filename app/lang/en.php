@@ -70,7 +70,7 @@ return [
     'Select Start Year' => 'Select Start Year',
     'Car Model To' => 'Car Model To',
     'Select End Year' => 'Select End Year',
-    'Other Images' => 'Other Images',
+    'Other Images' => 'Images',
     'Contact' => 'Contact',
     'Create' => 'Create',
     'Edit Offer' => 'Edit Offer',

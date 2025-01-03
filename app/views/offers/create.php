@@ -72,13 +72,8 @@
         </div>
 
         <div class="form-group">
-            <label for="image"><?= __('Main Image') ?></label>
-            <input type="file" name="image" id="image" class="form-control" required>
-        </div>
-
-        <div class="form-group">
             <label for="other_images"><?= __('Other Images') ?></label>
-            <input type="file" id="file-selector" class="form-control" multiple>
+            <input type="file" id="file-selector" class="form-control" multiple required>
             <br>
             <ul id="file-list"></ul>
         </div>
@@ -226,6 +221,7 @@
             removeButton.addEventListener('click', function() {
                 files.splice(index, 1);
                 updateFileList();
+                fileSelector.value = null;
             });
 
             const upButton = document.createElement('button');

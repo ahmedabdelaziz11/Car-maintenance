@@ -39,7 +39,7 @@ ob_start();
                     <?php endif; ?>
                     <button class="btn btn-primary share-button" 
                         onclick="openShareModal(
-                            '<?= BASE_URL . '/OfferDetails/show/' . $offer['id']; ?>', 
+                            '<?= BASE_URL . '/' . $offer['id']; ?>', 
                             '<?= addslashes($offer['title']); ?>', 
                             '<?= BASE_URL . '/uploads/offers/' . $offer['image']; ?>'
                         )">
@@ -410,7 +410,7 @@ $metaTags = [
     'og:title' => htmlspecialchars($offer['title']),
     'og:description' => htmlspecialchars($offer['details']),
     'og:image' => BASE_URL . '/uploads/offers/' . $offer['image'],
-    'og:url' => BASE_URL . '/OfferDetails/show/' . $offer['id'],
+    'og:url' => BASE_URL . '/' . $offer['id'],
     'og:type' => 'website'
 ];
 

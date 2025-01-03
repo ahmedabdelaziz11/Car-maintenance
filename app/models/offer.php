@@ -154,7 +154,13 @@ class offer extends model{
         
         if ($offer) {
             $offer['other_images'] = $this->getRelatedImages($id);
-            $offer['comments']     = $this->getRelatedComments($id);
+            array_unshift($offer['other_images'], [
+                'id' => 1,
+                'offer_id' => 0,
+                'image' => $offer['image'],
+                'order' => 1,
+            ]);
+            $offer['comments'] = $this->getRelatedComments($id);
         }
         if($offer && session::Get('user'))
         {
